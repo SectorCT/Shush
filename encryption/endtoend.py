@@ -1,3 +1,4 @@
+"""
 def is_even(number):
     return number % 2 == 0
 
@@ -32,10 +33,12 @@ text = swap_letters(text)
 
 print(text)
 print(swap_letters(text))
-
-key = "abcd"
+"""
 
 class Encryption:
+    order = []
+    countThem = 0
+
     def __init__(self, key, message):
         self.key = key
         self.message = list(message)
@@ -46,15 +49,18 @@ class Encryption:
     def get_even_ascii(self):
         even_char = []
         for character in range(len(self.message)):
-            if character % 2 == 0:
+            if ord(self.message[character]) % 2 == 0:
                 even_char.append(self.message[character])
+                self.order.append(character)
+                self.countThem += 1
         return even_char
 
     def get_odd_ascii(self):
         odd_char = []
         for character in range(len(self.message)):
-            if character % 2 == 1:
+            if ord(self.message[character]) % 2 == 1:
                 odd_char.append(self.message[character])
+                self.order.append(character)
         return odd_char
 
     def apply_encryption(self):
@@ -71,8 +77,24 @@ class Encryption:
             self.message.append(character)
         self.message = "".join(self.message)
         return self.message
+    
+    def revert_encryption(self):
+        temp = list(range(len(self.message)))
+        count = 0
+        for number in self.order:
+            temp[number] = self.message[count]
+            count += 1
+        self.message = temp
+        nextKeyEl = 0
+        for counter in range(0, len(self.message)):
+            self.message[counter] = chr(ord(self.message[counter]) - ord(self.key[nextKeyEl]))
+            nextKeyEl = nextKeyEl + 1 if nextKeyEl < 3 else 0
+        self.message = "".join(self.message)
+        return self.message
 
 
+key = "abcjknjkd"
 
-test = Encryption(key, "Hello")
+test = Encryption(key, "Hello my name is /place something/")
 print(test.apply_encryption())
+print(test.revert_encryption())
