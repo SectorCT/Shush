@@ -1,3 +1,9 @@
+// import { useFonts, Oswald_400Regular } from '@expo-google-fonts/oswald';
+
+// const [fontsLoaded] = useFonts({
+//     'Oswald-Regular': Oswald_400Regular,
+// });
+
 colors = {
     primary: '#010111',
     secondary: '#555555',
@@ -5,7 +11,7 @@ colors = {
 }
 
 fonts = {
-    primary: 'Roboto, sans-serif',
+    //primary: 'Roboto',
     secondary: 'Roboto Mono, monospace',
 }
 

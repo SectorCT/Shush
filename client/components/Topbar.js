@@ -1,5 +1,6 @@
 import React, { startTransition } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { colors, fonts } from '../styles';
 
 const ImageButton = ({ imageSource}) => {
     //const navigation = useNavigation();
@@ -10,7 +11,7 @@ const ImageButton = ({ imageSource}) => {
   
     return (
       <TouchableOpacity onPress={handlePress}>
-        <Image source={imageSource} />
+        <Image source={imageSource}/>
       </TouchableOpacity>
     );
   };
@@ -19,22 +20,26 @@ const ImageButton = ({ imageSource}) => {
 export default function TopBar() {
   return (
     <View style={styles.topbar__container}>
-        <Image source = {require('../assets/people.svg')}/>
+        <Image source = {require('../assets/addPeople.png')} style ={styles.topbar__imageItem}/>
         <Text style={styles.topbar__text}>ID: VPX_0987</Text>
-        <Image source = {require('../assets/settings.svg')}/>
+        <Image source = {require('../assets/settings.png')} style ={styles.topbar__imageItem}/>
+        
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   topbar__container: {
-    backgroundColor: '#101010',
+    // backgroundColor: colors.primary,
     height: 100,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 20,
+    fontWeight: 400,
+    fontSize: 29,
+    lineHeight: 43,
   },
   topbar__text: {
     fontSize: 20,

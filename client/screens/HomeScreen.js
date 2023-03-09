@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import TopBar from '../components/Topbar.js';
+import PersonChat from '../components/personChat';
 import { colors } from '../styles.js';
 
 const HomeScreen = () => {
@@ -9,7 +10,7 @@ const HomeScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <TopBar />
-        {/* rest of your app's content */}
+        <PersonChat />
       </View>
     </SafeAreaView>
   );
