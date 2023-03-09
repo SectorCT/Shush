@@ -5,15 +5,14 @@ import { colors } from './styles.js'
 
 import Chat from './screens/Chat/Chat';
 import HomeScreen from './screens/HomeScreen.js';
+import AddPeople from './screens/AddPeople.js';
 
 
 export default function App() {
   return (
     <>
-      <StatusBar style="auto" />
-      <View style={styles.islandHider} />
       <View style={styles.container}>
-        <HomeScreen />
+        <AddPeople />
       </View>
     </>
   );
