@@ -1,7 +1,7 @@
 colors = {
-    primary: '#3F51B5',
-    secondary: '#FF4081',
-    accent: '#FFC107',
+    primary: '#010111',
+    secondary: '#181818',
+    accent: '#4BB2DE',
 }
 
 fonts = {
@@ -9,8 +9,7 @@ fonts = {
     secondary: 'Roboto Mono, monospace',
 }
 
-
-export default {
+module.exports = {
     colors,
-    font,
-};
+    fonts,
+}
