@@ -1,6 +1,6 @@
 colors = {
     primary: '#010111',
-    secondary: '#181818',
+    secondary: '#555555',
     accent: '#4BB2DE',
 }
 
