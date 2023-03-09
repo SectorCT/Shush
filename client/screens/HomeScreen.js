@@ -7,12 +7,10 @@ import { colors } from '../styles.js';
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <TopBar />
         <PersonChat />
       </View>
-    </SafeAreaView>
   );
 }
 
