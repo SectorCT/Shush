@@ -1,10 +1,14 @@
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProfileSerializer
 from django.views.decorators.csrf import csrf_exempt
 from .models import Profile
 from django.http import JsonResponse
 from .models import Profile
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, api_view
 
 @csrf_exempt
 def login_view(request):
@@ -33,8 +37,11 @@ def signup(request):
     return JsonResponse({'status': 'error', 'message': 'POST requests only'})
 
 @login_required
+@api_view(['GET'])
 def gettoken(request):
-    if request.method == 'POST':
-        return JsonResponse({'token': request.user.token1})
-    else:
-        return JsonResponse({'error': 'POST requests only.'})
+    user = request.user
+    token = user.token1
+    serialized_token1 = ProfileSerializer(user).data['token1']
+
+    # Return the serialized token1 value
+    return Response({'token1': serialized_token1}, status=status.HTTP_200_OK)

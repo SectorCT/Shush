@@ -12,7 +12,7 @@ class AuthMiddleware:
         # check if user is authenticated
         if not user.is_authenticated:
             # redirect to login page
-            return JsonResponse({'error': 'You are not logged in.'}, status=401)
+            return redirect('login')
         
         # call the next middleware or view
         response = self.get_response(request)
