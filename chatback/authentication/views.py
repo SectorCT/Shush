@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from .models import Profile
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required, api_view
+from django.contrib.auth.decorators import login_required
 
 @csrf_exempt
 def login_view(request):
