@@ -10,6 +10,12 @@ import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
 import InvitePeople from './InvitePeople';
 
 const screens = {
+    SignIn: {
+        screen: SignIn,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
     HomeScreen: {
         screen: HomeScreen,
         navigationOptions: {
@@ -24,12 +30,6 @@ const screens = {
     },
     Chat: {
         screen: Chat,
-        navigationOptions: {
-            headerShown: false,
-        },
-    },
-    SignIn: {
-        screen: SignIn,
         navigationOptions: {
             headerShown: false,
         },

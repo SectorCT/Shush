@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageButton from '../components/ImageButton.js';
 import { colors } from '../styles.js';
 
-const SignScreen = () => {
+const SignScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
 
@@ -27,6 +27,7 @@ const SignScreen = () => {
               onChangeText={(value) => setPassword(value)}
               maxLength={32}
               secureTextEntry={true}
+              placeholderTextColor="#525252"
               />
             <TextInput
               style={styles.input__field}
@@ -35,9 +36,14 @@ const SignScreen = () => {
               onChangeText={(value) => setConfirmedPassword(value)}
               maxLength={32}
               secureTextEntry={true}
+              placeholderTextColor="#525252"
               />
-            <TouchableOpacity style = {styles.sign__logInButton}>
-              <Text style = {styles.sign__logInButton_text}>Already have an account?</Text>
+            <TouchableOpacity style = {styles.sign__logInButton} onPress={() => {navigation.navigate('SignIn');}}>
+              <Text 
+              style = {styles.sign__logInButton_text} 
+              >
+                Already have an account?
+              </Text>
             </TouchableOpacity>
         </View>
             <TouchableOpacity style = {styles.sign__createAccountButton}>
