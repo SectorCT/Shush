@@ -9,7 +9,7 @@ export default function TopBar({ navigation }) {
     <View style={styles.topbar__container}>
       <ImageButton imageSource={require('../assets/addPeople.png')} style={styles.topbar__imageItem}
         onPress={() => {
-          navigation.navigate('AddPeople');
+          navigation.navigate('AddPeopleOrSeeCode');
         }}
       />
       <Text style={styles.topbar__text}>App Name</Text>

@@ -21,7 +21,8 @@ function Message({ text, isOwn }) {
 
 
 
-export default function Chat() {
+export default function Chat({ navigation, chatId }) {
+    console.log("ChatId: ", chatId);
     const [messages, setMessages] = useState([
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
