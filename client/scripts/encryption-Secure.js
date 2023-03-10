@@ -86,8 +86,17 @@ class Encryption {
       return message;
     }
   }
+
+  function genKey() {
+    var key = "";
+    for (var i = 0; i < 128; i++) {
+      key += String.fromCharCode(Math.floor(Math.random() * 95));
+    }
+    return key;
+  }
   
-  const key = "shdjkfhjksdjdiagfohs";
+  /* Here is a quick example of this encryption in use
+  const key = genKey();
   const heremessage = "Hello my name is /place something/";
   
   const test = new Encryption(key);
@@ -104,3 +113,4 @@ class Encryption {
 
   deencrypted = test1.revert_encryption(mydekey, encrypted);
   console.log(deencrypted);
+  */
