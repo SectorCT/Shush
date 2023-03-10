@@ -19,10 +19,7 @@ function Message({ text, isOwn }) {
     );
 }
 
-
-
-export default function Chat({ navigation, chatId }) {
-    console.log("ChatId: ", chatId);
+export default function Chat({ navigation }) {
     const [messages, setMessages] = useState([
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -55,6 +52,8 @@ export default function Chat({ navigation, chatId }) {
 
     const flatListRef = useRef();
 
+    const friendName = navigation.getParam('friendName');
+
     function handleSendMsg() {
         if (typedMessage.length === 0) return;
         setMessages([...messages, {
@@ -69,7 +68,7 @@ export default function Chat({ navigation, chatId }) {
         <>
             <View style={styles.islandHider}></View>
             <View style={styles.chat__header} >
-                <Text style={styles.chat__header_title}>Friend Name</Text>
+                <Text style={styles.chat__header_title}>{friendName}</Text>
             </View>
             <View style={styles.chat__container}>
                 <FlatList
