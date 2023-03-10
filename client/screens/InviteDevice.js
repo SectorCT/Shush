@@ -4,8 +4,8 @@ import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacit
 import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
 
-const code = '2D8KL09S'
-const InvitePeople = ({navigation}) => {
+const codeLink = '3ER89H5Y'
+const inviteDevice = ({navigation}) => {
     const [text, setText] = useState('');
 
     // useEffect(() => {
@@ -35,26 +35,26 @@ const InvitePeople = ({navigation}) => {
             <StatusBar style="auto" />
             <View style={styles.islandHider} />
             <View style={styles.container}>
-                <View style={styles.invitePeople__header} >
-                    <Text style={styles.invitePeople__header_title}>Add People</Text>
+                <View style={styles.inviteDevice__header} >
+                    <Text style={styles.inviteDevice__header_title}>Your Profile</Text>
                 </View>
-                <View style={styles.invitePeople__flex}>
-                    <View style={styles.invitePeople__descriptionview}>
-                        <Text style={styles.invitePeople__description}>Let your friend insert/scan it</Text>
-                        <Text style={styles.invitePeople__description}>Code: <Text style={styles.invitePeople__description_highlight}>{code}</Text></Text>
+                <View style={styles.inviteDevice__flex}>
+                    <View style={styles.inviteDevice__descriptionview}>
+                        <Text style={styles.inviteDevice__description}>Scan from another device</Text>
+                        <Text style={styles.inviteDevice__description}>ID: <Text style={styles.inviteDevice__description_highlight}>{codeLink}</Text></Text>
                     </View>
-                    <View style = {styles.invitePeople__qrCode_view}>
+                    <View style = {styles.inviteDevice__qrCode_view}>
                         <View style={{ borderWidth: 10, borderColor: 'white' }}>
                             <QRCode
-                                value={code}
+                                value={codeLink}
                                 size={200}
                                 color='black'
                                 backgroundColor='white'
                             />
                         </View>
                     </View>
-                    <TouchableOpacity style = {styles.invitePeople__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
-                        <Text style = {styles.invitePeople__createAccountButton_text}>Go Back</Text>
+                    <TouchableOpacity style = {styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
+                        <Text style = {styles.inviteDevice__createAccountButton_text}>Go Back</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primary,
         width: '100%'
     },
-    invitePeople__header: {
+    inviteDevice__header: {
         backgroundColor: colors.complimentary,
         height: 60,
         width: '100%',
@@ -84,29 +84,29 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 30,
     },
-    invitePeople__header_title: {
+    inviteDevice__header_title: {
         color: "#fff",
         fontSize: 40,
         // fontFamily: fonts.primary,
     },
-    invitePeople__flex: {
+    inviteDevice__flex: {
         flex:1,
         margin: 40,
         justifyContent: 'space-between'
     },
-    invitePeople__description: {
+    inviteDevice__description: {
         color: "#898989",
         fontSize: 32,
         lineHeight: 32,
         marginTop: 10
     },
-    invitePeople__descriptionview: {
+    inviteDevice__descriptionview: {
     },
-    invitePeople__description_highlight: {
+    inviteDevice__description_highlight: {
         fontSize: 34,
         color: '#fff',
     },
-    invitePeople__createAccountButton: {
+    inviteDevice__createAccountButton: {
         backgroundColor: colors.accent,
         color: colors.primary,
         borderTopLeftRadius:15,
@@ -119,13 +119,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
       },
-      invitePeople__createAccountButton_text: {
+      inviteDevice__createAccountButton_text: {
         fontSize:30
       },
-      invitePeople__qrCode_style: {
+      inviteDevice__qrCode_style: {
         alignSelf: 'center',
       },
-      invitePeople__qrCode_view: {
+      inviteDevice__qrCode_view: {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center'
@@ -133,4 +133,4 @@ const styles = StyleSheet.create({
       }
 });
 
-export default InvitePeople;
+export default inviteDevice;

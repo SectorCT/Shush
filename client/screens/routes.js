@@ -8,16 +8,23 @@ import SignIn from './SignInScreen.js'
 import AddPeople from './AddPeople.js'
 import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
 import InvitePeople from './InvitePeople';
+import InviteDevice from './InviteDevice';
 
 const screens = {
-    SignIn: {
-        screen: SignIn,
+    HomeScreen: {
+        screen: HomeScreen,
         navigationOptions: {
             headerShown: false,
         },
     },
-    HomeScreen: {
-        screen: HomeScreen,
+    InviteDevice: {
+        screen: InviteDevice,
+        navigationOptions: {
+            headerShown: false
+        }
+    },
+    SignIn: {
+        screen: SignIn,
         navigationOptions: {
             headerShown: false,
         },
