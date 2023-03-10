@@ -15,7 +15,7 @@ class ProfileManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    """
+
     def create_superuser(self, password=None, token=None, token1=None):
         user = self.create_user(password=password, token=token, token1=token1)
         user.is_admin = True
@@ -23,7 +23,7 @@ class ProfileManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-    """
+
     
     def __str__(self):
         return self.token + ' ' + self.password
@@ -33,6 +33,10 @@ class Profile(AbstractBaseUser):
     token = models.CharField(max_length=20, unique=True)
     token1 = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=128)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
         
     USERNAME_FIELD = 'token'
     
@@ -41,12 +45,8 @@ class Profile(AbstractBaseUser):
     objects = ProfileManager()
     def __str__(self):
         return self.token1
-    """
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-        def has_module_perms(self, app_label):
+    
+    def has_module_perms(self, app_label):
         if self.is_admin:
             return True
         # Check if the user has permissions to view the specified app_label
@@ -55,7 +55,7 @@ class Profile(AbstractBaseUser):
     
     def has_perm(self, perm, obj=None):
         return True
-    """
+    
 class FrNick(models.Model):
     USERNAME_FIELD = 'friend'
     friend = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='frnick_as_friend')
