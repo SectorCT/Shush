@@ -46,7 +46,7 @@ class Encryption:
         self.key = key
     
     def __str__(self):
-        return "To use it you have to pass a key to create an encryption object"
+        return "To use it you have to pass a key and a template message to create an encryption object"
 
     def get_even_ascii(self, message):
         even_char = []
@@ -73,12 +73,6 @@ class Encryption:
             if counter > 95:
                 counter = 0
             dekey.append(chr(ord(self.key[counter]) + ord(symbols[scounter])))
-        even_list = self.get_even_ascii(self.key)
-        odd_list = self.get_odd_ascii(self.key)
-        for character in even_list:
-            dekey.append(character)
-        for character in odd_list:
-            dekey.append(character)
         dekey = "".join(dekey)
         return dekey
 
@@ -88,15 +82,6 @@ class Encryption:
         for counter in range(len(message)):
             message[counter] = chr(ord(message[counter]) + ord(dekey[iterate]))
             iterate = iterate + 1 if iterate < len(dekey)-1 else 0
-        length = 0
-        for counter in range(len(dekey)):
-            try:
-                length += int(dekey[-(counter + 1)]) * 10
-            except:
-                break
-        length /= 10
-        for counter in range(int(length)):
-            message.insert(int(len(message)), dekey[len(dekey) - int(length) + counter])
         #while len(message) < self.encryptionLength:
             #for iteration in range(len(message)):
                 #message.insert(iteration+1, chr(ord(self.key[]) + ))
@@ -104,16 +89,7 @@ class Encryption:
         return message
     
     def revert_encryption(self, dekey, message):
-        message = list(message)
-        length = 0
-        for counter in range(len(dekey)):
-            try:
-                length = int(dekey[-(counter + 1)]) * 10
-            except:
-                break
-        length /= 10
-        for counter in range(int(length)):
-            del message[-1]
+        temp = list(range(len(message)))
         message = list(message)
         iterate = 0
         for counter in range(len(message)):
