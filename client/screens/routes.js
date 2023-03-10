@@ -6,36 +6,59 @@ import Chat from './Chat';
 import SignUp from './SignUpScreen.js'
 import SignIn from './SignInScreen.js'
 import AddPeople from './AddPeople.js'
+import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
+import InvitePeople from './InvitePeople';
 
 const screens = {
     SignUp: {
         screen: SignUp,
-        navigationOptions: {
-            headerShown: false,
+        HomeScreen: {
+            screen: HomeScreen,
+            navigationOptions: {
+                headerShown: false,
+            },
         },
-    },
-    SignIn: {
-        screen: SignIn,
-        navigationOptions: {
-            headerShown: false,
+        Chat: {
+            screen: Chat,
+            navigationOptions: {
+                headerShown: false,
+            },
         },
-    },
-    HomeScreen: {
-        screen: HomeScreen,
-        navigationOptions: {
-            headerShown: false,
+        SignIn: {
+            screen: SignIn,
+            navigationOptions: {
+                headerShown: false,
+            },
         },
-    },
-    Chat: {
-        screen: Chat,
-        navigationOptions: {
-            headerShown: false,
+        HomeScreen: {
+            screen: HomeScreen,
+            navigationOptions: {
+                headerShown: false,
+            },
         },
-    },
-    AddPeople: {
-        screen: AddPeople,
-        navigationOptions: {
-            headerShown: false,
+        Chat: {
+            screen: Chat,
+            navigationOptions: {
+                headerShown: false,
+            },
+        },
+        AddPeople: {
+            screen: AddPeople,
+            navigationOptions: {
+                headerShown: false,
+            },
+        },
+        AddPeopleOrSeeCode: {
+            screen: AddPeopleOrSeeCode,
+            navigationOptions: {
+                headerShown: false,
+            },
+        },
+        InvitePeople: {
+            screen: InvitePeople,
+            navigationOptions: {
+                headerShown: false,
+            },
         },
     },
 };
