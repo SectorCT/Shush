@@ -35,66 +35,92 @@ print(text)
 print(swap_letters(text))
 """
 
+import string
+
 class Encryption:
     order = []
     countThem = 0
+    encryptionLength = 4096
 
-    def __init__(self, key, message):
+    def __init__(self, key):
         self.key = key
-        self.message = list(message)
     
     def __str__(self):
-        return "To use it you have to pass firstly a key and secondly a message"
+        return "To use it you have to pass a key and a template message to create an encryption object"
 
-    def get_even_ascii(self):
+    def get_even_ascii(self, message):
         even_char = []
-        for character in range(len(self.message)):
-            if ord(self.message[character]) % 2 == 0:
-                even_char.append(self.message[character])
+        for character in range(len(message)):
+            if ord(message[character]) % 2 == 0:
+                even_char.append(message[character])
                 self.order.append(character)
                 self.countThem += 1
         return even_char
 
-    def get_odd_ascii(self):
+    def get_odd_ascii(self, message):
         odd_char = []
-        for character in range(len(self.message)):
-            if ord(self.message[character]) % 2 == 1:
-                odd_char.append(self.message[character])
+        for character in range(len(message)):
+            if ord(message[character]) % 2 == 1:
+                odd_char.append(message[character])
                 self.order.append(character)
         return odd_char
 
-    def apply_encryption(self):
+    def genDeKey(self):
+        dekey = []
+        symbols = string.printable
+        for counter in range(len(self.key)):
+            scounter = counter + ord(self.key[counter]) if counter + ord(self.key[counter]) <= 95 else counter
+            if counter > 95:
+                counter = 0
+            dekey.append(chr(ord(self.key[counter]) + ord(symbols[scounter])))
+        dekey = "".join(dekey)
+        return dekey
+
+    def apply_encryption(self, dekey, message):
+        message = list(message)
         nextKeyEl = 0
-        for counter in range(0, len(self.message)):
-            self.message[counter] = chr(ord(self.message[counter]) + ord(self.key[nextKeyEl]))
-            nextKeyEl = nextKeyEl + 1 if nextKeyEl < 3 else 0
-        even_list = self.get_even_ascii()
-        odd_list = self.get_odd_ascii()
-        self.message = []
+        for counter in range(0, len(message)):
+            message[counter] = chr(ord(message[counter]) + ord(self.key[nextKeyEl]))
+            nextKeyEl = nextKeyEl + 1 if nextKeyEl < len(self.key)-1 else 0
+        even_list = self.get_even_ascii(message)
+        odd_list = self.get_odd_ascii(message)
+        message = []
         for character in even_list:
-            self.message.append(character)
+            message.append(character)
         for character in odd_list:
-            self.message.append(character)
-        self.message = "".join(self.message)
-        return self.message
+            message.append(character)
+        iterate = 0
+        for counter in range(len(message)):
+            message[counter] = chr(ord(message[counter]) + ord(dekey[iterate]))
+            iterate = iterate + 1 if iterate < len(dekey)-1 else 0
+        message = "".join(message)
+        return message
     
-    def revert_encryption(self):
-        temp = list(range(len(self.message)))
+    def revert_encryption(self, dekey, message):
+        temp = list(range(len(message)))
+        message = list(message)
+        iterate = 0
+        for counter in range(len(message)):
+            message[counter] = chr(ord(message[counter]) - ord(dekey[iterate]))
+            iterate = iterate + 1 if iterate < len(dekey)-1 else 0
         count = 0
         for number in self.order:
-            temp[number] = self.message[count]
+            temp[number] = message[count]
             count += 1
-        self.message = temp
+        message = temp
         nextKeyEl = 0
-        for counter in range(0, len(self.message)):
-            self.message[counter] = chr(ord(self.message[counter]) - ord(self.key[nextKeyEl]))
-            nextKeyEl = nextKeyEl + 1 if nextKeyEl < 3 else 0
-        self.message = "".join(self.message)
-        return self.message
+        for counter in range(0, len(message)):
+            message[counter] = chr(ord(message[counter]) - ord(self.key[nextKeyEl]))
+            nextKeyEl = nextKeyEl + 1 if nextKeyEl < len(self.key)-1 else 0
+        message = "".join(message)
+        return message
 
 
-key = "abcjknjkd"
+key = "ashdfejopsdjfklkd"
+message = "Hello my name is /place something/"
 
-test = Encryption(key, "Hello my name is /place something/")
-print(test.apply_encryption())
-print(test.revert_encryption())
+test = Encryption(key)
+dekey = test.genDeKey()
+encrypted = test.apply_encryption(dekey, message)
+print(encrypted)
+print(test.revert_encryption(dekey, encrypted))
