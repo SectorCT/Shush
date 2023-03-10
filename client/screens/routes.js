@@ -10,14 +10,14 @@ import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
 import InvitePeople from './InvitePeople';
 
 const screens = {
-    HomeScreen: {
-        screen: HomeScreen,
+    SignIn: {
+        screen: SignIn,
         navigationOptions: {
             headerShown: false,
         },
     },
-    SignIn: {
-        screen: SignIn,
+    HomeScreen: {
+        screen: HomeScreen,
         navigationOptions: {
             headerShown: false,
         },
