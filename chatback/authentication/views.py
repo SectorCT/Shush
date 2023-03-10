@@ -1,3 +1,7 @@
+from authentication.serializers import ProfileSerializer
+from rest_framework import permissions
+from rest_framework import viewsets
+import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,7 +16,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 from .models import Profile
-import json
+<< << << < HEAD
+== == == =
+>>>>>> > 3946179ec98f7d66ce48790de790b48a017744b0
 
 User = get_user_model()
 
