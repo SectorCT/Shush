@@ -8,18 +8,6 @@ import SignIn from './SignInScreen.js'
 import AddPeople from './AddPeople.js'
 
 const screens = {
-    HomeScreen: {
-        screen: HomeScreen,
-        navigationOptions: {
-            headerShown: false,
-        },
-    },
-    Chat: {
-        screen: Chat,
-        navigationOptions: {
-            headerShown: false,
-        },
-    },
     SignUp: {
         screen: SignUp,
         navigationOptions: {
@@ -28,6 +16,18 @@ const screens = {
     },
     SignIn: {
         screen: SignIn,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
+    HomeScreen: {
+        screen: HomeScreen,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
+    Chat: {
+        screen: Chat,
         navigationOptions: {
             headerShown: false,
         },
