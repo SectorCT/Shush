@@ -2,28 +2,23 @@ import React, { startTransition } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { colors, fonts } from '../styles';
 
-const ImageButton = ({ imageSource}) => {
-    //const navigation = useNavigation();
-  
-    const handlePress = () => {
-      //navigation.navigate(targetScreen);
-    };
-  
-    return (
-      <TouchableOpacity onPress={handlePress}>
-        <Image source={imageSource}/>
-      </TouchableOpacity>
-    );
-  };
-  
+import ImageButton from './ImageButton.js';
 
-export default function TopBar() {
+export default function TopBar({ navigation }) {
   return (
     <View style={styles.topbar__container}>
-        <Image source = {require('../assets/addPeople.png')} style ={styles.topbar__imageItem}/>
-        <Text style={styles.topbar__text}>ID: VPX_0987</Text>
-        <Image source = {require('../assets/settings.png')} style ={styles.topbar__imageItem}/>
-        
+      <ImageButton imageSource={require('../assets/addPeople.png')} style={styles.topbar__imageItem}
+        onPress={() => {
+          navigation.navigate('AddPeople');
+        }}
+      />
+      <Text style={styles.topbar__text}>App Name</Text>
+      <ImageButton imageSource={require('../assets/settings.png')} style={styles.topbar__imageItem}
+        onPress={() => {
+          navigation.navigate('Settings');
+        }}
+      />
+
     </View>
   );
 }
