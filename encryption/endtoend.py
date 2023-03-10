@@ -40,7 +40,7 @@ import string
 class Encryption:
     order = []
     countThem = 0
-    encryptionLength = 4096
+    encryptionLength = 1024
 
     def __init__(self, key):
         self.key = key
@@ -93,6 +93,9 @@ class Encryption:
         for counter in range(len(message)):
             message[counter] = chr(ord(message[counter]) + ord(dekey[iterate]))
             iterate = iterate + 1 if iterate < len(dekey)-1 else 0
+        #while len(message) < self.encryptionLength:
+            #for iteration in range(len(message)):
+                #message.insert(iteration+1, chr(ord(self.key[]) + ))
         message = "".join(message)
         return message
     
@@ -116,11 +119,15 @@ class Encryption:
         return message
 
 
-key = "ashdfejopsdjfklkd"
-message = "Hello my name is /place something/"
+key = "wruibxcnmmz"
+heremessage = "Hello my name is /place something/"
 
 test = Encryption(key)
-dekey = test.genDeKey()
-encrypted = test.apply_encryption(dekey, message)
+test1 = Encryption(key)
+
+mydekey = test.genDeKey()
+print("---" + mydekey + "---")
+encrypted = test.apply_encryption(mydekey, heremessage)
 print(encrypted)
-print(test.revert_encryption(dekey, encrypted))
+deencrypted = test1.revert_encryption(mydekey, encrypted)
+print(deencrypted)
