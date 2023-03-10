@@ -55,7 +55,6 @@ export default function Chat() {
     const flatListRef = useRef();
 
     function handleSendMsg() {
-        console.log("Send message");
         if (typedMessage.length === 0) return;
         setMessages([...messages, {
             id: Math.random().toString(),
@@ -64,7 +63,6 @@ export default function Chat() {
         }]);
         setTypedMessage("");
     }
-
 
     return (
         <>
@@ -83,7 +81,6 @@ export default function Chat() {
                     ref={flatListRef}
                     onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
                 />
-
             </View>
 
             <View style={styles.chat__sendMsg}>
@@ -91,7 +88,8 @@ export default function Chat() {
                     style={styles.chat__sendMsg_input}
                     value={typedMessage}
                     onChangeText={(text) => setTypedMessage(text)}
-                    placeholder="Type a message..."
+                    placeholder="Type a message ..."
+                    placeholderTextColor="#b4b4b4"
                 />
                 <Icon name='send' size={20} color="#fff" onPress={handleSendMsg}></Icon>
             </View>

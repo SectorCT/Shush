@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput } from 'react-native';
 import TopBar from '../components/Topbar.js';
 import PersonChat from '../components/personChat';
@@ -11,17 +11,17 @@ const SignScreen = () => {
       <StatusBar style="auto" />
       <View style={styles.islandHider} />
       <View style={styles.container}>
-          <View style={styles.sign__header} >
-              <Text style={styles.sign__header_title }>Create account</Text>
-              
-          </View>
-              <TextInput
-                  style={styles.input__field}
-                  value={text}
-                  placeholder="Password"
-                  onChangeText={(value) => setText(value.toUpperCase())}
-                  maxLength={8}
-              />
+        <View style={styles.sign__header} >
+          <Text style={styles.sign__header_title}>Create account</Text>
+
+        </View>
+        <TextInput
+          style={styles.input__field}
+          value={text}
+          placeholder="Password"
+          onChangeText={(value) => setText(value.toUpperCase())}
+          maxLength={8}
+        />
       </View>
     </>
   );
@@ -39,22 +39,22 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-      flex: 1,
-      backgroundColor: colors.primary,
-      width: '100%'
+    flex: 1,
+    backgroundColor: colors.primary,
+    width: '100%'
   },
   sign__header: {
-      backgroundColor: colors.primary,
-      height: 60,
-      width: '100%',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 30,
+    backgroundColor: colors.primary,
+    height: 60,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
   },
   sign__header_title: {
-      color: "#fff",
-      fontSize: 30,
+    color: "#fff",
+    fontSize: 30,
   },
   input__field: {
     padding: 10,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#fff',
     flex: 0.75,
-}
+  }
 });
 
 export default SignScreen;
