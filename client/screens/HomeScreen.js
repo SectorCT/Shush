@@ -4,12 +4,12 @@ import TopBar from '../components/Topbar.js';
 import PersonChat from '../components/personChat';
 import { colors } from '../styles.js';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
-      <View style={styles.container}>
-        <TopBar />
-        <PersonChat />
-      </View>
+    <View style={styles.container}>
+      <TopBar />
+      <PersonChat navigation={navigation} />
+    </View>
   );
 }
 

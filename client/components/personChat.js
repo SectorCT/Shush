@@ -69,14 +69,18 @@ const Peopele = [
   },
 ];
 
-export default function TopBar() {
+export default function TopBar({ navigation }) {
+  const handleOpenChat = () => {
+    navigation.navigate('Chat');
+  };
+
   const renderItem = ({ item }) => (
-    <View style={styles.prChat__personChat}>
+    <TouchableOpacity style={styles.prChat__personChat} onPress={handleOpenChat}>
       <View style={styles.prChat__personIcon}>
         <Text style={styles.prChat__letter}>{item.name[0]}</Text>
       </View>
       <Text style={styles.prChat__name}>{item.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
