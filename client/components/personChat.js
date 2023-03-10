@@ -1,25 +1,89 @@
 import React, { startTransition } from 'react';
-import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList} from 'react-native';
+import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
 import { colors, fonts } from '../styles';
 
-const Names = ["Damyan", "Jeni", "Svetoslav", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh", "Kelesh"];
-const ColorsOfPeople = ["#31CC4A", '#B82727', '#A04492', '#4CA2BD'];
+const Peopele = [
+  {
+    id: 1,
+    name: 'Jeni',
+  },
+  {
+    id: 2,
+    name: 'Jeni',
+  },
+  {
+    id: 3,
+    name: 'Jeni',
+  },
+  {
+    id: 4,
+    name: 'Jeni',
+  },
+  {
+    id: 5,
+    name: 'Jeni',
+  },
+  {
+    id: 6,
+    name: 'Jeni',
+  },
+  {
+    id: 7,
+    name: 'Jeni',
+  },
+  {
+    id: 8,
+    name: 'Jeni',
+  },
+  {
+    id: 9,
+    name: 'Jeni',
+  },
+  {
+    id: 10,
+    name: 'Jeni',
+  },
+  {
+    id: 11,
+    name: 'Jeni',
+  },
+  {
+    id: 12,
+    name: 'Jeni',
+  },
+  {
+    id: 13,
+    name: 'Jeni',
+  },
+  {
+    id: 14,
+    name: 'Jeni',
+  },
+  {
+    id: 15,
+    name: 'Jeni',
+  },
+  {
+    id: 16,
+    name: 'Jeni',
+  },
+];
 
 export default function TopBar() {
   const renderItem = ({ item }) => (
     <View style={styles.prChat__personChat}>
       <View style={styles.prChat__personIcon}>
-        <Text style={styles.prChat__letter}>{item[0]}</Text>
+        <Text style={styles.prChat__letter}>{item.name[0]}</Text>
       </View>
-      <Text style={styles.prChat__name}>{item}</Text>
+      <Text style={styles.prChat__name}>{item.name}</Text>
     </View>
   );
 
   return (
     <FlatList
-      data={Names}
+      data={Peopele}
       renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(item) => item.id}
     />
   );
 }

@@ -3,17 +3,16 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { colors } from './styles.js'
 
-import Chat from './screens/Chat/Chat';
-import HomeScreen from './screens/HomeScreen.js';
+import Navigator from './screens/routes.js';
 
 
 export default function App() {
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style={{ backgroundColor: colors.primary }} />
       <View style={styles.islandHider} />
       <View style={styles.container}>
-        <HomeScreen />
+        <Navigator style={{ height: "100%" }} />
       </View>
     </>
   );

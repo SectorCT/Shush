@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, Button } from 'react-native';
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from '../styles';
 import { TextInput } from 'react-native-gesture-handler';
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState, useRef } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 
