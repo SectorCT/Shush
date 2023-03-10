@@ -9,6 +9,11 @@ from .models import Profile
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login
+from .models import Profile
+
+User = get_user_model()
 
 @csrf_exempt
 def login_view(request):
@@ -28,13 +33,14 @@ def login_view(request):
 def signup(request):
     if request.method == 'POST':
         password = request.POST.get('password')
-        user = Profile.objects.create_user(password)
+        user = Profile.objects.create_user(password=password)
         if user:
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'Could not create user'})
-    
+
     return JsonResponse({'status': 'error', 'message': 'POST requests only'})
+
 
 @login_required
 @api_view(['GET'])
@@ -42,6 +48,5 @@ def gettoken(request):
     user = request.user
     token = user.token1
     serialized_token1 = ProfileSerializer(user).data['token1']
-
     # Return the serialized token1 value
     return Response({'token1': serialized_token1}, status=status.HTTP_200_OK)
