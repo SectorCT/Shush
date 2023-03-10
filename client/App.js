@@ -10,7 +10,7 @@ import AddPeople from './screens/AddPeople.js';
 export default function App() {
   return (
     <>
-      <AddPeople />
+      <Navigator />
     </>
   );
 }
