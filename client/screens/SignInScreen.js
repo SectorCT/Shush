@@ -41,7 +41,7 @@ const SignInScreen = ({ navigation }) => {
                             <Text style={styles.signUp__logInButton_text}>Don't have an account?</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.signUp__createAccountButton} onPress={() => { navigation.navigate('SignUp'); }}>
+                    <TouchableOpacity style={styles.signUp__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
                         <Text style={styles.signUp__createAccountButton_text}>Link in</Text>
                     </TouchableOpacity>
                 </View>
