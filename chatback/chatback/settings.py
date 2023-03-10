@@ -31,33 +31,46 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'msgback.apps.MsgbackConfig',
+    'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
-    'rest_framework',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'authentication.apps.AuthenticationConfig',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 ]
 
-
-AUTH_USER_MODEL = 'authentication.Profile'
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "ROUTING": "myproject.routing.channel_routing",
+    },
+    "database": {
+        "BACKEND": "channels.layers.DatabaseChannelLayer",
+        "ROUTING": "myproject.routing.channel_routing",
+    },
 }
+
+
+
+# Add the "consumers" module to the channel_routing
+#channel_routing = [
+#    # This example assumes your consumer is named "ChatConsumer"
+#    # and it's located in the consumers module
+#    # The third argument is the name of the channel layer
+#    # to use for this consumer (defaults to "default")
+#    route("websocket.connect", "consumers.ChatConsumer"),
+#]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'middleware.auth_middleware.AuthMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -80,8 +93,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'chatback.wsgi.application'
 
 
 # Database
@@ -135,3 +146,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ASGI_APPLICATION = "core.routing.application "

@@ -4,51 +4,64 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.http import JsonResponse
 
 class ProfileManager(BaseUserManager):
-    def create_user(self, token=None, password=None):
+    def create_user(self, password=None, token=None, token1=None):
         if token is None:
             token = secrets.token_hex(20)
+        if token1 is None:
+            token1 = secrets.token_hex(20)
         if password is None:
             return JsonResponse({'status': 'error', 'message': 'Password is required'})
-        user = self.model(token=token)
+        user = self.model(token=token, token1=token1)
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
-    def create_superuser(self, token=None, password=None):
-        user = self.create_user(token=token, password=password)
+    """
+    def create_superuser(self, password=None, token=None, token1=None):
+        user = self.create_user(password=password, token=token, token1=token1)
         user.is_admin = True
         user.is_staff = True
-        is_superuser = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
+    """
     
     def __str__(self):
         return self.token + ' ' + self.password
     
-    
+        
 class Profile(AbstractBaseUser):
     token = models.CharField(max_length=20, unique=True)
+    token1 = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=128)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-    
+        
     USERNAME_FIELD = 'token'
     
     last_login = None
 
     objects = ProfileManager()
-    def has_module_perms(self, app_label):
+    def __str__(self):
+        return self.token1
+    """
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+        def has_module_perms(self, app_label):
         if self.is_admin:
             return True
         # Check if the user has permissions to view the specified app_label
         # Implement your own logic here
         return False
+    
     def has_perm(self, perm, obj=None):
-        """
-        Check if the user has a specific permission.
-        """
-        # Simplest implementation: always return True.
-        # Override this method to implement your own permissions logic.
         return True
+    """
+class FrNick(models.Model):
+    USERNAME_FIELD = 'friend'
+    friend = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='frnick_as_friend')
+    nickname = models.CharField(max_length=20)
+
+class Friend(models.Model):
+    USERNAME_FIELD = 'user'
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='friends_as_user')
+    friend = models.ForeignKey(FrNick, on_delete=models.CASCADE, related_name='frnick_as_friend')
