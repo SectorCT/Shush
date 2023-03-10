@@ -15,7 +15,7 @@ export default function TopBar({ navigation }) {
       <Text style={styles.topbar__text}>App Name</Text>
       <ImageButton imageSource={require('../assets/settings.png')} style={styles.topbar__imageItem}
         onPress={() => {
-          navigation.navigate('Settings');
+          navigation.navigate('InviteDevice');
         }}
       />
 

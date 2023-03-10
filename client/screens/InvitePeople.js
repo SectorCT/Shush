@@ -5,7 +5,7 @@ import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
 
 const code = '2D8KL09S'
-const InvitePeople = () => {
+const InvitePeople = ({navigation}) => {
     const [text, setText] = useState('');
 
     // useEffect(() => {
@@ -53,8 +53,8 @@ const InvitePeople = () => {
                             />
                         </View>
                     </View>
-                    <TouchableOpacity style = {styles.invitePeople__createAccountButton}>
-                        <Text style = {styles.invitePeople__createAccountButton_text}>Create</Text>
+                    <TouchableOpacity style = {styles.invitePeople__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
+                        <Text style = {styles.invitePeople__createAccountButton_text}>Go Back</Text>
                     </TouchableOpacity>
                 </View>
                 
