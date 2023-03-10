@@ -3,7 +3,9 @@ import { createAppContainer } from 'react-navigation';
 
 import HomeScreen from './HomeScreen';
 import Chat from './Chat';
-import People from './People';
+import SignUp from './SignUpScreen.js'
+import SignIn from './SignInScreen.js'
+import AddPeople from './AddPeople.js'
 
 const screens = {
     HomeScreen: {
@@ -18,8 +20,20 @@ const screens = {
             headerShown: false,
         },
     },
-    People: {
-        screen: People,
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
+    SignIn: {
+        screen: SignIn,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
+    AddPeople: {
+        screen: AddPeople,
         navigationOptions: {
             headerShown: false,
         },

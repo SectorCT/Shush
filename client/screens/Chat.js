@@ -66,6 +66,7 @@ export default function Chat() {
 
     return (
         <>
+            <View style={styles.islandHider}></View>
             <View style={styles.chat__header} >
                 <Text style={styles.chat__header_title}>Friend Name</Text>
             </View>
@@ -98,6 +99,11 @@ export default function Chat() {
 }
 
 const styles = StyleSheet.create({
+    islandHider: {
+        backgroundColor: colors.primary,
+        height: 40,
+        width: '100%',
+    },
     chat__header: {
         backgroundColor: colors.primary,
         height: 60,
