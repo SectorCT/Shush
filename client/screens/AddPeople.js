@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image } from 'react-native';
 import { colors } from '../styles.js';
 import { Header } from 'react-native/Libraries/NewAppScreen';
+import QRScanner from '../components/QRScanner';
+import QRCodeScanner from '../components/QRScanner';
 
 const AddPeople = () => {
 const [text, setText] = useState('');
@@ -23,11 +25,12 @@ const [text, setText] = useState('');
                 <View style={styles.input}>
                     <TextInput
                         style={styles.input__field}
-                        onChangeText={setText}
                         value={text}
                         placeholder="Insert invite code"
+                        onChangeText={(value) => setText(value.toUpperCase())}
+                        maxLength={8}
                     />
-                    <Image source = {require('../assets/next.png')} style = {styles.input__field_button}/>
+                    <QRCodeScanner style = {styles.input__field_button}/>
                 </View>
             </View>
             {/* QR */}
@@ -127,9 +130,6 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     input__qr_img: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 20
     },
 });
 
