@@ -1,18 +1,14 @@
 from django.test import TestCase
-from django.test.client import RequestFactory
-from .views import signup
+from django.contrib.auth import get_user_model
 
-class SignupTestCase(TestCase):
+User = get_user_model()
+
+class LoginTest(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
-        
-    def test_signup(self):
-        # Create a fake POST request with the password data
-        request = self.factory.post('/signup/', {'password': 'mysecretpassword'})
-        
-        # Call the signup function with the fake request
-        response = signup(request)
-        
-        # Check that the response indicates success
+        self.user = User.objects.create_user(token="admin", password="admin")
+
+    def test_login(self):
+        response = self.client.post('/api/token/', {'token': 'admin', 'password': 'admin'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'status': 'success'})
+        self.assertIn('access', response.json())
+        self.assertIn('refresh', response.json())
