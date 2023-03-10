@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import { useState, useRef } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import '../scripts/encryption.js'
 
 
 
