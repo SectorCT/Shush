@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 from .models import Profile
+from rest_framework import viewsets
+from rest_framework import permissions
+from authentication.serializers import ProfileSerializer
 
 User = get_user_model()
 
@@ -43,10 +46,5 @@ def signup(request):
 
 
 @login_required
-@api_view(['GET'])
-def gettoken(request):
-    user = request.user
-    token = user.token1
-    serialized_token1 = ProfileSerializer(user).data['token1']
-    # Return the serialized token1 value
-    return Response({'token1': serialized_token1}, status=status.HTTP_200_OK)
+def user_token(request):
+    return JsonResponse({'token': request.user.token1})
