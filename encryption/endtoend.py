@@ -67,7 +67,7 @@ class Encryption:
         nextKeyEl = 0
         for counter in range(0, len(self.message)):
             self.message[counter] = chr(ord(self.message[counter]) + ord(self.key[nextKeyEl]))
-            nextKeyEl = nextKeyEl + 1 if nextKeyEl < len(self.key)-1 else 0
+            nextKeyEl = nextKeyEl + 1 if nextKeyEl < 3 else 0
         even_list = self.get_even_ascii()
         odd_list = self.get_odd_ascii()
         self.message = []
@@ -76,26 +76,25 @@ class Encryption:
         for character in odd_list:
             self.message.append(character)
         self.message = "".join(self.message)
-        return self.message, self.order
+        return self.message
     
-    def revert_encryption(self, dekey):
+    def revert_encryption(self):
         temp = list(range(len(self.message)))
         count = 0
-        for number in dekey:
+        for number in self.order:
             temp[number] = self.message[count]
             count += 1
         self.message = temp
         nextKeyEl = 0
         for counter in range(0, len(self.message)):
             self.message[counter] = chr(ord(self.message[counter]) - ord(self.key[nextKeyEl]))
-            nextKeyEl = nextKeyEl + 1 if nextKeyEl < len(self.key)-1 else 0
+            nextKeyEl = nextKeyEl + 1 if nextKeyEl < 3 else 0
         self.message = "".join(self.message)
         return self.message
 
 
-key = "ashdfjkbcjknjkd"
+key = "abcjknjkd"
 
 test = Encryption(key, "Hello my name is /place something/")
-encrypted, dekey = test.apply_encryption()
-print(encrypted)
-print(test.revert_encryption(dekey))
+print(test.apply_encryption())
+print(test.revert_encryption())
