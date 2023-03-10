@@ -1,30 +1,67 @@
+import secrets
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.hashers import make_password
-import secrets
+from django.http import JsonResponse
 
 class ProfileManager(BaseUserManager):
-    def create_user(self, token=None, password=None, **extra_fields):
+    def create_user(self, password=None, token=None, token1=None):
         if token is None:
-            token = secrets.token_hex(10);
-        profile = self.model(token=token, **extra_fields)
-        if password:
-            profile.password = make_password(password)
-        profile.save(using=self._db)
-        return profile
-
+            token = secrets.token_hex(20)
+        if token1 is None:
+            token1 = secrets.token_hex(20)
+        if password is None:
+            return JsonResponse({'status': 'error', 'message': 'Password is required'})
+        user = self.model(token=token, token1=token1)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    """
+    def create_superuser(self, password=None, token=None, token1=None):
+        user = self.create_user(password=password, token=token, token1=token1)
+        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+    """
+    
+    def __str__(self):
+        return self.token + ' ' + self.password
+    
+        
 class Profile(AbstractBaseUser):
-    token = models.CharField(max_length=100, unique=True)
+    token = models.CharField(max_length=20, unique=True)
+    token1 = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=128)
+        
+    USERNAME_FIELD = 'token'
+    
+    last_login = None
 
+    objects = ProfileManager()
+    def __str__(self):
+        return self.token1
+    """
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-
-    objects = ProfileManager()
-
-    USERNAME_FIELD = 'token'
-    REQUIRED_FIELDS = ['password']
-
+    is_admin = models.BooleanField(default=False)
+        def has_module_perms(self, app_label):
+        if self.is_admin:
+            return True
+        # Check if the user has permissions to view the specified app_label
+        # Implement your own logic here
+        return False
+    
     def has_perm(self, perm, obj=None):
         return True
+    """
+class FrNick(models.Model):
+    USERNAME_FIELD = 'friend'
+    friend = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='frnick_as_friend')
+    nickname = models.CharField(max_length=20)
+
+class Friend(models.Model):
+    USERNAME_FIELD = 'user'
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='friends_as_user')
+    friend = models.ForeignKey(FrNick, on_delete=models.CASCADE, related_name='frnick_as_friend')
