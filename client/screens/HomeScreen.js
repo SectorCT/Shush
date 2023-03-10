@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
 import TopBar from '../components/Topbar.js';
 import PersonChat from '../components/personChat';
 import { colors } from '../styles.js';
