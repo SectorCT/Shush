@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders'
     'msgback.apps.MsgbackConfig',
     'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
@@ -53,7 +54,9 @@ CHANNEL_LAYERS = {
     },
 }
 
-
+CORS_ALLOWED_ORIGIN = [
+    "*"
+]
 
 # Add the "consumers" module to the channel_routing
 #channel_routing = [
@@ -66,6 +69,7 @@ CHANNEL_LAYERS = {
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
