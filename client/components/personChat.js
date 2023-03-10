@@ -68,6 +68,12 @@ const Peopele = [
     name: 'Jeni',
   },
 ];
+const Requests = [
+  {id: 17, name: 'Muj'},
+  {id: 18, name: 'Muj'},
+  {id: 19, name: 'Muj'},
+  {id: 20, name: 'Muj'}
+]
 
 export default function TopBar({ navigation }) {
   const handleOpenChat = (friendName, chatId) => {

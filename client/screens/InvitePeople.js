@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../styles.js';
+import QRCode from 'react-native-qrcode-svg';
 
-
+const code = '2D8KL09S'
 const InvitePeople = () => {
     const [text, setText] = useState('');
 
@@ -37,15 +38,26 @@ const InvitePeople = () => {
                 <View style={styles.invitePeople__header} >
                     <Text style={styles.invitePeople__header_title}>Add People</Text>
                 </View>
-
-                <View style={styles.yourCodeContainer}>
-                    <Text style={styles.yourCodeText}>Your Code is: {inviteCode}</Text>
-                    {/* qr image generated from code */}
-                    <Image
-                        style={{ width: 300, height: 300 }}
-                        source={{ uri: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Hello%20World' }}
-                    />
+                <View style={styles.invitePeople__flex}>
+                    <View style={styles.invitePeople__descriptionview}>
+                        <Text style={styles.invitePeople__description}>Let your friend insert/scan it</Text>
+                        <Text style={styles.invitePeople__description}>Code: <Text style={styles.invitePeople__description_highlight}>{code}</Text></Text>
+                    </View>
+                    <View style = {styles.invitePeople__qrCode_view}>
+                        <View style={{ borderWidth: 10, borderColor: 'white' }}>
+                            <QRCode
+                                value={code}
+                                size={200}
+                                color='black'
+                                backgroundColor='white'
+                            />
+                        </View>
+                    </View>
+                    <TouchableOpacity style = {styles.invitePeople__createAccountButton}>
+                        <Text style = {styles.invitePeople__createAccountButton_text}>Create</Text>
+                    </TouchableOpacity>
                 </View>
+                
             </View>
         </>
     );
@@ -55,7 +67,7 @@ const InvitePeople = () => {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.complimentary,
-        height: 40,
+        height: 50,
         width: '100%',
     },
     container: {
@@ -74,22 +86,51 @@ const styles = StyleSheet.create({
     },
     invitePeople__header_title: {
         color: "#fff",
-        fontSize: 30,
+        fontSize: 40,
         // fontFamily: fonts.primary,
     },
-    yourCodeContainer: {
-        backgroundColor: colors.secondary,
-        height: "100%",
+    invitePeople__flex: {
+        flex:1,
+        margin: 40,
+        justifyContent: 'space-between'
+    },
+    invitePeople__description: {
+        color: "#898989",
+        fontSize: 32,
+        lineHeight: 32,
+        marginTop: 10
+    },
+    invitePeople__descriptionview: {
+    },
+    invitePeople__description_highlight: {
+        fontSize: 34,
+        color: '#fff',
+    },
+    invitePeople__createAccountButton: {
+        backgroundColor: colors.accent,
+        color: colors.primary,
+        borderTopLeftRadius:15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        margin: 0,
+        marginBottom: 20,
         width: '100%',
+        height: 70,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: 30,
-    },
-    yourCodeText: {
-        color: "#fff",
-        fontSize: 20,
-        // fontFamily: fonts.primary,
-    },
+      },
+      invitePeople__createAccountButton_text: {
+        fontSize:30
+      },
+      invitePeople__qrCode_style: {
+        alignSelf: 'center',
+      },
+      invitePeople__qrCode_view: {
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+        
+      }
 });
 
 export default InvitePeople;
