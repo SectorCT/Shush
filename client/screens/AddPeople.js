@@ -26,11 +26,11 @@ const [text, setText] = useState('');
                     <TextInput
                         style={styles.input__field}
                         value={text}
-                        placeholder="Insert invite code"
+                        placeholder="Insert code"
                         onChangeText={(value) => setText(value.toUpperCase())}
                         maxLength={8}
                     />
-                    <QRCodeScanner style = {styles.input__field_button}/>
+                    <Image source = {require('../assets/next.png')} style = {styles.input__field_button}/>
                 </View>
             </View>
             {/* QR */}

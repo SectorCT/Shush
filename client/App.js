@@ -4,16 +4,13 @@ import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { colors } from './styles.js'
 
 import Navigator from './screens/routes.js';
+import AddPeople from './screens/AddPeople.js';
 
 
 export default function App() {
   return (
     <>
-      <StatusBar style={{ backgroundColor: colors.primary }} />
-      <View style={styles.islandHider} />
-      <View style={styles.container}>
-        <Navigator style={{ height: "100%" }} />
-      </View>
+      <AddPeople />
     </>
   );
 }
