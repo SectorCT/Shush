@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput } from 'react-native';
-import TopBar from '../components/Topbar.js';
-import PersonChat from '../components/personChat';
 import { colors } from '../styles.js';
 
 const SignScreen = () => {
@@ -29,10 +27,6 @@ const SignScreen = () => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.primary,
-  },
   islandHider: {
     backgroundColor: colors.primary,
     height: 40,

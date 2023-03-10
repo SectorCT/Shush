@@ -7,7 +7,8 @@ import { colors } from '../styles.js';
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TopBar />
+      <View style={styles.islandHider} />
+      <TopBar navigation={navigation} />
       <PersonChat navigation={navigation} />
     </View>
   );
@@ -15,6 +16,11 @@ const HomeScreen = ({ navigation }) => {
 
 
 const styles = StyleSheet.create({
+  islandHider: {
+    backgroundColor: colors.primary,
+    height: 40,
+    width: '100%',
+  },
   container: {
     flex: 1,
     backgroundColor: colors.primary,
