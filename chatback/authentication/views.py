@@ -1,37 +1,40 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import authenticate, login
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import make_password
 from .models import Profile
-from django.contrib.auth.hashers import check_password
+from django.http import JsonResponse
+from .models import Profile
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
-@method_decorator(csrf_exempt, name='dispatch')
-class SignUpView(APIView):
-    def post(self, request):
-        password = request.data.get('password')
-        # generate a random token
-        token = Profile.objects.make_random_token()
-        # create a new user profile
-        profile = Profile.objects.create(token=token, password=make_password(password))
-        login(request, profile)
-        return Response({'detail': 'Sign up successful'})
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        token = request.POST.get('token')
+        password = request.POST.get('password')
+        user = authenticate(request, token=token, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'success': True, 'message': 'Logged in successfully.'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Invalid credentials.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'})
 
+@csrf_exempt
+def signup(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = Profile.objects.create_user(password)
+        if user:
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Could not create user'})
+    
+    return JsonResponse({'status': 'error', 'message': 'POST requests only'})
 
-@method_decorator(csrf_exempt, name='dispatch')
-class TokenAuthenticationView(APIView):
-    def post(self, request):
-        token = request.data.get('token')
-        password = request.data.get('password')
-        try:    
-            profile = Profile.objects.get(token=token)
-            if check_password(password, profile.password):
-                login(request, profile)
-                return Response({'detail': 'Logged in successfully'})
-            else:
-                return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        except Profile.DoesNotExist:
-            return Response({'detail': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
-
+@login_required
+def gettoken(request):
+    if request.method == 'POST':
+        return JsonResponse({'token': request.user.token1})
+    else:
+        return JsonResponse({'error': 'POST requests only.'})
