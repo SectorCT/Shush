@@ -12,15 +12,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 from .models import Profile
+import json
 
 User = get_user_model()
+
 
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
-        token = request.POST.get('token')
-        password = request.POST.get('password')
-        user = authenticate(request, token=token, password=password)
+        jsonString = request.body.decode('utf-8')
+        jsonBody = json.loads(jsonString)
+        user = authenticate(
+            request, token=jsonBody["token"], password=jsonBody["password"])
         if user is not None:
             login(request, user)
             return JsonResponse({'success': True, 'message': 'Logged in successfully.'})
@@ -29,10 +32,13 @@ def login_view(request):
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
 
+
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
-        password = request.POST.get('password')
+        jsonString = request.body.decode('utf-8')
+        jsonBody = json.loads(jsonString)
+        password = jsonBody["password"]
         user = Profile.objects.create_user(password=password)
         if user:
             return JsonResponse({'status': 'success'})
