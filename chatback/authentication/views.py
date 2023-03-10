@@ -1,20 +1,17 @@
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import ProfileSerializer
 from django.views.decorators.csrf import csrf_exempt
 from .models import Profile
 from django.http import JsonResponse
 from .models import Profile
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 from .models import Profile
-from rest_framework import viewsets
-from rest_framework import permissions
-from authentication.serializers import ProfileSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+import json
 
 User = get_user_model()
 
@@ -37,6 +34,7 @@ def signup(request):
     if request.method == 'POST':
         password = request.POST.get('password')
         user = Profile.objects.create_user(password=password)
+        print(user)
         if user:
             return JsonResponse({'status': 'success'})
         else:
@@ -45,6 +43,15 @@ def signup(request):
     return JsonResponse({'status': 'error', 'message': 'POST requests only'})
 
 
-@login_required
-def user_token(request):
-    return JsonResponse({'token': request.user.token1})
+#@login_required
+#def user_token(request):
+#   return JsonResponse({'token': request.user.token1})
+
+class UserTokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = request.user
+        token1 = user.token1
+        return Response({'token1': token1})
+
