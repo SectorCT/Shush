@@ -88,15 +88,8 @@ class Encryption:
         for counter in range(len(message)):
             message[counter] = chr(ord(message[counter]) + ord(dekey[iterate]))
             iterate = iterate + 1 if iterate < len(dekey)-1 else 0
-        length = 0
-        for counter in range(len(dekey)):
-            try:
-                length += int(dekey[-(counter + 1)]) * 10
-            except:
-                break
-        length /= 10
-        for counter in range(int(length)):
-            message.insert(int(len(message)), dekey[len(dekey) - int(length) + counter])
+        for counter in range(ord(dekey[-1])):
+            message.insert(int(len(message)-counter), chr(len(message)+ord(message[counter])))
         #while len(message) < self.encryptionLength:
             #for iteration in range(len(message)):
                 #message.insert(iteration+1, chr(ord(self.key[]) + ))
@@ -105,16 +98,10 @@ class Encryption:
     
     def revert_encryption(self, dekey, message):
         message = list(message)
-        length = 0
-        for counter in range(len(dekey)):
-            try:
-                length = int(dekey[-(counter + 1)]) * 10
-            except:
-                break
-        length /= 10
-        for counter in range(int(length)):
-            del message[-1]
-        message = list(message)
+        counter = ord(dekey[-1])-1
+        for i in range(ord(dekey[-1])):
+            del message[int(len(message)-counter)-1]
+            counter -= 1
         iterate = 0
         for counter in range(len(message)):
             message[counter] = chr(ord(message[counter]) - ord(dekey[iterate]))
