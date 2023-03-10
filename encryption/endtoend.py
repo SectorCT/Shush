@@ -70,8 +70,8 @@ class Encryption:
         symbols = string.printable
         for counter in range(len(self.key)):
             scounter = counter + ord(self.key[counter]) if counter + ord(self.key[counter]) <= 95 else counter
-            if counter > 95:
-                counter = 0
+            if scounter > 95:
+                scounter = 0
             dekey.append(chr(ord(self.key[counter]) + ord(symbols[scounter])))
         even_list = self.get_even_ascii(self.key)
         odd_list = self.get_odd_ascii(self.key)
@@ -109,8 +109,16 @@ class Encryption:
         message = "".join(message)
         return message
 
+import random
 
-key = "shdjkfhjksdjdiagfohs"
+def genKey():
+    key = []
+    for counter in range(128):
+        key.append(chr(random.randint(0, 94)))
+    key = "".join(key)
+    return key
+
+key = genKey()
 heremessage = "Hello my name is /place something/"
 
 test = Encryption(key)
