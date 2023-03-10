@@ -78,10 +78,6 @@ class Encryption:
 
     def apply_encryption(self, dekey, message):
         message = list(message)
-        nextKeyEl = 0
-        for counter in range(0, len(message)):
-            message[counter] = chr(ord(message[counter]) + ord(self.key[nextKeyEl]))
-            nextKeyEl = nextKeyEl + 1 if nextKeyEl < len(self.key)-1 else 0
         even_list = self.get_even_ascii(message)
         odd_list = self.get_odd_ascii(message)
         message = []
@@ -111,10 +107,6 @@ class Encryption:
             temp[number] = message[count]
             count += 1
         message = temp
-        nextKeyEl = 0
-        for counter in range(0, len(message)):
-            message[counter] = chr(ord(message[counter]) - ord(self.key[nextKeyEl]))
-            nextKeyEl = nextKeyEl + 1 if nextKeyEl < len(self.key)-1 else 0
         message = "".join(message)
         return message
 
@@ -123,7 +115,7 @@ key = "wruibxcnmmz"
 heremessage = "Hello my name is /place something/"
 
 test = Encryption(key)
-test1 = Encryption(key)
+test1 = Encryption("dsfjklweruioxcweruiosdfnm,sdf")
 
 mydekey = test.genDeKey()
 print("---" + mydekey + "---")
