@@ -10,55 +10,52 @@ import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
 import InvitePeople from './InvitePeople';
 
 const screens = {
+    HomeScreen: {
+        screen: HomeScreen,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
     SignUp: {
         screen: SignUp,
-        HomeScreen: {
-            screen: HomeScreen,
-            navigationOptions: {
-                headerShown: false,
-            },
+        navigationOptions: {
+            headerShown: false,
         },
-        Chat: {
-            screen: Chat,
-            navigationOptions: {
-                headerShown: false,
-            },
+    },
+    Chat: {
+        screen: Chat,
+        navigationOptions: {
+            headerShown: false,
         },
-        SignIn: {
-            screen: SignIn,
-            navigationOptions: {
-                headerShown: false,
-            },
+    },
+    SignIn: {
+        screen: SignIn,
+        navigationOptions: {
+            headerShown: false,
         },
-        HomeScreen: {
-            screen: HomeScreen,
-            navigationOptions: {
-                headerShown: false,
-            },
+    },
+    Chat: {
+        screen: Chat,
+        navigationOptions: {
+            headerShown: false,
         },
-        Chat: {
-            screen: Chat,
-            navigationOptions: {
-                headerShown: false,
-            },
+    },
+    AddPeople: {
+        screen: AddPeople,
+        navigationOptions: {
+            headerShown: false,
         },
-        AddPeople: {
-            screen: AddPeople,
-            navigationOptions: {
-                headerShown: false,
-            },
+    },
+    AddPeopleOrSeeCode: {
+        screen: AddPeopleOrSeeCode,
+        navigationOptions: {
+            headerShown: false,
         },
-        AddPeopleOrSeeCode: {
-            screen: AddPeopleOrSeeCode,
-            navigationOptions: {
-                headerShown: false,
-            },
-        },
-        InvitePeople: {
-            screen: InvitePeople,
-            navigationOptions: {
-                headerShown: false,
-            },
+    },
+    InvitePeople: {
+        screen: InvitePeople,
+        navigationOptions: {
+            headerShown: false,
         },
     },
 };
