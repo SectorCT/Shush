@@ -27,6 +27,8 @@ const InvitePeople = () => {
 
     // }, []);
 
+    const [inviteCode, setInviteCode] = useState('ITEWSDSD');
+
     return (
         <>
             <StatusBar style="auto" />
@@ -36,6 +38,14 @@ const InvitePeople = () => {
                     <Text style={styles.invitePeople__header_title}>Add People</Text>
                 </View>
 
+                <View style={styles.yourCodeContainer}>
+                    <Text style={styles.yourCodeText}>Your Code is: {inviteCode}</Text>
+                    {/* qr image generated from code */}
+                    <Image
+                        style={{ width: 300, height: 300 }}
+                        source={{ uri: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Hello%20World' }}
+                    />
+                </View>
             </View>
         </>
     );
@@ -65,6 +75,19 @@ const styles = StyleSheet.create({
     invitePeople__header_title: {
         color: "#fff",
         fontSize: 30,
+        // fontFamily: fonts.primary,
+    },
+    yourCodeContainer: {
+        backgroundColor: colors.secondary,
+        height: "100%",
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 30,
+    },
+    yourCodeText: {
+        color: "#fff",
+        fontSize: 20,
         // fontFamily: fonts.primary,
     },
 });
