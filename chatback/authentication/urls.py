@@ -9,6 +9,6 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', views.login_view, name='login'),
-    path('user_token/', views.user_token, name='gettoken'),
+    path('user_token/',views.UserTokenView.as_view(), name='gettoken'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
