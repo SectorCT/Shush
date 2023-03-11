@@ -9,6 +9,7 @@ colors = {
     primary: '#000D1B',
     secondary: '#112436',
     accent: '#22B6F5',
+    accent2:'#7DDBFF',
     complimentary: '#ACB7C9',
     textWhite: '#EFEFEF'
 }
