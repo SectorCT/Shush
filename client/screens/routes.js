@@ -10,33 +10,9 @@ import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
 import InvitePeople from './InvitePeople';
 import InviteDevice from './InviteDevice';
 
-const screens = {
+const homeStackScreens = {
     HomeScreen: {
         screen: HomeScreen,
-        navigationOptions: {
-            headerShown: false,
-        },
-    },
-    InviteDevice: {
-        screen: InviteDevice,
-        navigationOptions: {
-            headerShown: false
-        }
-    },
-    SignIn: {
-        screen: SignIn,
-        navigationOptions: {
-            headerShown: false,
-        },
-    },
-    SignUp: {
-        screen: SignUp,
-        navigationOptions: {
-            headerShown: false,
-        },
-    },
-    Chat: {
-        screen: Chat,
         navigationOptions: {
             headerShown: false,
         },
@@ -67,7 +43,26 @@ const screens = {
     },
 };
 
-const HomeStack = createStackNavigator(screens);
+const authStackScreens = {
+    SignIn: {
+        screen: SignIn,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
+};
 
-export default createAppContainer(HomeStack);
+const HomeStack = createStackNavigator(homeStackScreens);
+const AuthStack = createStackNavigator(authStackScreens);
+
+module.exports = {
+    HomeStackNavigator: createAppContainer(HomeStack),
+    AuthStackNavigator: createAppContainer(AuthStack),
+};
 

@@ -1,25 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import ImageButton from '../components/ImageButton.js';
 import { colors } from '../styles.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SignScreen = ({navigation}) => {
+import { AuthContext } from '../AuthContext.js';
+
+const SignScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
 
+  const { checkIfLoggedIn } = React.useContext(AuthContext);
 
-  
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+
+  function handleSubmit() {
+    if (password === confirmedPassword) {
+      fetch('http://192.168.7.149:8000/authentication/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: password,
+        }),
+      }).then((response) => {
+        if (response.status === 200) {
+          const authCookie = response.headers.get('set-cookie');
+          response.json().then((data) => {
+            AsyncStorage.setItem("authCookie", authCookie).then(() => {
+              console.log('Cookie saved');
+              AsyncStorage.setItem("userToken", data.token).then(() => {
+                checkIfLoggedIn();
+              });
+            });
+          });
+
+        } else {
+          console.log('Error');
+        }
+      });
+    } else {
+      console.log('Passwords do not match');
+    }
+  }
   return (
     <>
       <StatusBar style="auto" />
       <View style={styles.islandHider} />
-        <View style={styles.container}>
-          <View style={styles.sign__header} >
-            <Text style={styles.sign__header_title}>Create account</Text>
-          </View>
+      <View style={styles.container}>
+        <View style={styles.sign__header} >
+          <Text style={styles.sign__header_title}>Create account</Text>
+        </View>
         <View style={styles.main}>
-          <View style = {styles.sign__inputcontainer}>
+          <View style={styles.sign__inputcontainer}>
             <TextInput
               style={styles.input__field}
               value={password}
@@ -28,7 +64,7 @@ const SignScreen = ({navigation}) => {
               maxLength={32}
               secureTextEntry={true}
               placeholderTextColor="#525252"
-              />
+            />
             <TextInput
               style={styles.input__field}
               value={confirmedPassword}
@@ -37,18 +73,18 @@ const SignScreen = ({navigation}) => {
               maxLength={32}
               secureTextEntry={true}
               placeholderTextColor="#525252"
-              />
-            <TouchableOpacity style = {styles.sign__logInButton} onPress={() => {navigation.navigate('SignIn');}}>
-              <Text 
-              style = {styles.sign__logInButton_text} 
+            />
+            <TouchableOpacity style={styles.sign__logInButton} onPress={() => { navigation.navigate('SignIn'); }}>
+              <Text
+                style={styles.sign__logInButton_text}
               >
                 Already have an account?
               </Text>
             </TouchableOpacity>
-        </View>
-            <TouchableOpacity style = {styles.sign__createAccountButton}>
-              <Text style = {styles.sign__createAccountButton_text}>Create</Text>
-            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.sign__createAccountButton} onPress={handleSubmit}>
+            <Text style={styles.sign__createAccountButton_text}>Create</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -63,7 +99,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   main: {
-    flex:1,
+    flex: 1,
     height: '100%',
     justifyContent: 'space-between',
     backgroundColor: colors.backgroundColor,
@@ -73,7 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary,
     width: '100%',
-    height:'100%',
+    height: '100%',
     justifyContent: 'space-between',
   },
   sign__header: {
@@ -87,26 +123,27 @@ const styles = StyleSheet.create({
   },
   sign__header_title: {
     color: "#fff",
-    fontSize: 30,
+    fontSize: 40,
   },
   input__field: {
     padding: 10,
     width: '100%',
     height: '100%',
-    borderRadius: 20,
     alignItems: 'center',
+    justifyContent: 'center',
+    height: 70,
     fontSize: 30,
     color: '#fff',
-    flex: 0.25,
     borderBottomColor: colors.secondary,
     borderBottomWidth: 2,
+    marginTop: 20,
   },
   sign__inputcontainer: {
     margin: 40,
     marginTop: 70,
     height: '24%',
     justifyContent: 'space-between',
-    flex:0.5
+    flex: 0.5
   },
   sign__logInButton: {
     marginTop: 30,
@@ -131,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sign__createAccountButton_text: {
-    fontSize:30
+    fontSize: 30
   }
 
 });
