@@ -5,6 +5,8 @@ import { colors, fonts } from '../styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+const serverIP = '192.168.7.149';
+
 const Separator = () => <View style={styles.separator} />;
 
 export default function TopBar({ navigation }) {
@@ -13,8 +15,9 @@ export default function TopBar({ navigation }) {
 
   useEffect(() => {
     setPeopele([]);
+    console.log('useEffect');
     AsyncStorage.getItem('authCookie').then((cookie) => {
-      fetch('http://192.168.7.149:8000/authentication/list_friends/', {
+      fetch(`http://${serverIP}:8000/authentication/list_friends/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

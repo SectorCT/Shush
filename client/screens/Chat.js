@@ -3,12 +3,18 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList, Button } from 'react-na
 import { colors, fonts } from '../styles';
 import { TextInput } from 'react-native-gesture-handler';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import '../scripts/encryption-Secure.js'
 import ImageButton from '../components/ImageButton';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import WebSocket from 'react-native-websocket';
+
+
+
+const serverIP = '192.168.7.149';
 
 function Message({ text, isOwn }) {
     let extraStyles = isOwn ? styles.chat__messages_message_own : styles.chat__messages_message_other;
@@ -21,29 +27,67 @@ function Message({ text, isOwn }) {
 }
 
 export default function Chat({ navigation }) {
-    const [messages, setMessages] = useState([
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            text: 'Whats up mom?',
-            isOwn: true,
-            expiresAt: 1620000000000,
-        },
-        {
-            id: '3ac68afc-c605-48d3-a4f8-fb d91aa97f63',
-            text: "Hi Honey",
-            isOwn: false,
-        },
-        {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            text: 'I cant wait to meet you!!',
-            isOwn: true,
-        },
-    ]);
+    const [messages, setMessages] = useState([]);
 
     const [friendName, setFriendName] = useState(navigation.getParam('friendName'));
     const [typedMessage, setTypedMessage] = useState("");
 
     const flatListRef = useRef();
+
+
+    let Cookie = "";
+
+    useEffect(() => {
+
+        AsyncStorage.getItem('authCookie').then((cookie) => {
+            Cookie = cookie;
+            setMessages([]);
+            fetch(`http://${serverIP}:8000/authentication/get_recent_messages/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': cookie,
+                },
+                body: JSON.stringify({
+                    nickname: friendName,
+                }),
+            }).then((response) => {
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        console.log(data);
+                        for (let i = 0; i < data.messages.length; i++) {
+                            let isOwn = data[i].isOwn;
+                            let text = data[i].content;
+                            setMessages([...messages, {
+                                text: text,
+                                isOwn: isOwn,
+                            }]);
+                        }
+                    });
+                } else {
+                    console.log("error");
+                }
+            }
+            );
+        });
+    }, []);
+
+
+    const handleOpen = () => {
+        console.log('WebSocket connection opened');
+    };
+
+    const handleMessage = (event) => {
+        setMessage(event.data);
+    };
+
+    const handleError = (error) => {
+        console.error('WebSocket error:', error);
+    };
+
+    const handleClose = () => {
+        console.log('WebSocket closed');
+    };
 
     function handleSendMsg() {
         if (typedMessage.length === 0) return;
@@ -57,22 +101,36 @@ export default function Chat({ navigation }) {
 
     return (
         <>
+            {/* <WebSocket
+                url='ws://192.168.7.149:8000/ws/chat/1/'
+                headers={
+                    {
+                        "Cookie": Cookie,
+                    }
+                }
+                onOpen={handleOpen}
+                onMessage={handleMessage}
+                onError={handleError}
+                onClose={handleClose}
+                reconnect={true}
+                reconnectInterval={30000}
+            /> */}
             <View style={styles.islandHider}></View>
             <View style={styles.chat__header} >
                 <Text style={styles.chat__header_title}>{friendName}</Text>
-                <ImageButton imageSource={require('../assets/cross.png')} style = {styles.chat__imageItem} onPress={() => {
-          navigation.navigate('HomeScreen');
-        }}/>
+                <ImageButton imageSource={require('../assets/cross.png')} style={styles.chat__imageItem} onPress={() => {
+                    navigation.navigate('HomeScreen');
+                }} />
             </View>
             <View style={styles.chat__container}>
                 <FlatList
                     contentContainerStyle={styles.chat__messages}
-                    data={messages}
+                    data={messages.length === 0 ? [{ text: "No messages yet", isOwn: false }] : messages}
                     renderItem={({ item }) => <Message
                         text={item.text}
                         isOwn={item.isOwn}
                     />}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item, index) => index.toString()}
                     ref={flatListRef}
                     onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
                 />
@@ -86,7 +144,7 @@ export default function Chat({ navigation }) {
                     placeholder="Type a message ..."
                     placeholderTextColor="#b4b4b4"
                 />
-                
+
                 <Icon name='send' size={20} color="#fff" onPress={handleSendMsg}></Icon>
             </View>
             <View style={styles.downSpace} />
@@ -98,7 +156,7 @@ const styles = StyleSheet.create({
     chat__imageItem: {
         width: 25,
         height: 25,
-      },
+    },
     downSpace: {
         backgroundColor: colors.primary,
         height: 50,
@@ -145,15 +203,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         borderRadius: 20,
         // iOS shadow properties
-    shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      
-      // Android elevation property
-      elevation: 5,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        // Android elevation property
+        elevation: 5,
     },
     chat__messages_message_own: {
         alignSelf: "flex-end",

@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../AuthContext.js';
+
 const codeLink = '3ER89H5Y'
-const inviteDevice = ({navigation}) => {
+
+const serverIP = '192.168.7.149';
+const inviteDevice = ({ navigation }) => {
     const [text, setText] = useState('');
 
+
+    const { checkIfLoggedIn } = useContext(AuthContext);
     // useEffect(() => {
     //     console.log("fetch");
     //     fetch('http://192.168.43.51:8000/authentication/gettoken', {
@@ -28,6 +35,27 @@ const inviteDevice = ({navigation}) => {
 
     // }, []);
 
+    function handleLogout() {
+        fetch(`http://${serverIP}:8000/authentication/logout/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            if (response.status === 200) {
+                response.json().then((data) => {
+                    console.log(data);
+                    AsyncStorage.removeItem('authCookie').then(() => {
+                        console.log('Cookie removed');
+                        checkIfLoggedIn();
+                    });
+                });
+            } else {
+                console.error('Error');
+            }
+        });
+    }
+
     const [inviteCode, setInviteCode] = useState('ITEWSDSD');
 
     return (
@@ -43,7 +71,7 @@ const inviteDevice = ({navigation}) => {
                         <Text style={styles.inviteDevice__description}>Scan from another device</Text>
                         <Text style={styles.inviteDevice__description}>ID: <Text style={styles.inviteDevice__description_highlight}>{codeLink}</Text></Text>
                     </View>
-                    <View style = {styles.inviteDevice__qrCode_view}>
+                    <View style={styles.inviteDevice__qrCode_view}>
                         <View style={{ borderWidth: 10, borderColor: 'white' }}>
                             <QRCode
                                 value={codeLink}
@@ -53,11 +81,14 @@ const inviteDevice = ({navigation}) => {
                             />
                         </View>
                     </View>
-                    <TouchableOpacity style = {styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
-                        <Text style = {styles.inviteDevice__createAccountButton_text}>Go Back</Text>
+                    <TouchableOpacity style={styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
+                        <Text style={styles.inviteDevice__createAccountButton_text}>Go Back</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.inviteDevice__logOutButton} onPress={handleLogout}>
+                        <Text style={{ color: "#fff", fontSize: 30 }} >Log Out</Text>
                     </TouchableOpacity>
                 </View>
-                
+
             </View>
         </>
     );
@@ -90,7 +121,7 @@ const styles = StyleSheet.create({
         // fontFamily: fonts.primary,
     },
     inviteDevice__flex: {
-        flex:1,
+        flex: 1,
         margin: 40,
         justifyContent: 'space-between'
     },
@@ -110,29 +141,38 @@ const styles = StyleSheet.create({
     inviteDevice__createAccountButton: {
         backgroundColor: colors.secondary,
         color: colors.primary,
-        borderTopLeftRadius:15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
+        borderRadius: 15,
         margin: 0,
         marginBottom: 20,
         width: '100%',
         height: 70,
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      inviteDevice__createAccountButton_text: {
-        fontSize:30,
+    },
+    inviteDevice__logOutButton: {
+        backgroundColor: colors.secondary,
+        color: colors.primary,
+        borderRadius: 15,
+        margin: 0,
+        marginBottom: 20,
+        width: '100%',
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inviteDevice__createAccountButton_text: {
+        fontSize: 30,
         color: colors.textWhite
-      },
-      inviteDevice__qrCode_style: {
+    },
+    inviteDevice__qrCode_style: {
         alignSelf: 'center',
-      },
-      inviteDevice__qrCode_view: {
+    },
+    inviteDevice__qrCode_view: {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center'
-        
-      }
+
+    }
 });
 
 export default inviteDevice;

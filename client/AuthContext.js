@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [refreshChats, setRefreshChats] = useState(null);
 
     // logic to check if the user is logged in
     const checkIfLoggedIn = async () => {
@@ -12,7 +13,7 @@ const AuthContextProvider = ({ children }) => {
         if (token) {
             setLoggedIn(true);
         } else {
-            setLoggedIn(true);
+            setLoggedIn(false);
         }
     };
 
@@ -21,7 +22,7 @@ const AuthContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ loggedIn, checkIfLoggedIn }}>
+        <AuthContext.Provider value={{ loggedIn, checkIfLoggedIn, refreshChats, setRefreshChats }}>
             {children}
         </AuthContext.Provider>
     );
