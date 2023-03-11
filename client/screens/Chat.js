@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import { useState, useRef } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import '../scripts/encryption.js'
+import '../scripts/encryption-Secure.js'
 
 
 
@@ -31,14 +31,7 @@ export default function Chat({ navigation }) {
             id: '3ac68afc-c605-48d3-a4f8-fb d91aa97f63',
             text: "Lorem ipsum dolo sit amet, consectetur adipisicing elit. Dolores obcaecati a quia vero doloribus vel ut neque aut odio blanditiis in magnam unde, rem sequi eum totam veritatis. Similique, consequatur.\
     Et quasi libero perspiciatis natus molestias delectus dolore a officia hic, vel molestiae perferendis rem nam placeat, quibusdam assumenda incidunt? Alias laudantium ipsam tempore laboriosam amet minima ad molestias sunt?\
-    Voluptatum odio voluptates vitae laboriosam nostrum itaque animi, rerum quis, nam neque obcaecati.Accusantium, fugiat rem deleniti adipisci quisquam commodi distinctio quam, ut deserunt sit ducimus recusandae iste omnis? Temporibus.\
-    Laborum ipsam reiciendis earum laudantium? Cum enim a accusantium saepe quaerat vel in necessitatibus iste at molestiae dignissimos voluptatibus, quod eos.Sunt aliquid recusandae ipsa.Dolore repellendus atque nam nesciunt?\
-    Esse necessitatibus delectus saepe recusandae nisi error dolores veniam ratione similique maiores sint ea doloremque, accusantium quae voluptates unde perferendis iusto aut vel magni est quibusdam.Suscipit illo mollitia sed?\
-    Ab tempore, non nihil quas autem eveniet quibusdam eligendi eos facilis.A quos impedit fugit ullam voluptate provident, doloribus libero assumenda iusto suscipit, ipsa incidunt ducimus est ipsum in harum?\
-    Architecto mollitia tempora, quaerat optio veniam laborum.Necessitatibus, consequuntur asperiores, sint laudantium tempore id obcaecati molestiae itaque fuga similique aperiam voluptatum accusamus harum doloribus, doloremque aliquid reprehenderit.Ducimus, facere eligendi.\
-    Aliquid ipsam sed voluptatem temporibus placeat ea, sapiente voluptates repellendus quisquam quasi quibusdam laudantium quo, fuga, et vel magnam ipsum provident doloremque ratione recusandae quod optio commodi doloribus aspernatur! Consequuntur.\
-    Iure architecto nisi ratione perspiciatis culpa molestiae suscipit delectus repudiandae reprehenderit nesciunt.Ducimus perspiciatis omnis amet ratione veniam mollitia vitae accusantium dolores.Natus quod assumenda mollitia magni illum perferendis architecto.\
-    Voluptatem vel eos corporis doloribus consequatur pariatur, exercitationem ratione, nihil deleniti eum sed veniam libero ut aliquid dolores quos impedit saepe officia.Optio quo laboriosam saepe ipsa, amet voluptate explicabo!",
+    Voluptatum odio voluptates vitae laboriosam nostrum itaque animi, rerum quis, nam neque obcaecati.Accusantium, fugiat rem deleniti adipisci quisquam commodi distinctio quam, ut deserunt sit ducimus recusandae iste omnis? Temporibus.",
             isOwn: false,
         },
         {

@@ -5,10 +5,12 @@
 // });
 
 colors = {
-    primary: '#010101',
-    secondary: '#242424',
-    accent: '#4BB2DE',
-    complimentary: '#070707'
+    background: "#000510",
+    primary: '#000D1B',
+    secondary: '#112436',
+    accent: '#22B6F5',
+    complimentary: '#ACB7C9',
+    textWhite: '#EFEFEF'
 }
 
 fonts = {

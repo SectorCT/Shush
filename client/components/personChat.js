@@ -75,6 +75,8 @@ const Requests = [
   {id: 20, name: 'Muj'}
 ]
 
+const Separator = () => <View style={styles.separator} />;
+
 export default function TopBar({ navigation }) {
   const handleOpenChat = (friendName, chatId) => {
     navigation.navigate('Chat', { friendName, chatId });
@@ -99,40 +101,58 @@ export default function TopBar({ navigation }) {
       data={Peopele}
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
+      ItemSeparatorComponent={Separator}
+      style={styles.prChat__flatList}
+      showsVerticalScrollIndicator={false}
     />
   );
 }
 
 const styles = StyleSheet.create({
   prChat__personChat: {
-    marginLeft: 30,
-    backgroundColor: colors.primary,
-    width: '100%',
-    height: 60,
+    backgroundColor: colors.secondary,
+    borderRadius: 20,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   prChat__personIcon: {
     backgroundColor: colors.accent,
-    borderRadius: 10,
-    height: '80%',
+    borderRadius: 90,
+    height: '75%',
     aspectRatio: '1/1',
-    margin: 5,
+    margin: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   prChat__name: {
-    color: '#fff',
     marginLeft: 12,
     fontWeight: 900,
     fontSize: 23,
     lineHeight: 34,
-    color: '#898989',
+    color: colors.textWhite,
   },
   prChat__letter: {
     color: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 30,
+  },
+  separator: {
+    height: 0,
+    backgroundColor: '#ddd',
+    marginVertical: 5,
+  },
+  prChat__flatList: {
+    flex:1,
+    margin: 5
   }
 });

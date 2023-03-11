@@ -66,21 +66,21 @@ const inviteDevice = ({navigation}) => {
 
 const styles = StyleSheet.create({
     islandHider: {
-        backgroundColor: colors.complimentary,
+        backgroundColor: colors.primary,
         height: 50,
         width: '100%',
     },
     container: {
         flex: 1,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.background,
         width: '100%'
     },
     inviteDevice__header: {
-        backgroundColor: colors.complimentary,
+        backgroundColor: colors.primary,
         height: 60,
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
         paddingHorizontal: 30,
     },
@@ -95,19 +95,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     inviteDevice__description: {
-        color: "#898989",
+        color: colors.complimentary,
         fontSize: 32,
         lineHeight: 32,
-        marginTop: 10
+        marginTop: 10,
     },
     inviteDevice__descriptionview: {
     },
     inviteDevice__description_highlight: {
         fontSize: 34,
-        color: '#fff',
+        fontWeight: 'bold',
+        color: colors.textWhite
     },
     inviteDevice__createAccountButton: {
-        backgroundColor: colors.accent,
+        backgroundColor: colors.secondary,
         color: colors.primary,
         borderTopLeftRadius:15,
         borderBottomRightRadius: 15,
@@ -120,7 +121,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       inviteDevice__createAccountButton_text: {
-        fontSize:30
+        fontSize:30,
+        color: colors.textWhite
       },
       inviteDevice__qrCode_style: {
         alignSelf: 'center',
