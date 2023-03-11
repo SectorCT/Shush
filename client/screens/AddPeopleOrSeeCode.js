@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     },
 
     addButton_Text: {
-        color: "#fff",
+        color: colors.primary,
         fontSize: 25,
     },
 

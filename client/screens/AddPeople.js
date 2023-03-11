@@ -28,6 +28,7 @@ const [text, setText] = useState('');
                             style={styles.input__field}
                             value={text}
                             placeholder="Insert code"
+                            placeholderTextColor = {colors.complimentary}
                             onChangeText={(value) => setText(value.toUpperCase())}
                             maxLength={8}
                         />
@@ -58,33 +59,33 @@ const styles = StyleSheet.create({
         margin: 40,
     },
     islandHider: {
-        backgroundColor: colors.complimentary,
-        height: 40,
+        backgroundColor: colors.primary,
+        height: 50,
         width: '100%',
     },
     container: {
         flex: 1,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.background,
         width: '100%',
     },
     addPeople__header: {
-        backgroundColor: colors.complimentary,
+        backgroundColor: colors.primary,
         height: 60,
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
         paddingHorizontal: 30,
     },
     addPeople__header_title: {
-        color: "#fff",
-        fontSize: 30,
+        color: colors.accent,
+        fontSize: 40,
         // fontFamily: fonts.primary,
     },
     addPeople__invite_text: {
         color: '#fff',
         fontWeight: 400,
-        fontSize: 30,
+        fontSize: 35,
         lineHeight: 37,
         flex:0.25,
         width: '100%'
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: colors.complimentary,
+        backgroundColor: colors.secondary,
         justifyContent: 'space-between',
         fontSize: 30,
         color: '#fff',
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: colors.complimentary,
+        backgroundColor: colors.secondary,
         fontSize: 30,
         color: '#fff',
         flex: 0.75,
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     input__qr_img: {
     },
     inviteDevice__createAccountButton: {
-        backgroundColor: colors.accent,
+        backgroundColor: colors.secondary,
         color: colors.primary,
         borderTopLeftRadius:15,
         borderBottomRightRadius: 15,
@@ -152,7 +153,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       inviteDevice__createAccountButton_text: {
-        fontSize:30
+        fontSize:30,
+        color: colors.textWhite
       },
 });
 

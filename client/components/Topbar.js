@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     lineHeight: 43,
   },
   topbar__text: {
-    fontSize: 20,
+    fontSize: 35,
     fontWeight: 'bold',
     color: "#fff",
     justifyContent: 'center',
