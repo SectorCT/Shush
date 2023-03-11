@@ -8,12 +8,14 @@ import QRCodeScanner from '../components/QRScanner';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const serverIP = '192.168.7.149';
+
 const AddPeople = ({ navigation }) => {
-    const [text, setText] = useState('E19D6D4667BAF6F7');
+    const [text, setText] = useState('');
 
     function handleSubmit() {
         AsyncStorage.getItem('authCookie').then((cookie) => {
-            fetch('http://192.168.7.149:8000/authentication/make_friends/', {
+            fetch(`http://${serverIP}:8000/authentication/make_friends/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,13 +68,13 @@ const AddPeople = ({ navigation }) => {
                         </View>
                     </View>
                     {/* QR */}
-                    <View style={styles.addPeople__qr_container}>
+                    {/* <View style={styles.addPeople__qr_container}>
                         <Text style={styles.addPeople__invite_text}>
                             Or scan{' '}
                             <Text style={styles.addPeople__invite_text_blue}>QR code</Text>
                         </Text>
                         <Image source={require('../assets/QR-clear.png')} style={styles.input__qr_img} />
-                    </View>
+                    </View> */}
                     <TouchableOpacity style={styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
                         <Text style={styles.inviteDevice__createAccountButton_text}>Go Back</Text>
                     </TouchableOpacity>

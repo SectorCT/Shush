@@ -5,11 +5,15 @@ import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+const serverIP = '192.168.7.149';
+
 const InvitePeople = ({ navigation }) => {
+
 
     useEffect(() => {
         AsyncStorage.getItem('authCookie').then((cookie) => {
-            fetch('http://192.168.7.149:8000/authentication/user_token/', {
+            fetch(`http://${serverIP}:8000/authentication/user_token/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

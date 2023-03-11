@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AuthContext } from '../AuthContext.js';
 
+const serverIP = '192.168.7.149';
+
 const SignScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
@@ -18,7 +20,7 @@ const SignScreen = ({ navigation }) => {
 
   function handleSubmit() {
     if (password === confirmedPassword) {
-      fetch('http://192.168.7.149:8000/authentication/signup/', {
+      fetch(`http://${serverIP}:8000/authentication/signup/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
