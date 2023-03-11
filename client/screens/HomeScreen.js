@@ -36,9 +36,9 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.islandHider} />
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Text style={{ color: "#fff" }} onPress={handleLogout}>Log Out</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TopBar navigation={navigation} />
       <PersonChat navigation={navigation} />
     </View>

@@ -6,6 +6,7 @@ import { Header } from 'react-native/Libraries/NewAppScreen';
 import QRScanner from '../components/QRScanner';
 import QRCodeScanner from '../components/QRScanner';
 
+
 const AddPeople = ({navigation}) => {
 const [text, setText] = useState('');
   return (
@@ -27,22 +28,20 @@ const [text, setText] = useState('');
                         <TextInput
                             style={styles.input__field}
                             value={text}
-                            placeholder="Insert code"
-                            placeholderTextColor = {colors.complimentary}
+                            placeholder="Your Code"
+                            placeholderTextColor="#525252"
                             onChangeText={(value) => setText(value.toUpperCase())}
                             maxLength={8}
+
                         />
-                        <Image source = {require('../assets/next.png')} style = {styles.input__field_button}/>
+                        <TouchableOpacity style = {styles.input__field_buttonview}>
+                            <Image source = {require('../assets/qr-code.png')} style = {styles.input__field_button}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
-                {/* QR */}
-                <View style = {styles.addPeople__qr_container}>
-                    <Text style={styles.addPeople__invite_text}>
-                            Or scan{' '}
-                        <Text style={styles.addPeople__invite_text_blue}>QR code</Text>
-                    </Text>
-                    <Image source = {require('../assets/QR-clear.png')} style = {styles.input__qr_img}/>
-                </View>
+                    <TouchableOpacity style = {styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
+                        <Text style = {styles.inviteDevice__createAccountButton_text}>Invite Friend</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style = {styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
                         <Text style = {styles.inviteDevice__createAccountButton_text}>Go Back</Text>
                     </TouchableOpacity>
@@ -98,15 +97,11 @@ const styles = StyleSheet.create({
         padding: 0
     },
     input: {
-        borderWidth: 1,
-        borderRadius: 10,
         padding: 10,
         width: '100%',
-        height: 114,
         borderRadius: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: colors.secondary,
         justifyContent: 'space-between',
         fontSize: 30,
         color: '#fff',
@@ -116,22 +111,24 @@ const styles = StyleSheet.create({
     },
     input__field: {
         padding: 10,
-        width: '100%',
+        width: '80%',
         height: '100%',
-        borderRadius: 20,
-        flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: colors.secondary,
+        justifyContent: 'center',
+        height: 70,
         fontSize: 30,
         color: '#fff',
-        flex: 0.75,
+        borderBottomColor: colors.secondary,
+        borderBottomWidth: 2,
+        marginTop: 20,
     },
     input__field_button: {
-        aspectRatio: '1/1',
-        padding: 15,
-        flex: 0.05,
-        marginRight: 25
+        height:37,
+        aspectRatio:'1/1',
 
+    },
+    input__field_buttonview: {
+        
     },
     addPeople__qr_container: {
         flex: 1.5,

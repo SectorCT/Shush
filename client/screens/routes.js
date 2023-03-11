@@ -17,6 +17,12 @@ const homeStackScreens = {
             headerShown: false,
         },
     },
+    InvitePeople: {
+        screen: InvitePeople,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
     Chat: {
         screen: Chat,
         navigationOptions: {
@@ -35,12 +41,12 @@ const homeStackScreens = {
             headerShown: false,
         },
     },
-    InvitePeople: {
-        screen: InvitePeople,
+    InviteDevice: {
+        screen: InviteDevice,
         navigationOptions: {
             headerShown: false,
         },
-    },
+    }
 };
 
 const authStackScreens = {

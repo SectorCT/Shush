@@ -4,70 +4,71 @@ import { colors, fonts } from '../styles';
 
 const Peopele = [
   {
-    id: 1,
-    name: 'Jeni',
+  id: 1,
+  name: 'Samantha',
   },
   {
-    id: 2,
-    name: 'Jeni',
+  id: 2,
+  name: 'David',
   },
   {
-    id: 3,
-    name: 'Jeni',
+  id: 3,
+  name: 'Amanda',
   },
   {
-    id: 4,
-    name: 'Jeni',
+  id: 4,
+  name: 'Michael',
   },
   {
-    id: 5,
-    name: 'Jeni',
+  id: 5,
+  name: 'Emily',
   },
   {
-    id: 6,
-    name: 'Jeni',
+  id: 6,
+  name: 'Brian',
   },
   {
-    id: 7,
-    name: 'Jeni',
+  id: 7,
+  name: 'Rachel',
   },
   {
-    id: 8,
-    name: 'Jeni',
+  id: 8,
+  name: 'Alex',
   },
   {
-    id: 9,
-    name: 'Jeni',
+  id: 9,
+  name: 'Jessica',
   },
   {
-    id: 10,
-    name: 'Jeni',
+  id: 10,
+  name: 'Ryan',
   },
   {
-    id: 11,
-    name: 'Jeni',
+  id: 11,
+  name: 'Taylor',
   },
   {
-    id: 12,
-    name: 'Jeni',
+  id: 12,
+  name: 'Justin',
   },
   {
-    id: 13,
-    name: 'Jeni',
+  id: 13,
+  name: 'Hannah',
   },
   {
-    id: 14,
-    name: 'Jeni',
+  id: 14,
+  name: 'Andrew',
   },
   {
-    id: 15,
-    name: 'Jeni',
+  id: 15,
+  name: 'Olivia',
   },
   {
-    id: 16,
-    name: 'Jeni',
+  id: 16,
+  name: 'Jacob',
   },
-];
+  ];
+  
 const Requests = [
   {id: 17, name: 'Muj'},
   {id: 18, name: 'Muj'},

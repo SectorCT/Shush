@@ -12,7 +12,7 @@ export default function TopBar({ navigation }) {
           navigation.navigate('AddPeopleOrSeeCode');
         }}
       />
-      <Text style={styles.topbar__text}>App Name</Text>
+      <Text style={styles.topbar__text}>Shush</Text>
       <ImageButton imageSource={require('../assets/settings.png')} style={styles.topbar__imageItem}
         onPress={() => {
           navigation.navigate('InviteDevice');

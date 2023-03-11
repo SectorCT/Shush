@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useState, useRef } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import '../scripts/encryption-Secure.js'
+import ImageButton from '../components/ImageButton';
 
 
 
@@ -23,20 +24,18 @@ export default function Chat({ navigation }) {
     const [messages, setMessages] = useState([
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            text: 'First Item',
+            text: 'Whats up mom?',
             isOwn: true,
             expiresAt: 1620000000000,
         },
         {
             id: '3ac68afc-c605-48d3-a4f8-fb d91aa97f63',
-            text: "Lorem ipsum dolo sit amet, consectetur adipisicing elit. Dolores obcaecati a quia vero doloribus vel ut neque aut odio blanditiis in magnam unde, rem sequi eum totam veritatis. Similique, consequatur.\
-    Et quasi libero perspiciatis natus molestias delectus dolore a officia hic, vel molestiae perferendis rem nam placeat, quibusdam assumenda incidunt? Alias laudantium ipsam tempore laboriosam amet minima ad molestias sunt?\
-    Voluptatum odio voluptates vitae laboriosam nostrum itaque animi, rerum quis, nam neque obcaecati.Accusantium, fugiat rem deleniti adipisci quisquam commodi distinctio quam, ut deserunt sit ducimus recusandae iste omnis? Temporibus.",
+            text: "Hi Honey",
             isOwn: false,
         },
         {
             id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            text: 'Third Item',
+            text: 'I cant wait to meet you!!',
             isOwn: true,
         },
     ]);
@@ -62,6 +61,9 @@ export default function Chat({ navigation }) {
             <View style={styles.islandHider}></View>
             <View style={styles.chat__header} >
                 <Text style={styles.chat__header_title}>{friendName}</Text>
+                <ImageButton imageSource={require('../assets/cross.png')} style = {styles.chat__imageItem} onPress={() => {
+          navigation.navigate('HomeScreen');
+        }}/>
             </View>
             <View style={styles.chat__container}>
                 <FlatList
@@ -85,16 +87,27 @@ export default function Chat({ navigation }) {
                     placeholder="Type a message ..."
                     placeholderTextColor="#b4b4b4"
                 />
+                
                 <Icon name='send' size={20} color="#fff" onPress={handleSendMsg}></Icon>
             </View>
+            <View style={styles.downSpace} />
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    chat__imageItem: {
+        width: 25,
+        height: 25,
+      },
+    downSpace: {
+        backgroundColor: colors.primary,
+        height: 50,
+        width: '100%',
+    },
     islandHider: {
         backgroundColor: colors.primary,
-        height: 40,
+        height: 50,
         width: '100%',
     },
     chat__header: {
@@ -107,14 +120,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     chat__header_title: {
-        color: "#2CBCFA",
-        fontSize: 30,
+        color: colors.accent,
+        fontSize: 40,
         // fontFamily: fonts.primary,
     },
     chat__container: {
         flex: 1,
         width: '100%',
-        backgroundColor: colors.primary,
+        backgroundColor: colors.background,
     },
     chat__messages: {
         width: "100%",
@@ -141,6 +154,7 @@ const styles = StyleSheet.create({
     chat__messages_message_other: {
         alignSelf: "flex-start",
         borderTopLeftRadius: 0,
+
     },
     chat__text: {
         padding: 0,

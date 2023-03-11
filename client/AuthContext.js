@@ -12,7 +12,7 @@ const AuthContextProvider = ({ children }) => {
         if (token) {
             setLoggedIn(true);
         } else {
-            setLoggedIn(false);
+            setLoggedIn(true);
         }
     };
 
