@@ -1,15 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageButton from '../components/ImageButton.js';
 import { colors } from '../styles.js';
 
+import { AuthContext } from '../AuthContext.js';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const SignInScreen = ({ navigation }) => {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
 
+    const { checkIfLoggedIn } = React.useContext(AuthContext);
 
+    useEffect(() => {
+        checkIfLoggedIn();
+        AsyncStorage.getItem('userToken').then((value) => {
+            setCode(value);
+        });
+    }, []);
 
+    function handleSubmit() {
+        fetch('http://192.168.7.149:8000/authentication/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: code,
+                password: password,
+            }),
+        }).then((response) => {
+            if (response.status === 200) {
+                const authCookie = response.headers.get('set-cookie');
+                response.json().then((data) => {
+                    console.log(data);
+                    AsyncStorage.setItem("authCookie", authCookie).then(() => {
+                        AsyncStorage.setItem("userToken", data.token).then(() => {
+                            checkIfLoggedIn();
+                        });
+                    });
+                });
+            } else {
+                console.log('Error');
+            }
+        });
+    }
     return (
         <>
             <StatusBar style="auto" />
@@ -25,8 +63,7 @@ const SignInScreen = ({ navigation }) => {
                             value={code}
                             placeholder="Your Code"
                             placeholderTextColor="#525252"
-                            onChangeText={(value) => setCode(value.toUpperCase())}
-                            maxLength={8}
+                            onChangeText={(value) => setCode(value)}
                         />
                         <TextInput
                             style={styles.input__field}
@@ -41,8 +78,8 @@ const SignInScreen = ({ navigation }) => {
                             <Text style={styles.signUp__logInButton_text}>Don't have an account?</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.signUp__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
-                        <Text style={styles.signUp__createAccountButton_text}>Link in</Text>
+                    <TouchableOpacity style={styles.signUp__createAccountButton} onPress={handleSubmit}>
+                        <Text style={styles.signUp__createAccountButton_text}>Link Account</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -88,7 +125,6 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '100%',
         height: '100%',
-        borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
         height: 70,
