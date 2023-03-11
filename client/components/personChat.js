@@ -1,84 +1,39 @@
-import React, { startTransition } from 'react';
+import React, { useEffect } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
 import { colors, fonts } from '../styles';
 
-const Peopele = [
-  {
-  id: 1,
-  name: 'Samantha',
-  },
-  {
-  id: 2,
-  name: 'David',
-  },
-  {
-  id: 3,
-  name: 'Amanda',
-  },
-  {
-  id: 4,
-  name: 'Michael',
-  },
-  {
-  id: 5,
-  name: 'Emily',
-  },
-  {
-  id: 6,
-  name: 'Brian',
-  },
-  {
-  id: 7,
-  name: 'Rachel',
-  },
-  {
-  id: 8,
-  name: 'Alex',
-  },
-  {
-  id: 9,
-  name: 'Jessica',
-  },
-  {
-  id: 10,
-  name: 'Ryan',
-  },
-  {
-  id: 11,
-  name: 'Taylor',
-  },
-  {
-  id: 12,
-  name: 'Justin',
-  },
-  {
-  id: 13,
-  name: 'Hannah',
-  },
-  {
-  id: 14,
-  name: 'Andrew',
-  },
-  {
-  id: 15,
-  name: 'Olivia',
-  },
-  {
-  id: 16,
-  name: 'Jacob',
-  },
-  ];
-  
-const Requests = [
-  {id: 17, name: 'Muj'},
-  {id: 18, name: 'Muj'},
-  {id: 19, name: 'Muj'},
-  {id: 20, name: 'Muj'}
-]
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Separator = () => <View style={styles.separator} />;
 
 export default function TopBar({ navigation }) {
+
+  const [Peopele, setPeopele] = React.useState([]);
+
+  useEffect(() => {
+    setPeopele([]);
+    AsyncStorage.getItem('authCookie').then((cookie) => {
+      fetch('http://192.168.7.149:8000/authentication/list_friends/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': cookie,
+        },
+      }).then((response) => {
+        if (response.status === 200) {
+          response.json().then((data) => {
+            data.friends.forEach((element) => {
+              setPeopele((Peopele) => [...Peopele, element]);
+            });
+          });
+        } else {
+          console.error('Error');
+        }
+      });
+    });
+  }, []);
+
   const handleOpenChat = (friendName, chatId) => {
     navigation.navigate('Chat', { friendName, chatId });
   };
@@ -87,13 +42,13 @@ export default function TopBar({ navigation }) {
     <TouchableOpacity
       style={styles.prChat__personChat}
       onPress={
-        () => handleOpenChat(item.name, item.id)
+        () => handleOpenChat(item.nickname, item.id)
       }
     >
       <View style={styles.prChat__personIcon}>
-        <Text style={styles.prChat__letter}>{item.name[0]}</Text>
+        <Text style={styles.prChat__letter}>{item.nickname[0]}</Text>
       </View>
-      <Text style={styles.prChat__name}>{item.name}</Text>
+      <Text style={styles.prChat__name}>{item.nickname}</Text>
     </TouchableOpacity>
   );
 
@@ -101,7 +56,7 @@ export default function TopBar({ navigation }) {
     <FlatList
       data={Peopele}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item, index) => index.toString()}
       ItemSeparatorComponent={Separator}
       style={styles.prChat__flatList}
       showsVerticalScrollIndicator={false}
@@ -153,7 +108,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   prChat__flatList: {
-    flex:1,
+    flex: 1,
     margin: 5
   }
 });
