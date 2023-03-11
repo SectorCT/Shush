@@ -145,6 +145,16 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 20,
+        // iOS shadow properties
+    shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      
+      // Android elevation property
+      elevation: 5,
     },
     chat__messages_message_own: {
         alignSelf: "flex-end",
