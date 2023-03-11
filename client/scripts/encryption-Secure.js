@@ -4,6 +4,7 @@ class Encryption {
       this.order = [];
       this.countThem = 0;
       this.encryptionLength = 1024;
+      this.DeKey = this.genDeKey()
     }
   
     get_even_ascii(message) {
@@ -56,14 +57,14 @@ class Encryption {
     }
     
   
-    apply_encryption(dekey, message) {
+    apply_encryption(message) {
       message = message.split("");
       let iterate = 0;
       for (let counter = 0; counter < message.length; counter++) {
-        message[counter] = String.fromCharCode(message[counter].charCodeAt() + dekey.charCodeAt(iterate));
-        iterate = iterate < dekey.length - 1 ? iterate + 1 : 0;
+        message[counter] = String.fromCharCode(message[counter].charCodeAt() + this.DeKey.charCodeAt(iterate));
+        iterate = iterate < this.DeKey.length - 1 ? iterate + 1 : 0;
       }
-      for (let counter = 0; counter < dekey.charCodeAt(dekey.length - 1); counter++) {
+      for (let counter = 0; counter < this.DeKey.charCodeAt(this.DeKey.length - 1); counter++) {
         message.splice(message.length - counter, 0, String.fromCharCode(message[counter].length + message.length));
       }
       message = message.join("");
@@ -102,15 +103,14 @@ class Encryption {
   const test = new Encryption(key);
   const test1 = new Encryption("dsfjklweruioxcweruiosdfnm,sdf");
   
-  const mydekey = test.genDeKey();
-  let encrypted = test.apply_encryption(mydekey, heremessage);
+  let encrypted = test.apply_encryption(heremessage);
   console.log(encrypted);
-  let deencrypted = test1.revert_encryption(mydekey, encrypted);
+  let deencrypted = test1.revert_encryption(test.DeKey, encrypted);
   console.log(deencrypted);
 
-  encrypted = test.apply_encryption(mydekey, "i am here");
+  encrypted = test.apply_encryption("i am here");
   console.log(encrypted);
 
-  deencrypted = test1.revert_encryption(mydekey, encrypted);
+  deencrypted = test1.revert_encryption(test.DeKey, encrypted);
   console.log(deencrypted);
   */
