@@ -3,30 +3,30 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const code = '2D8KL09S'
-const InvitePeople = ({navigation}) => {
-    const [text, setText] = useState('');
+const InvitePeople = ({ navigation }) => {
 
-    // useEffect(() => {
-    //     console.log("fetch");
-    //     fetch('http://192.168.43.51:8000/authentication/gettoken', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //         })
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log("test");
-    //         })
-    //         .catch(error => {
-    //             console.error(error);
-    //         });
-
-    // }, []);
+    useEffect(() => {
+        AsyncStorage.getItem('authCookie').then((cookie) => {
+            fetch('http://192.168.7.149:8000/authentication/user_token/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': cookie,
+                },
+            }).then((response) => {
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        setInviteCode(data.friendInviteCode);
+                    });
+                } else {
+                    console.log("error");
+                }
+            }
+            );
+        }, []);
+    });
 
     const [inviteCode, setInviteCode] = useState('ITEWSDSD');
 
@@ -41,23 +41,23 @@ const InvitePeople = ({navigation}) => {
                 <View style={styles.invitePeople__flex}>
                     <View style={styles.invitePeople__descriptionview}>
                         <Text style={styles.invitePeople__description}>Let your friend insert/scan it</Text>
-                        <Text style={styles.invitePeople__description}>Code: <Text style={styles.invitePeople__description_highlight}>{code}</Text></Text>
+                        <Text style={styles.invitePeople__description}>Code: <Text style={styles.invitePeople__description_highlight}>{inviteCode}</Text></Text>
                     </View>
-                    <View style = {styles.invitePeople__qrCode_view}>
+                    <View style={styles.invitePeople__qrCode_view}>
                         <View style={{ borderWidth: 10, borderColor: 'white' }}>
                             <QRCode
-                                value={code}
+                                value={inviteCode}
                                 size={200}
                                 color='black'
                                 backgroundColor='white'
                             />
                         </View>
                     </View>
-                    <TouchableOpacity style = {styles.invitePeople__createAccountButton} onPress={() => { navigation.navigate('HomeScreen');}}>
-                        <Text style = {styles.invitePeople__createAccountButton_text}>Go Back</Text>
+                    <TouchableOpacity style={styles.invitePeople__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
+                        <Text style={styles.invitePeople__createAccountButton_text}>Go Back</Text>
                     </TouchableOpacity>
                 </View>
-                
+
             </View>
         </>
     );
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         // fontFamily: fonts.primary,
     },
     invitePeople__flex: {
-        flex:1,
+        flex: 1,
         margin: 40,
         justifyContent: 'space-between'
     },
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     invitePeople__createAccountButton: {
         backgroundColor: colors.secondary,
         color: colors.primary,
-        borderTopLeftRadius:15,
+        borderTopLeftRadius: 15,
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
         margin: 0,
@@ -119,20 +119,20 @@ const styles = StyleSheet.create({
         height: 70,
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      invitePeople__createAccountButton_text: {
-        fontSize:30,
+    },
+    invitePeople__createAccountButton_text: {
+        fontSize: 30,
         color: colors.textWhite
-      },
-      invitePeople__qrCode_style: {
+    },
+    invitePeople__qrCode_style: {
         alignSelf: 'center',
-      },
-      invitePeople__qrCode_view: {
+    },
+    invitePeople__qrCode_view: {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'center'
-        
-      }
+
+    }
 });
 
 export default InvitePeople;

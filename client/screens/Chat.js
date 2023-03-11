@@ -40,11 +40,10 @@ export default function Chat({ navigation }) {
         },
     ]);
 
+    const [friendName, setFriendName] = useState(navigation.getParam('friendName'));
     const [typedMessage, setTypedMessage] = useState("");
 
     const flatListRef = useRef();
-
-    const friendName = navigation.getParam('friendName');
 
     function handleSendMsg() {
         if (typedMessage.length === 0) return;
