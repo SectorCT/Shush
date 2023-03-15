@@ -40,7 +40,7 @@ export default function AddPeopleOrSeeCode({ navigation }) {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.primary,
-        height: 40,
+        height: 20,
         width: '100%',
     },
     container: {

@@ -8,14 +8,14 @@ import QRCodeScanner from '../components/QRScanner';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const serverIP = '192.168.7.149';
+import { SERVER_IP } from '@env';
 
 const AddPeople = ({ navigation }) => {
     const [text, setText] = useState('');
 
     function handleSubmit() {
         AsyncStorage.getItem('authCookie').then((cookie) => {
-            fetch(`http://${serverIP}:8000/authentication/make_friends/`, {
+            fetch(`http://${SERVER_IP}:8000/authentication/make_friends/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,19 +62,11 @@ const AddPeople = ({ navigation }) => {
                                 onChangeText={(value) => setText(value.toUpperCase())}
                                 maxLength={20}
                             />
-                            <TouchableOpacity onPress={handleSubmit}>
-                                <Image source={require('../assets/next.png')} style={styles.input__field_button} />
+                            <TouchableOpacity onPress={() => { }}>
+                                <Image source={require('../assets/scanQr.png')} style={styles.input__field_button} />
                             </TouchableOpacity>
                         </View>
                     </View>
-                    {/* QR */}
-                    {/* <View style={styles.addPeople__qr_container}>
-                        <Text style={styles.addPeople__invite_text}>
-                            Or scan{' '}
-                            <Text style={styles.addPeople__invite_text_blue}>QR code</Text>
-                        </Text>
-                        <Image source={require('../assets/QR-clear.png')} style={styles.input__qr_img} />
-                    </View> */}
                     <TouchableOpacity style={styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
                         <Text style={styles.inviteDevice__createAccountButton_text}>Go Back</Text>
                     </TouchableOpacity>
@@ -92,7 +84,7 @@ const styles = StyleSheet.create({
     },
     islandHider: {
         backgroundColor: colors.primary,
-        height: 50,
+        height: 20,
         width: '100%',
     },
     container: {
@@ -158,10 +150,7 @@ const styles = StyleSheet.create({
     input__field_button: {
         height: 37,
         aspectRatio: '1/1',
-
-    },
-    input__field_buttonview: {
-
+        marginTop: 20,
     },
     addPeople__qr_container: {
         flex: 1.5,
@@ -172,9 +161,7 @@ const styles = StyleSheet.create({
     inviteDevice__createAccountButton: {
         backgroundColor: colors.secondary,
         color: colors.primary,
-        borderTopLeftRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
+        borderRadius: 15,
         margin: 0,
         marginBottom: 20,
         width: '100%',

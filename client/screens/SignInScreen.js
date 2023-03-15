@@ -9,13 +9,11 @@ import { AuthContext } from '../AuthContext.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const serverIP = '192.168.7.149';
-
 const SignInScreen = ({ navigation }) => {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
 
-    const { checkIfLoggedIn } = React.useContext(AuthContext);
+    const { checkIfLoggedIn, login } = React.useContext(AuthContext);
 
     useEffect(() => {
         checkIfLoggedIn();
@@ -25,30 +23,7 @@ const SignInScreen = ({ navigation }) => {
     }, []);
 
     function handleSubmit() {
-        fetch(`http://${serverIP}:8000/authentication/login/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token: code,
-                password: password,
-            }),
-        }).then((response) => {
-            if (response.status === 200) {
-                const authCookie = response.headers.get('set-cookie');
-                response.json().then((data) => {
-                    console.log(data);
-                    AsyncStorage.setItem("authCookie", authCookie).then(() => {
-                        AsyncStorage.setItem("userToken", data.token).then(() => {
-                            checkIfLoggedIn();
-                        });
-                    });
-                });
-            } else {
-                console.log('Error');
-            }
-        });
+        login(code, password);
     }
     return (
         <>
@@ -93,7 +68,7 @@ const SignInScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.primary,
-        height: 50,
+        height: 20,
         width: '100%',
     },
     main: {
@@ -155,9 +130,7 @@ const styles = StyleSheet.create({
     signUp__createAccountButton: {
         backgroundColor: colors.accent,
         color: colors.primary,
-        borderTopLeftRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
+        borderRadius: 15,
         marginBottom: 20,
         width: '80%',
         margin: 40,

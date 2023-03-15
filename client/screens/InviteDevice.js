@@ -9,12 +9,11 @@ import { AuthContext } from '../AuthContext.js';
 
 const codeLink = '3ER89H5Y'
 
-const serverIP = '192.168.7.149';
+import { SERVER_IP } from '@env';
+
 const inviteDevice = ({ navigation }) => {
-    const [text, setText] = useState('');
 
-
-    const { checkIfLoggedIn } = useContext(AuthContext);
+    const { checkIfLoggedIn, logout } = useContext(AuthContext);
     // useEffect(() => {
     //     console.log("fetch");
     //     fetch('http://192.168.43.51:8000/authentication/gettoken', {
@@ -36,27 +35,10 @@ const inviteDevice = ({ navigation }) => {
     // }, []);
 
     function handleLogout() {
-        fetch(`http://${serverIP}:8000/authentication/logout/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then((response) => {
-            if (response.status === 200) {
-                response.json().then((data) => {
-                    console.log(data);
-                    AsyncStorage.removeItem('authCookie').then(() => {
-                        console.log('Cookie removed');
-                        checkIfLoggedIn();
-                    });
-                });
-            } else {
-                console.error('Error');
-            }
-        });
+        logout()
     }
 
-    const [inviteCode, setInviteCode] = useState('ITEWSDSD');
+    const [inviteCode, setInviteCode] = useState('');
 
     return (
         <>
@@ -98,7 +80,7 @@ const inviteDevice = ({ navigation }) => {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.primary,
-        height: 50,
+        height: 20,
         width: '100%',
     },
     container: {

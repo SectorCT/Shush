@@ -3,7 +3,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { HomeStackNavigator, AuthStackNavigator } from './screens/routes.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { AuthContext, AuthContextProvider } from './AuthContext.js';
+import { AuthContext } from './AuthContext.js';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function Root() {
     const { loggedIn, checkIfLoggedIn } = useContext(AuthContext);
@@ -17,7 +18,9 @@ export default function Root() {
 
     return (
         <>
-            {loggedIn ? <HomeStackNavigator /> : <AuthStackNavigator />}
+            <NavigationContainer>
+                {loggedIn ? <HomeStackNavigator /> : <AuthStackNavigator />}
+            </NavigationContainer>
         </>
     );
 }
