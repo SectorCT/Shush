@@ -14,7 +14,7 @@ import WebSocket from 'react-native-websocket';
 
 
 
-const serverIP = '192.168.7.149';
+import { SERVER_IP } from '@env';
 
 function Message({ text, isOwn }) {
     let extraStyles = isOwn ? styles.chat__messages_message_own : styles.chat__messages_message_other;
@@ -38,38 +38,40 @@ export default function Chat({ navigation }) {
     let Cookie = "";
 
     useEffect(() => {
-
-        AsyncStorage.getItem('authCookie').then((cookie) => {
-            Cookie = cookie;
-            setMessages([]);
-            fetch(`http://${serverIP}:8000/authentication/get_recent_messages/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cookie': cookie,
-                },
-                body: JSON.stringify({
-                    nickname: friendName,
-                }),
-            }).then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
-                        console.log(data);
-                        for (let i = 0; i < data.messages.length; i++) {
-                            let isOwn = data[i].isOwn;
-                            let text = data[i].content;
-                            setMessages([...messages, {
-                                text: text,
-                                isOwn: isOwn,
-                            }]);
-                        }
-                    });
-                } else {
-                    console.log("error");
+        try {
+            AsyncStorage.getItem('authCookie').then((cookie) => {
+                Cookie = cookie;
+                setMessages([]);
+                fetch(`http://${SERVER_IP}:8000/authentication/get_recent_messages/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': cookie,
+                    },
+                    body: JSON.stringify({
+                        nickname: friendName,
+                    }),
+                }).then((response) => {
+                    if (response.status === 200) {
+                        response.json().then((data) => {
+                            for (let i = 0; i < data.messages.length; i++) {
+                                let isOwn = data[i].isOwn;
+                                let text = data[i].content;
+                                setMessages([...messages, {
+                                    text: text,
+                                    isOwn: isOwn,
+                                }]);
+                            }
+                        });
+                    } else {
+                        console.log("error");
+                    }
                 }
-            }
-            );
-        });
+                );
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
 
@@ -123,17 +125,19 @@ export default function Chat({ navigation }) {
                 }} />
             </View>
             <View style={styles.chat__container}>
-                <FlatList
-                    contentContainerStyle={styles.chat__messages}
-                    data={messages.length === 0 ? [{ text: "No messages yet", isOwn: false }] : messages}
-                    renderItem={({ item }) => <Message
-                        text={item.text}
-                        isOwn={item.isOwn}
-                    />}
-                    keyExtractor={(item, index) => index.toString()}
-                    ref={flatListRef}
-                    onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
-                />
+                {messages.length === 0 ? <Text style={styles.no_messages}>No messages yet</Text> :
+                    <FlatList
+                        contentContainerStyle={styles.chat__messages}
+                        data={messages}
+                        renderItem={({ item }) => <Message
+                            text={item.text}
+                            isOwn={item.isOwn}
+                        />}
+                        keyExtractor={(item, index) => index.toString()}
+                        ref={flatListRef}
+                        onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
+                    />
+                }
             </View>
 
             <View style={styles.chat__sendMsg}>
@@ -157,14 +161,9 @@ const styles = StyleSheet.create({
         width: 25,
         height: 25,
     },
-    downSpace: {
-        backgroundColor: colors.primary,
-        height: 50,
-        width: '100%',
-    },
     islandHider: {
         backgroundColor: colors.primary,
-        height: 50,
+        height: 20,
         width: '100%',
     },
     chat__header: {
@@ -185,6 +184,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         backgroundColor: colors.background,
+        height: '100%',
     },
     chat__messages: {
         width: "100%",
@@ -229,17 +229,18 @@ const styles = StyleSheet.create({
     },
     chat__sendMsg: {
         width: "100%",
-        height: 60,
+        height: 80,
         backgroundColor: colors.primary,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         gap: 30,
         paddingHorizontal: 30,
     },
     chat__sendMsg_input: {
         backgroundColor: colors.primary,
         borderBottomColor: colors.secondary,
+        maxHeight: 50,
         borderBottomWidth: 3,
         color: "#fff",
         width: "80%",
@@ -252,8 +253,10 @@ const styles = StyleSheet.create({
         height: "100%",
 
     },
-    chat__sendMsg_btn_text: {
-        fontSize: 20,
+    no_messages: {
         color: colors.accent,
+        fontSize: 20,
+        alignSelf: 'center',
+        marginTop: 20,
     },
 });

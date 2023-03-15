@@ -6,33 +6,35 @@ import QRCode from 'react-native-qrcode-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const serverIP = '192.168.7.149';
+import { SERVER_IP } from '@env';
 
 const InvitePeople = ({ navigation }) => {
 
-
     useEffect(() => {
-        AsyncStorage.getItem('authCookie').then((cookie) => {
-            fetch(`http://${serverIP}:8000/authentication/user_token/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cookie': cookie,
-                },
-            }).then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
-                        setInviteCode(data.friendInviteCode);
-                    });
-                } else {
-                    console.log("error");
-                }
-            }
-            );
-        }, []);
+        try {
+            AsyncStorage.getItem('authCookie').then((cookie) => {
+                fetch(`http://${SERVER_IP}:8000/authentication/get_friend_token/`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': cookie,
+                    },
+                }).then((response) => {
+                    if (response.status === 200) {
+                        response.json().then((data) => {
+                            setInviteCode(data.friendInviteCode);
+                        });
+                    } else {
+                        console.log("error");
+                    }
+                });
+            }, []);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
-    const [inviteCode, setInviteCode] = useState('ITEWSDSD');
+    const [inviteCode, setInviteCode] = useState('');
 
     return (
         <>
@@ -49,12 +51,12 @@ const InvitePeople = ({ navigation }) => {
                     </View>
                     <View style={styles.invitePeople__qrCode_view}>
                         <View style={{ borderWidth: 10, borderColor: 'white' }}>
-                            <QRCode
+                            {inviteCode ? <QRCode
                                 value={inviteCode}
                                 size={200}
                                 color='black'
                                 backgroundColor='white'
-                            />
+                            /> : <Text>loading</Text>}
                         </View>
                     </View>
                     <TouchableOpacity style={styles.invitePeople__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
@@ -71,7 +73,7 @@ const InvitePeople = ({ navigation }) => {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.primary,
-        height: 50,
+        height: 20,
         width: '100%',
     },
     container: {
@@ -114,9 +116,7 @@ const styles = StyleSheet.create({
     invitePeople__createAccountButton: {
         backgroundColor: colors.secondary,
         color: colors.primary,
-        borderTopLeftRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
+        borderRadius: 15,
         margin: 0,
         marginBottom: 20,
         width: '100%',
