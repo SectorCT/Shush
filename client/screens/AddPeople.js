@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../styles.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { FocusEventHandler } from 'react';
+
 import { SERVER_IP } from '@env';
+
 
 const AddPeople = ({ navigation }) => {
     const [text, setText] = useState('');
 
-    console.log("AddPeople:", SERVER_IP);
-
-
+    useEffect(() => {
+        if (navigation.getParam('token')) {
+            setText(navigation.getParam('token'));
+        }
+    }, [navigation]);
 
     function handleSubmit() {
         AsyncStorage.getItem('authCookie').then((cookie) => {

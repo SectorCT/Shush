@@ -7,12 +7,8 @@ import { SERVER_IP } from '@env';
 
 const AuthContextProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(false);
-
-
-
-    console.log('AuthContext:', SERVER_IP);
-
     // logic to check if the user is logged in
+    console.log("AuthContextProvider:", SERVER_IP);
     const checkIfLoggedIn = () => {
         try {
             AsyncStorage.getItem('authCookie').then((value) => {

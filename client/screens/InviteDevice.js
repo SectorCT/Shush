@@ -9,8 +9,6 @@ import { AuthContext } from '../AuthContext.js';
 
 const codeLink = '3ER89H5Y'
 
-import { SERVER_IP } from '@env';
-
 const inviteDevice = ({ navigation }) => {
 
     const { checkIfLoggedIn, logout } = useContext(AuthContext);

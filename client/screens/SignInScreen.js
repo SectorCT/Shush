@@ -8,11 +8,7 @@ import { AuthContext } from '../AuthContext.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { SERVER_IP } from "@env"
 const SignInScreen = ({ navigation }) => {
-
-
-    console.log(SERVER_IP);
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
 

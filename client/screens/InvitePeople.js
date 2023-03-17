@@ -5,15 +5,9 @@ import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 import { SERVER_IP } from '@env';
 
 const InvitePeople = ({ navigation }) => {
-
-
-
-    console.log("InvitePeople:", SERVER_IP);
-
     useEffect(() => {
         try {
             AsyncStorage.getItem('authCookie').then((cookie) => {
