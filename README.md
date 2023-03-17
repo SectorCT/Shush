@@ -17,7 +17,7 @@
  - След като Docker се е стартирал успешно, отворете CMD и напишете следната команда - docker run --name my-redis -p 6379:6379 -d redis:7
  - Между другото ако използвате порт 6379 за нещо няма да успеете да пуснете Redis сървъра
 2 Microsoft Visual C++ 14.0 или по-нова версия - https://visualstudio.microsoft.com/visual-cpp-build-tools/
-3 - Инсталирайте нужните библиотеки с командата: 'pip install -r requirements.txt'
+3 - Инсталирайте нужните библиотеки, като влезете в server папката в CMD и използвайте командата: 'pip install -r requirements.txt'
 4 - Влезте в директорията Shush/server в CMD и напишете следната команда за да хостнете проекта под localhost 'daphne shush.asgi:application'. Ако искате да използвате друг ip address използвайте: 'daphne -b <your-ip-address> shush.asgi:application'
 
 ## Какво липсва от приложението
