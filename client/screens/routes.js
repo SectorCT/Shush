@@ -9,6 +9,8 @@ import AddPeople from './AddPeople.js'
 import AddPeopleOrSeeCode from './AddPeopleOrSeeCode';
 import InvitePeople from './InvitePeople';
 import InviteDevice from './InviteDevice';
+import QRScanner from './QRScanner';
+
 
 const homeStackScreens = {
     HomeScreen: {
@@ -46,7 +48,13 @@ const homeStackScreens = {
         navigationOptions: {
             headerShown: false,
         },
-    }
+    },
+    QRScanner: {
+        screen: QRScanner,
+        navigationOptions: {
+            headerShown: false,
+        },
+    },
 };
 
 const authStackScreens = {
