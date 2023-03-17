@@ -11,7 +11,7 @@ class ProfileManager(BaseUserManager):
             token1 = secrets.token_hex(4).upper()
         if password is None:
             return JsonResponse({'status': 'error', 'message': 'Password is required'})
-        if password.length < 8:
+        if password.length() < 8:
             return JsonResponse({'status': 'error', 'message': 'Password must be at least 8 characters'})
         user = self.model(token=token, token1=token1)
         user.set_password(password)
