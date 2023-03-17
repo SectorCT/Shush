@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../styles.js';
-import { Header } from 'react-native/Libraries/NewAppScreen';
-import QRScanner from '../components/QRScanner';
-import QRCodeScanner from '../components/QRScanner';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +9,10 @@ import { SERVER_IP } from '@env';
 
 const AddPeople = ({ navigation }) => {
     const [text, setText] = useState('');
+
+    console.log("AddPeople:", SERVER_IP);
+
+
 
     function handleSubmit() {
         AsyncStorage.getItem('authCookie').then((cookie) => {
@@ -27,7 +28,11 @@ const AddPeople = ({ navigation }) => {
             }).then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        console.log(data);
+                        if (data.status === 'success') {
+                            navigation.navigate('HomeScreen');
+                        } else {
+                            console.log(data.message);
+                        }
                     });
                 } else {
                     console.log("error");
@@ -43,15 +48,15 @@ const AddPeople = ({ navigation }) => {
             <StatusBar style="auto" />
             <View style={styles.islandHider} />
             <View style={styles.container}>
-                <View style={styles.addPeople__header} >
-                    <Text style={styles.addPeople__header_title}>Add People</Text>
+                <View style={styles.header} >
+                    <Text style={styles.header_title}>Add People</Text>
                 </View>
                 {/* Invite */}
                 <View style={styles.main}>
-                    <View style={styles.addPeople__invite_container}>
-                        <Text style={styles.addPeople__invite_text}>
+                    <View style={styles.invite_container}>
+                        <Text style={styles.invite_text}>
                             Insert{' '}
-                            <Text style={styles.addPeople__invite_text_blue}>invite code</Text>
+                            <Text style={styles.invite_text_blue}>invite code</Text>
                         </Text>
                         <View style={styles.input}>
                             <TextInput
@@ -62,13 +67,16 @@ const AddPeople = ({ navigation }) => {
                                 onChangeText={(value) => setText(value.toUpperCase())}
                                 maxLength={20}
                             />
-                            <TouchableOpacity onPress={() => { }}>
+                            <TouchableOpacity onPress={() => { navigation.navigate("QRScanner") }}>
                                 <Image source={require('../assets/scanQr.png')} style={styles.input__field_button} />
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.inviteDevice__createAccountButton} onPress={() => { navigation.navigate('HomeScreen'); }}>
-                        <Text style={styles.inviteDevice__createAccountButton_text}>Go Back</Text>
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                        <Text style={styles.button_text}>Add Friend</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('HomeScreen'); }}>
+                        <Text style={styles.button_text}>Go Back</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
         width: '100%',
     },
-    addPeople__header: {
+    header: {
         backgroundColor: colors.primary,
         height: 60,
         width: '100%',
@@ -101,12 +109,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 30,
     },
-    addPeople__header_title: {
+    header_title: {
         color: colors.accent,
         fontSize: 40,
         // fontFamily: fonts.primary,
     },
-    addPeople__invite_text: {
+    invite_text: {
         color: '#fff',
         fontWeight: 400,
         fontSize: 35,
@@ -114,10 +122,10 @@ const styles = StyleSheet.create({
         flex: 0.25,
         width: '100%'
     },
-    addPeople__invite_text_blue: {
+    invite_text_blue: {
         color: '#4BB2DE',
     },
-    addPeople__invite_container: {
+    invite_container: {
         flex: 1,
         padding: 0
     },
@@ -152,13 +160,13 @@ const styles = StyleSheet.create({
         aspectRatio: '1/1',
         marginTop: 20,
     },
-    addPeople__qr_container: {
+    qr_container: {
         flex: 1.5,
         width: '100%'
     },
     input__qr_img: {
     },
-    inviteDevice__createAccountButton: {
+    button: {
         backgroundColor: colors.secondary,
         color: colors.primary,
         borderRadius: 15,
@@ -169,7 +177,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    inviteDevice__createAccountButton_text: {
+    button_text: {
         fontSize: 30,
         color: colors.textWhite
     },

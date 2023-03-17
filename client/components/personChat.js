@@ -11,6 +11,10 @@ const Separator = () => <View style={styles.separator} />;
 export default function PersonChat({ navigation }) {
     const [Peopele, setPeopele] = useState([]);
 
+
+
+    console.log('PersonChat:', SERVER_IP);
+
     function refresh() {
         try {
             const newArray = [];

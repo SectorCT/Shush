@@ -10,6 +10,10 @@ import { SERVER_IP } from '@env';
 
 const InvitePeople = ({ navigation }) => {
 
+
+
+    console.log("InvitePeople:", SERVER_IP);
+
     useEffect(() => {
         try {
             AsyncStorage.getItem('authCookie').then((cookie) => {
