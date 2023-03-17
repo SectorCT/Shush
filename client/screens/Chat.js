@@ -12,9 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WebSocket from 'react-native-websocket';
 
-
-
 import { SERVER_IP } from '@env';
+
 
 function Message({ text, isOwn }) {
     let extraStyles = isOwn ? styles.chat__messages_message_own : styles.chat__messages_message_other;

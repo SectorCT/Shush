@@ -10,15 +10,23 @@
 ## Използвани технологии: Python, Django, SQLite, JavaScript, React Native
 
 ## За да пуснете проекта, като dev са ви нужни:
-1 Windows: Docker Desktop - https://www.docker.com/products/docker-desktop/
+1.1 Windows: Docker Desktop - https://www.docker.com/products/docker-desktop/
  - При инсталиране на Docker ще трябва да рестартирате компютъра си.
- - След като пуснете Docker  е възможно да излезе грешка, че трябва да използвате по-нова версия на WSL - 'wsl --update' - https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package.
+ - След като пуснете Docker  е възможно да излезе грешка, че трябва да използвате по-нова версия на WSL - `wsl --update` - https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package.
  - Също така първото пускане на Docker е доста бавно, така че му дайте 5 минути.
  - След като Docker се е стартирал успешно, отворете CMD и напишете следната команда - docker run --name my-redis -p 6379:6379 -d redis:7
  - Между другото ако използвате порт 6379 за нещо няма да успеете да пуснете Redis сървъра
-2 Microsoft Visual C++ 14.0 или по-нова версия - https://visualstudio.microsoft.com/visual-cpp-build-tools/
-3 - Инсталирайте нужните библиотеки, като влезете в server папката в CMD и използвайте командата: 'pip install -r requirements.txt'
-4 - Влезте в директорията Shush/server в CMD и напишете следната команда за да хостнете проекта под localhost 'daphne shush.asgi:application'. Ако искате да използвате друг ip address използвайте: 'daphne -b <your-ip-address> shush.asgi:application'
+1.2 Microsoft Visual C++ 14.0 или по-нова версия - https://visualstudio.microsoft.com/visual-cpp-build-tools/
+1.3 - Инсталирайте нужните библиотеки, като влезете в server папката в CMD и използвайте командата: `pip install -r requirements.txt`
+1.4 - Влезте в директорията server в CMD и напишете следната команда за да мигрирате проекта за да работи баззата данни. 
+    `python manage.py makemigrations`
+    `python manage.py migrate`
+1.5 - Хостнете проекта с командата: `daphne -b <your-ip-address> shush.asgi:application`.
+
+2.1 - Отидете в client папката и напишете командат `npm i` и изчакайте да се инсталира всичко
+2.2 - В .env файла (ако нямате такъв го създайте) напишете `SERVER_IP = <your-ip-address>`
+2.3 - Стартирайте expo servera с `npm start` ще трябва да сканиерте QR-а от конзолата с "expo go" приложението на телефона си
+2.3.2 - Стартирайте expo servera с `npm run android` и ако имате включен емулатор на андроид приложението ще се отвори в него
 
 ## Какво липсва от приложението
 1 - Самото енкриптиране на съобщенията, когато се изпращат

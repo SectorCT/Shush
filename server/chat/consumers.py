@@ -14,9 +14,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def get_rooms(self, friends):
         Room = apps.get_model('chat', 'Room')
-        index = Room.objects.filter(users__in=[friends.user, friends.friend])
-        index = index[0]
-        return index
+        Rooms = Room.objects.filter(users__in=[friends.user, friends.friend])
+        room_name = Rooms[0]
+        return room_name
 
     @sync_to_async
     def save_message(self, friends, room, content):
@@ -38,9 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-        print(self.channel_name)
         await self.accept()
-
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -49,15 +47,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-
     # Receive message from WebSocket
+
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         nickname = text_data_json['nickname']
         message = text_data_json['message']
         room = self.room
         friends = await self.get_friends(nickname)
-
 
         # Save message to database
         await self.save_message(friends, room, message)
