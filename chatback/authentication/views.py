@@ -1,14 +1,13 @@
 from django.views.decorators.csrf import csrf_exempt
-from .models import Profile
-from django.http import JsonResponse
-from .models import Profile, Room, Message
+from .models import Profile, Friend
 from django.contrib.auth import authenticate, login , logout
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
-from .models import Profile
 import json
 from django.middleware.csrf import get_token
 from django.contrib.sessions.backends.db import SessionStore
+import secrets
+from room.models import Room, Message
 
 User = get_user_model()
 
@@ -18,18 +17,13 @@ def login_view(request):
     if request.method == 'POST':
         jsonString = request.body.decode('utf-8')
         jsonBody = json.loads(jsonString)
-        print(jsonBody["token"])
-        print(jsonBody["password"])
         user = authenticate(request, token=jsonBody["token"], password=jsonBody["password"])
-        print(user)
         if user is not None:
             login(request, user)
-            print(user)
-
             # create a new session and save it to the database
             request.session = SessionStore()
             request.session['user_id'] = user.id
-            request.session['username_token'] = user.token
+            request.session['token'] = user.token
             request.session['friend_token'] = user.token1
             request.session.save()
 
@@ -52,60 +46,61 @@ def signup(request):
         jsonBody = json.loads(jsonString)
         password = jsonBody["password"]
         user = Profile.objects.create_user(password=password)
+        user_auth = authenticate(request, token=user.token, password=password)
         if user:
-            # create a new session
+            login(request, user_auth)
+            # create a new session and save it to the database
             request.session = SessionStore()
-
-            # set the session data
             request.session['user_id'] = user.id
-            request.session['username_token'] = user.token
+            request.session['token'] = user.token
             request.session['friend_token'] = user.token1
-
-            # save the session
             request.session.save()
 
-            # create the response
-            response_data = {'status': 'success', 'token': user.token}
-            response = JsonResponse(response_data)
+            # set the sessionid cookie to the session key
+            response = JsonResponse({'success': True, 'message': 'Logged in successfully.', 'token':user.token})
             response.set_cookie('sessionid', request.session.session_key, max_age=86400, httponly=True)
-            response.set_cookie('csrftoken', get_token(request), max_age=86400, httponly=True)
-            response['Access-Control-Allow-Credentials'] = 'true'
+            #send csrf token to client
+            response.set_cookie('csrftoken', request.META['CSRF_COOKIE'], max_age=86400, httponly=True)
             return response
         else:
             return JsonResponse({'status': 'error', 'message': 'Could not create user'}, status=400)
 
     return JsonResponse({'status': 'error', 'message': 'POST requests only'}, status=405)
 
+
 def logout_view(request):
     logout(request)
     response = JsonResponse({'success': True, 'message': 'Logged out successfully.'})
     response.delete_cookie('sessionid')
     response.delete_cookie('csrftoken')
+    request.session.flush()
+    request.session.delete()
     return response
-#@login_required
-#def user_token(request):
-#   return JsonResponse({'token': request.user.token1})
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from .models import Friend
 
 def list_friends(request):
     if not request.session.session_key:
         return JsonResponse({'status': 'error', 'message': 'Not logged in.'}, status=401)
     # Rest of the code
-    user = Profile.objects.get(token=request.session['username_token'])
-    friends = Friend.objects.filter(user=user)
-    friend_list = []
-    for friend in friends:
-        friend_list.append({'nickname': friend.nickname})
-    return JsonResponse({'friends': friend_list})
+    session_key = request.COOKIES.get('sessionid')
+    if session_key:
+        session = SessionStore(session_key=session_key)
+        user = Profile.objects.get(token=session['token'])
+        friends = Friend.objects.filter(user=user)
+        friend_list = []
+        for friend in friends:
+            friend_list.append({'nickname': friend.nickname})
+        return JsonResponse({'friends': friend_list})
 
 
-def user_token(request):
+def get_friend_token(request):
     if not request.session.session_key:
         return JsonResponse({'status': 'error', 'message': 'Not logged in.'}, status=401)
-    return JsonResponse({'friendInviteCode': request.session['friend_token']})
+    session_key = request.COOKIES.get('sessionid')
+    if session_key is None:
+        return JsonResponse({'status': 'error', 'message': 'No session key provided.'}, status=400)
+    session = SessionStore(session_key=session_key)
+    user = Profile.objects.get(token=session['token'])
+    return JsonResponse({'friendInviteCode': user.token1})
     
 
 @csrf_exempt
@@ -119,23 +114,31 @@ def make_friends(request):
         if friend_token is None:
             return JsonResponse({'status': 'error', 'message': 'No friend token provided.'}, status=400)
         friendT = Profile.objects.get(token1=friend_token)
-        user = Profile.objects.get(token=request.session['username_token'])
-        friend = Friend.objects.create(user=user, friend=friendT)
-        friend_friends = Friend.objects.create(user=friendT, friend=user)
+        session_key = request.COOKIES.get('sessionid')
+        if session_key is None:
+            return JsonResponse({'status': 'error', 'message': 'No session key provided.'}, status=400)
+        session = SessionStore(session_key=session_key)
+        user = Profile.objects.get(token=session['token'])
+        friend = Friend.objects.create(user=user, friend=friendT, nickname=secrets.token_hex(4))
+        friend_friends = Friend.objects.create(user=friendT, friend=user, nickname=secrets.token_hex(4))
         room_name = ""
         namearray = [user.token,friendT.token]
         namearray.sort()
         for name in namearray:
             room_name += name
-
-        Room.objects.create(name = room_name)
+        room = Room.objects.create(name=room_name)
+        room.users.add(user, friendT)
+        room.save()
+        # user.token1 = secrets.token_hex(4).upper()
+        # friendT.token1 = secrets.token_hex(4).upper()
+        # user.save()
+        # friendT.save()
         if friend and friend_friends:
             return JsonResponse({'status': 'success', 'message': 'Friend added successfully.'})
         else:
             return JsonResponse({'status': 'error', 'message': 'Couldnt add friend'}, status=400)
 
 from django.http import JsonResponse
-from .models import Message
 
 @csrf_exempt
 def get_recent_messages(request):
@@ -145,9 +148,14 @@ def get_recent_messages(request):
         jsonString = request.body.decode('utf-8')
         jsonBody = json.loads(jsonString)
         nickname = jsonBody["nickname"]
-        user = Profile.objects.get(token=request.session['username_token'])
+        session_key = request.COOKIES.get('sessionid')
+        if session_key is None:
+            return JsonResponse({'status': 'error', 'message': 'No session key provided.'}, status=400)
+        session = SessionStore(session_key=session_key)
+        user = Profile.objects.get(token=session['token'])
+        user = Profile.objects.get(token=user.token)
         friend = Friend.objects.get(nickname=nickname, user=user)
-        namearray = [request.session['username_token'],friend.friend.token]
+        namearray = [user.token,friend.friend.token]
         namearray.sort()
         room_name = ""
         for name in namearray:
@@ -159,9 +167,16 @@ def get_recent_messages(request):
     message_list = []
     for message in messages:
         message_list.append({
-            'isOwn': message.user.token == request.session['username_token'],
+            'isOwn': message.user.token == request.session['token'],
             'content': message.content,
         })
     data = {'messages': message_list}
 
     return JsonResponse(data)
+
+def verify_session(request):
+    if request.method == "GET":
+        if request.session.session_key:
+            return JsonResponse({'status': 'success', 'message': 'Session is valid.'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Session is invalid.'}, status=401)

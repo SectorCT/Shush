@@ -11,6 +11,8 @@ class ProfileManager(BaseUserManager):
             token1 = secrets.token_hex(4).upper()
         if password is None:
             return JsonResponse({'status': 'error', 'message': 'Password is required'})
+        # if password.length < 8:
+        #     return JsonResponse({'status': 'error', 'message': 'Password must be at least 8 characters'})
         user = self.model(token=token, token1=token1)
         user.set_password(password)
         user.save(using=self._db)
@@ -58,13 +60,4 @@ class Profile(AbstractBaseUser):
 class Friend(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='friends_as_user')
     friend = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='frnick_as_friend')
-    nickname = models.CharField(max_length=8, default=secrets.token_hex(4))
-
-class Room(models.Model):
-    name = models.CharField(max_length=255)
-
-class Message(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    content = models.TextField()
+    nickname = models.CharField(max_length=8)
