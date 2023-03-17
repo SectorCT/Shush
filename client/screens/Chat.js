@@ -34,6 +34,7 @@ export default function Chat({ navigation }) {
 
     const flatListRef = useRef();
 
+    const ws = useRef(null);
 
     let Cookie = "";
 
@@ -54,14 +55,17 @@ export default function Chat({ navigation }) {
                 }).then((response) => {
                     if (response.status === 200) {
                         response.json().then((data) => {
+                            const newMessages = []
                             for (let i = 0; i < data.messages.length; i++) {
-                                let isOwn = data[i].isOwn;
-                                let text = data[i].content;
-                                setMessages([...messages, {
+                                let isOwn = data.messages[i].isOwn;
+                                let text = data.messages[i].content;
+                                console.log(isOwn, text)
+                                newMessages.push({
                                     text: text,
                                     isOwn: isOwn,
-                                }]);
+                                });
                             }
+                            setMessages(newMessages)
                         });
                     } else {
                         console.log("error");
@@ -80,7 +84,13 @@ export default function Chat({ navigation }) {
     };
 
     const handleMessage = (event) => {
-        setMessage(event.data);
+        let data = JSON.parse(event.data);
+        // if (data.type === "message") {
+        setMessages([...messages, {
+            text: data.message,
+            isOwn: false,
+        }]);
+        // }
     };
 
     const handleError = (error) => {
@@ -94,29 +104,31 @@ export default function Chat({ navigation }) {
     function handleSendMsg() {
         if (typedMessage.length === 0) return;
         setMessages([...messages, {
-            id: Math.random().toString(),
             text: typedMessage,
             isOwn: true,
         }]);
         setTypedMessage("");
+        ws.current.send(JSON.stringify({
+            type: "message",
+            message: typedMessage,
+            nickname: friendName,
+        }));
     }
 
     return (
         <>
-            {/* <WebSocket
-                url='ws://192.168.7.149:8000/ws/chat/1/'
-                headers={
-                    {
-                        "Cookie": Cookie,
-                    }
-                }
+            <StatusBar style="light" />
+            <WebSocket
+                ref={ws}
+                url={`ws://46.233.21.123:8000/ws/chat/${friendName}/`}
+                headers={{
+                    Cookie: Cookie,
+                }}
                 onOpen={handleOpen}
                 onMessage={handleMessage}
                 onError={handleError}
                 onClose={handleClose}
-                reconnect={true}
-                reconnectInterval={30000}
-            /> */}
+            />
             <View style={styles.islandHider}></View>
             <View style={styles.chat__header} >
                 <Text style={styles.chat__header_title}>{friendName}</Text>

@@ -8,10 +8,14 @@ import { SERVER_IP } from '@env';
 const AuthContextProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(false);
 
+
+
+    console.log('AuthContext:', SERVER_IP);
+
     // logic to check if the user is logged in
     const checkIfLoggedIn = () => {
         try {
-            const authCookie = AsyncStorage.getItem('authCookie').then((value) => {
+            AsyncStorage.getItem('authCookie').then((value) => {
                 fetch(`http://${SERVER_IP}:8000/authentication/verify_session/`, {
                     method: 'GET',
                     headers: {
@@ -47,6 +51,7 @@ const AuthContextProvider = ({ children }) => {
                 }).then((response) => {
                     if (response.status === 200) {
                         const authCookie = response.headers.get('set-cookie');
+                        console.log(authCookie);
                         response.json().then((data) => {
                             AsyncStorage.setItem("authCookie", authCookie).then(() => {
                                 AsyncStorage.setItem("userToken", data.token).then(() => {

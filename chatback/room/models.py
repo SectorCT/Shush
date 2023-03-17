@@ -1,0 +1,17 @@
+from django.db import models
+from authentication.models import Profile
+
+# Create your models here.
+class Room(models.Model):
+    users = models.ManyToManyField(Profile, related_name='room_users')
+    name = models.CharField(max_length=255, unique=True, default = 'room')
+
+class Message(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    is_seen = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('timestamp',)
