@@ -120,7 +120,7 @@ export default function Chat({ navigation }) {
             <StatusBar style="light" />
             <WebSocket
                 ref={ws}
-                url={`ws://46.233.21.123:8000/ws/chat/${friendName}/`}
+                url={`ws://${SERVER_IP}:8000/ws/chat/${friendName}/`}
                 headers={{
                     Cookie: Cookie,
                 }}
