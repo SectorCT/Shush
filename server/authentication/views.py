@@ -116,10 +116,10 @@ def make_friends(request):
         room = Room.objects.create(name = room_name)
         room.users.add(user, friendT)
         room.save()
-        # user.token1 = secrets.token_hex(4).upper()
-        # friendT.token1 = secrets.token_hex(4).upper()
-        # user.save()
-        # friendT.save()
+        user.token1 = secrets.token_hex(4).upper()
+        friendT.token1 = secrets.token_hex(4).upper()
+        user.save()
+        friendT.save()
         if friend and friend_friends:
             return JsonResponse({'status': 'success', 'message': 'Friend added successfully.'})
         else:
