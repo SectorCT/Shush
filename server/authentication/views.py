@@ -1,6 +1,5 @@
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.auth import authenticate, login , logout
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Profile, Friend
 from django.http import JsonResponse
@@ -75,7 +74,6 @@ def logout_view(request):
     request.session.delete()
     return response
 
-@login_required
 def list_friends(request):
     if not request.session.session_key:
         return JsonResponse({'status': 'error', 'message': 'Not logged in.'}, status=401)
@@ -87,13 +85,11 @@ def list_friends(request):
         friend_list.append({'nickname': friend.nickname})
     return JsonResponse({'friends': friend_list})
 
-@login_required
 def get_friend_token(request):
     if not request.session.session_key:
         return JsonResponse({'status': 'error', 'message': 'Not logged in.'}, status=401)
     return JsonResponse({'friendInviteCode': request.session['friend_token']})
-
-@login_required  
+    
 @csrf_exempt
 def make_friends(request):
     if not request.session.session_key:
@@ -126,7 +122,7 @@ def make_friends(request):
         else:
             return JsonResponse({'status': 'error', 'message': 'Couldnt add friend'}, status=400)
 
-@login_required
+
 @csrf_exempt
 def get_recent_messages(request):
     if not request.session.session_key:
@@ -155,7 +151,6 @@ def get_recent_messages(request):
     data = {'messages': message_list}
     return JsonResponse(data)
 
-@login_required
 def verify_session(request):
     if request.method == "GET":
         
