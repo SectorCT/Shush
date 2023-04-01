@@ -1,15 +1,20 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-import json
-from django.apps import apps
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives import hashes
 from asgiref.sync import sync_to_async
+from django.apps import apps
+import base64
+import json
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
-    def get_friends(self, nickname):
+    def get_friends(self, friendship_token):
         Friend = apps.get_model('authentication', 'Friend')
-        return Friend.objects.get(nickname=nickname)
+        return Friend.objects.get(friendship_token=friendship_token)
 
     @sync_to_async
     def get_rooms(self, friends):
@@ -25,14 +30,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return Message.objects.create(author=user, room=room, content=content)
 
     async def connect(self):
-        # Extract nickname query parameter from scope
-        self.friend_nickname = self.scope['url_route']['kwargs']['nickname']
+        # Extract friendship_token query parameter from scope
+        self.friendship_token = self.scope['url_route']['kwargs']['friendship_token']
 
         # Set user attribute on consumer instance
-        friends = await self.get_friends(self.friend_nickname)
+        friends = await self.get_friends(self.friendship_token)
         self.room = await self.get_rooms(friends)
         self.room_group_name = 'chat_%s' % self.room.name
 
+        # Checks if the user is allowed to access the room
+        user_allowed = await sync_to_async(self.room.user_allowed)(friends.user)
+        if not user_allowed:
+            # Reject the connection
+            await self.close()
+            return
+        
+        # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -47,7 +60,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-    # Receive message from WebSocket
+
+    @sync_to_async
+    def get_public_key(self, user):
+        UserProfile = apps.get_model('authentication', 'UserProfile')
+        profile = UserProfile.objects.get(user=user)
+        public_key_pem = profile.public_key
+        public_key = serialization.load_pem_public_key(
+            public_key_pem.encode(),
+            backend=default_backend()
+        )
+        return public_key
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -56,10 +79,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         room = self.room
         friends = await self.get_friends(nickname)
 
-        # Save message to database
         await self.save_message(friends, room, message)
 
-        # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
