@@ -4,36 +4,29 @@ import { colors, fonts } from '../styles';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { SERVER_IP } from '@env';
+import { makeRequest } from '../requests.js';
 
 const Separator = () => <View style={styles.separator} />;
 
+
 export default function PersonChat({ navigation }) {
     const [Peopele, setPeopele] = useState([]);
-
-    console.log('PersonChat:', SERVER_IP);
     function refresh() {
         try {
             const newArray = [];
-            AsyncStorage.getItem('authCookie').then((cookie) => {
-                fetch(`http://${SERVER_IP}:8000/authentication/list_friends/`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Cookie': cookie,
-                    },
-                }).then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            data.friends.forEach((element) => {
-                                newArray.push(element);
-                            });
-                            setPeopele(newArray);
+            makeRequest("authentication/list_friends/").then((response) => {
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        data.friends.forEach((element) => {
+                            newArray.push(element);
                         });
-                    } else {
-                        console.error('Error');
-                    }
-                });
+                        setPeopele(newArray);
+                    });
+                } else {
+                    response.json().then((data) => {
+                        console.log("Error while getting friends", response.status, data.message);
+                    });
+                }
             });
         } catch (error) {
             console.error(error);
@@ -49,15 +42,16 @@ export default function PersonChat({ navigation }) {
         };
     }, []);
 
-    const handleOpenChat = (friendName, chatId) => {
-        navigation.navigate('Chat', { friendName, chatId });
+    const handleOpenChat = (friendName, friendshipId) => {
+        console.log(friendName, friendshipId);
+        navigation.navigate('Chat', { friendName, friendshipId });
     };
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.prChat__personChat}
             onPress={
-                () => handleOpenChat(item.nickname, item.id)
+                () => handleOpenChat(item.nickname, item.friendship_token)
             }
         >
             <View style={styles.prChat__personIcon}>

@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WebSocket from 'react-native-websocket';
 
 import { SERVER_IP } from '@env';
+import { makeRequest } from '../requests';
 
 
 function Message({ text, isOwn }) {
@@ -29,6 +30,7 @@ export default function Chat({ navigation }) {
     const [messages, setMessages] = useState([]);
 
     const [friendName, setFriendName] = useState(navigation.getParam('friendName'));
+    const [friendshipId, setFriendshipId] = useState(navigation.getParam('friendshipId'));
     const [typedMessage, setTypedMessage] = useState("");
 
     const flatListRef = useRef();
@@ -39,44 +41,35 @@ export default function Chat({ navigation }) {
 
     useEffect(() => {
         try {
-            AsyncStorage.getItem('authCookie').then((cookie) => {
-                Cookie = cookie;
+            AsyncStorage.getItem('access_token').then((access_token) => {
+                console.log(access_token);
                 setMessages([]);
-                fetch(`http://${SERVER_IP}:8000/authentication/get_recent_messages/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Cookie': cookie,
-                    },
-                    body: JSON.stringify({
-                        nickname: friendName,
-                    }),
-                }).then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            const newMessages = []
-                            for (let i = 0; i < data.messages.length; i++) {
-                                let isOwn = data.messages[i].isOwn;
-                                let text = data.messages[i].content;
-                                console.log(isOwn, text)
-                                newMessages.push({
-                                    text: text,
-                                    isOwn: isOwn,
-                                });
-                            }
-                            setMessages(newMessages)
-                        });
-                    } else {
-                        console.log("error");
+                makeRequest(`authentication/get_recent_messages/`, 'POST', { friendship_token: friendshipId })
+                    .then((response) => {
+                        if (response.status === 200) {
+                            response.json().then((data) => {
+                                const newMessages = []
+                                for (let i = 0; i < data.messages.length; i++) {
+                                    let isOwn = data.messages[i].isOwn;
+                                    let text = data.messages[i].content;
+                                    console.log(isOwn, text)
+                                    newMessages.push({
+                                        text: text,
+                                        isOwn: isOwn,
+                                    });
+                                }
+                                setMessages(newMessages)
+                            });
+                        } else {
+                            console.log("error");
+                        }
                     }
-                }
-                );
+                    );
             });
         } catch (error) {
             console.log(error);
         }
     }, []);
-
 
     const handleOpen = () => {
         console.log('WebSocket connection opened');
@@ -110,7 +103,7 @@ export default function Chat({ navigation }) {
         ws.current.send(JSON.stringify({
             type: "message",
             message: typedMessage,
-            nickname: friendName,
+            friendship_token: friendshipId,
         }));
     }
 
@@ -119,7 +112,7 @@ export default function Chat({ navigation }) {
             <StatusBar style="light" />
             <WebSocket
                 ref={ws}
-                url={`ws://${SERVER_IP}:8000/ws/chat/${friendName}/`}
+                url={`ws://${SERVER_IP}:8000/ws/chat/${friendshipId}/`}
                 headers={{
                     Cookie: Cookie,
                 }}
