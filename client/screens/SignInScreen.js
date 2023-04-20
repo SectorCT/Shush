@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageButton from '../components/ImageButton.js';
@@ -12,16 +12,33 @@ const SignInScreen = ({ navigation }) => {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
 
-    const { checkIfLoggedIn, login } = React.useContext(AuthContext);
+    const [error, setError] = useState('');
+
+    const { login } = useContext(AuthContext);
 
     useEffect(() => {
-        checkIfLoggedIn();
         AsyncStorage.getItem('userToken').then((value) => {
             setCode(value);
         });
     }, []);
 
+    function verrifyCodeAndPass() {
+        if (code.length < 8) {
+            setError('Code must be at least 8 characters long');
+            return false;
+        }
+        if (password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return false;
+        }
+        setError('');
+        return true;
+    }
+
     function handleSubmit() {
+        if (!verrifyCodeAndPass()) {
+            return;
+        }
         login(code, password);
     }
     return (
@@ -29,11 +46,11 @@ const SignInScreen = ({ navigation }) => {
             <StatusBar style="auto" />
             <View style={styles.islandHider} />
             <View style={styles.container}>
-                <View style={styles.signUp__header} >
-                    <Text style={styles.signUp__header_title}>Link account</Text>
+                <View style={styles.header} >
+                    <Text style={styles.header_title}>Link account</Text>
                 </View>
                 <View style={styles.main}>
-                    <View style={styles.signUp__inputcontainer}>
+                    <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input__field}
                             value={code}
@@ -50,12 +67,17 @@ const SignInScreen = ({ navigation }) => {
                             secureTextEntry={true}
                             placeholderTextColor="#525252"
                         />
-                        <TouchableOpacity style={styles.signUp__logInButton} onPress={() => { navigation.navigate('SignUp'); }}>
-                            <Text style={styles.signUp__logInButton_text}>Don't have an account?</Text>
+                        <TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate('SignUp'); }}>
+                            <Text style={styles.logInButton_text}>Don't have an account?</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.signUp__createAccountButton} onPress={handleSubmit}>
-                        <Text style={styles.signUp__createAccountButton_text}>Link Account</Text>
+                    {error !== '' &&
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorContainer_text}>{error}</Text>
+                        </View>
+                    }
+                    <TouchableOpacity style={styles.createAccountButton} onPress={handleSubmit}>
+                        <Text style={styles.createAccountButton_text}>Link Account</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -84,7 +106,7 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'space-between',
     },
-    signUp__header: {
+    header: {
         backgroundColor: colors.primary,
         height: 60,
         width: '100%',
@@ -93,7 +115,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 30,
     },
-    signUp__header_title: {
+    header_title: {
         color: "#fff",
         fontSize: 40,
     },
@@ -110,23 +132,23 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         marginTop: 20,
     },
-    signUp__inputcontainer: {
+    inputContainer: {
         margin: 40,
         marginTop: 70,
         height: '24%',
         justifyContent: 'flex-start',
         flex: 1
     },
-    signUp__logInButton: {
+    logInButton: {
         marginTop: 30,
     },
-    signUp__logInButton_text: {
+    logInButton_text: {
         color: '#fff',
         textDecorationLine: 'underline',
         fontSize: 20,
         padding: 10
     },
-    signUp__createAccountButton: {
+    createAccountButton: {
         backgroundColor: colors.accent,
         color: colors.primary,
         borderRadius: 15,
@@ -137,8 +159,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    signUp__createAccountButton_text: {
+    createAccountButton_text: {
         fontSize: 30
+    },
+    errorContainer: {
+        backgroundColor: colors.secondary,
+        width: '80%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 15,
+        padding: 20
+    },
+    errorContainer_text: {
+        color: '#fff',
+        fontSize: 20,
     }
 
 });

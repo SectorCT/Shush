@@ -6,27 +6,21 @@ import QRCode from 'react-native-qrcode-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { SERVER_IP } from '@env';
+import { makeRequest } from '../requests.js';
 
 const InvitePeople = ({ navigation }) => {
     useEffect(() => {
         try {
-            AsyncStorage.getItem('authCookie').then((cookie) => {
-                fetch(`http://${SERVER_IP}:8000/authentication/get_friend_token/`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Cookie': cookie,
-                    },
-                }).then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            setInviteCode(data.friendInviteCode);
-                        });
-                    } else {
-                        console.log("error");
-                    }
-                });
-            }, []);
+            makeRequest(`authentication/get_friend_token/`, "GET").then((response) => {
+                console.log(response);
+                if (response.status === 200) {
+                    response.json().then((data) => {
+                        setInviteCode(data.friendInviteCode);
+                    });
+                } else {
+                    console.log("error");
+                }
+            });
         } catch (error) {
             console.log(error);
         }

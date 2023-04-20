@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "startClearCache": "expo start --clear",
     "start": "expo start",
-    "android": "expo start --android",
+    "android": "expo start",
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
@@ -16,6 +17,7 @@
     "expo-barcode-scanner": "~12.3.2",
     "expo-google-fonts": "^0.0.0",
     "expo-status-bar": "~1.4.4",
+    "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.71.3",
     "react-native-camera": "^4.2.1",

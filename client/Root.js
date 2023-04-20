@@ -9,12 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 export default function Root() {
     const { loggedIn, checkIfLoggedIn } = useContext(AuthContext);
 
-
-    // logic to check if the user is logged in
     useEffect(() => {
         checkIfLoggedIn();
     }, []);
-
 
     return (
         <>

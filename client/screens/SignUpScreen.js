@@ -10,13 +10,28 @@ const SignScreen = ({ navigation }) => {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
-	const { checkIfLoggedIn, signup } = React.useContext(AuthContext);
+	const [error, setError] = useState('');
 
-	useEffect(() => {
-		checkIfLoggedIn();
-	}, []);
+	const { signup } = React.useContext(AuthContext);
+
+
+	function validatePassword() {
+		if (password.length < 8) {
+			setError('Password must be at least 8 characters long');
+			return false;
+		}
+		if (password !== confirmPassword) {
+			setError('Passwords do not match');
+			return false;
+		}
+		setError('');
+		return true;
+	}
 
 	function handleSubmit() {
+		if (!validatePassword()) {
+			return;
+		}
 		signup(password, confirmPassword)
 	}
 	return (
@@ -24,11 +39,11 @@ const SignScreen = ({ navigation }) => {
 			<StatusBar style="auto" />
 			<View style={styles.islandHider} />
 			<View style={styles.container}>
-				<View style={styles.sign__header} >
-					<Text style={styles.sign__header_title}>Create account</Text>
+				<View style={styles.header} >
+					<Text style={styles.header_title}>Create account</Text>
 				</View>
 				<View style={styles.main}>
-					<View style={styles.sign__inputcontainer}>
+					<View style={styles.inputContainer}>
 						<TextInput
 							style={styles.input__field}
 							value={password}
@@ -47,16 +62,21 @@ const SignScreen = ({ navigation }) => {
 							secureTextEntry={true}
 							placeholderTextColor="#525252"
 						/>
-						<TouchableOpacity style={styles.sign__logInButton} onPress={() => { navigation.navigate('SignIn'); }}>
+						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate('SignIn'); }}>
 							<Text
-								style={styles.sign__logInButton_text}
+								style={styles.logInButton_text}
 							>
 								Already have an account?
 							</Text>
 						</TouchableOpacity>
 					</View>
-					<TouchableOpacity style={styles.sign__createAccountButton} onPress={handleSubmit}>
-						<Text style={styles.sign__createAccountButton_text}>Create</Text>
+					{error !== '' &&
+						<View style={styles.errorContainer}>
+							<Text style={styles.errorContainer_text}>{error}</Text>
+						</View>
+					}
+					<TouchableOpacity style={styles.createAccountButton} onPress={handleSubmit}>
+						<Text style={styles.createAccountButton_text}>Create</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -85,7 +105,7 @@ const styles = StyleSheet.create({
 		height: '100%',
 		justifyContent: 'space-between',
 	},
-	sign__header: {
+	header: {
 		backgroundColor: colors.primary,
 		height: 60,
 		width: '100%',
@@ -94,7 +114,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingHorizontal: 30,
 	},
-	sign__header_title: {
+	header_title: {
 		color: "#fff",
 		fontSize: 40,
 	},
@@ -111,23 +131,23 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 2,
 		marginTop: 20,
 	},
-	sign__inputcontainer: {
+	inputContainer: {
 		margin: 40,
 		marginTop: 70,
 		height: '24%',
 		justifyContent: 'space-between',
 		flex: 0.5
 	},
-	sign__logInButton: {
+	logInButton: {
 		marginTop: 30,
 	},
-	sign__logInButton_text: {
+	logInButton_text: {
 		color: '#fff',
 		textDecorationLine: 'underline',
 		fontSize: 20,
 		padding: 10
 	},
-	sign__createAccountButton: {
+	createAccountButton: {
 		backgroundColor: colors.accent,
 		color: colors.primary,
 		borderRadius: 15,
@@ -138,10 +158,22 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	sign__createAccountButton_text: {
+	createAccountButton_text: {
 		fontSize: 30
+	},
+	errorContainer: {
+		backgroundColor: colors.secondary,
+		width: '80%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		borderRadius: 15,
+		padding: 20
+	},
+	errorContainer_text: {
+		color: '#fff',
+		fontSize: 20,
 	}
-
 });
 
 export default SignScreen;

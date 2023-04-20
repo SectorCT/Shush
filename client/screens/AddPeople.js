@@ -5,32 +5,45 @@ import { colors } from '../styles.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { FocusEventHandler } from 'react';
-
 import { SERVER_IP } from '@env';
 
+import { makeRequest } from '../requests.js';
 
 const AddPeople = ({ navigation }) => {
-    const [text, setText] = useState('');
+    const [inviteToken, setInviteToken] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if (navigation.getParam('token')) {
-            setText(navigation.getParam('token'));
+            setInviteToken(navigation.getParam('token'));
         }
     }, [navigation]);
 
+    function verrifyToken() {
+        if (inviteToken.length === 8) {
+            return true;
+        }
+        setError('Token must be 8 characters long');
+        return false;
+    }
+
     function handleSubmit() {
-        AsyncStorage.getItem('authCookie').then((cookie) => {
-            fetch(`http://${SERVER_IP}:8000/authentication/make_friends/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cookie': cookie,
-                },
-                body: JSON.stringify({
-                    friend_token: text,
-                }),
-            }).then((response) => {
+        if (!verrifyToken()) {
+            return;
+        }
+        AsyncStorage.getItem('access_token').then((access_token) => {
+
+            // fetch(`http://${SERVER_IP}:8000/authentication/make_friends/`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${access_token}`,
+            //     },
+            //     body: JSON.stringify({
+            //         friend_token: inviteToken,
+            //     }),
+            // })
+            makeRequest(`authentication/make_friends/`, "POST", { friend_token: inviteToken }).then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
                         if (data.status === 'success') {
@@ -47,6 +60,10 @@ const AddPeople = ({ navigation }) => {
         }
         );
     }
+
+    // const handleInviteTokenChange = debounce((value) => {
+    //     setInviteToken(value.toUpperCase());
+    // }, 0);
 
     return (
         <>
@@ -66,10 +83,10 @@ const AddPeople = ({ navigation }) => {
                         <View style={styles.input}>
                             <TextInput
                                 style={styles.input__field}
-                                value={text}
+                                value={inviteToken}
                                 placeholder="Insert code"
                                 placeholderTextColor={colors.complimentary}
-                                onChangeText={(value) => setText(value.toUpperCase())}
+                                onChangeText={(value) => { setInviteToken(value.toUpperCase()); }}
                                 maxLength={20}
                             />
                             <TouchableOpacity onPress={() => { navigation.navigate("QRScanner") }}>
@@ -77,6 +94,11 @@ const AddPeople = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    {error !== '' &&
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorContainer_text}>{error}</Text>
+                        </View>
+                    }
                     <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                         <Text style={styles.button_text}>Add Friend</Text>
                     </TouchableOpacity>
@@ -169,8 +191,6 @@ const styles = StyleSheet.create({
         flex: 1.5,
         width: '100%'
     },
-    input__qr_img: {
-    },
     button: {
         backgroundColor: colors.secondary,
         color: colors.primary,
@@ -186,6 +206,20 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: colors.textWhite
     },
+    errorContainer: {
+        backgroundColor: colors.secondary,
+        width: '80%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 15,
+        padding: 20,
+        marginBottom: 20
+    },
+    errorContainer_text: {
+        color: '#fff',
+        fontSize: 20,
+    }
 });
 
 export default AddPeople;

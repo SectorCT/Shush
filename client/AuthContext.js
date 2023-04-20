@@ -7,31 +7,16 @@ import { SERVER_IP } from '@env';
 
 const AuthContextProvider = ({ children }) => {
     const [loggedIn, setLoggedIn] = useState(false);
-    // logic to check if the user is logged in
-    console.log("AuthContextProvider:", SERVER_IP);
-    const checkIfLoggedIn = () => {
-        try {
-            AsyncStorage.getItem('authCookie').then((value) => {
-                fetch(`http://${SERVER_IP}:8000/authentication/verify_session/`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Cookie': value,
-                    },
-                }).then((response) => {
-                    if (response.status === 200) {
-                        response.json().then((data) => {
-                            setLoggedIn(true);
-                        });
-                    } else {
-                        setLoggedIn(false);
-                    }
-                });
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
+
+    async function checkIfLoggedIn() {
+        AsyncStorage.getItem('refreshToken').then((userToken) => {
+            if (userToken !== null) {
+                setLoggedIn(true);
+            } else {
+                setLoggedIn(false);
+            }
+        });
+    }
 
     function signup(password, confirmPassword) {
         try {
@@ -46,18 +31,19 @@ const AuthContextProvider = ({ children }) => {
                     }),
                 }).then((response) => {
                     if (response.status === 200) {
-                        const authCookie = response.headers.get('set-cookie');
-                        console.log(authCookie);
                         response.json().then((data) => {
-                            AsyncStorage.setItem("authCookie", authCookie).then(() => {
+                            if (data.success !== true) {
+                                console.log(data.message);
+                                return;
+                            }
+                            AsyncStorage.setItem("refreshToken", data.refresh_token).then(() => {
                                 AsyncStorage.setItem("userToken", data.token).then(() => {
                                     checkIfLoggedIn();
                                 });
                             });
                         });
-
                     } else {
-                        console.log('Error');
+                        console.log('Error creating account:', response.status, response.message);
                     }
                 });
             } else {
@@ -81,16 +67,17 @@ const AuthContextProvider = ({ children }) => {
                 }),
             }).then((response) => {
                 if (response.status === 200) {
-                    const authCookie = response.headers.get('set-cookie');
                     response.json().then((data) => {
-                        AsyncStorage.setItem("authCookie", authCookie).then(() => {
-                            AsyncStorage.setItem("userToken", data.token).then(() => {
-                                checkIfLoggedIn();
+                        AsyncStorage.setItem("accessToken", data.access_token).then(() => {
+                            AsyncStorage.setItem("refreshToken", data.refresh_token).then(() => {
+                                AsyncStorage.setItem("userToken", token).then(() => {
+                                    checkIfLoggedIn();
+                                });
                             });
                         });
                     });
                 } else {
-                    console.log('Error');
+                    console.log('Error logging in:', response.status, response.message);
                 }
             });
         } catch (error) {
@@ -100,33 +87,34 @@ const AuthContextProvider = ({ children }) => {
 
     function logout() {
         try {
-            fetch(`http://${SERVER_IP}:8000/authentication/logout/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            }).then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
-                        AsyncStorage.removeItem('authCookie').then(() => {
+            AsyncStorage.getItem('refreshToken').then((refreshToken) => {
+                fetch(`http://${SERVER_IP}:8000/authentication/logout/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        refresh_token: refreshToken,
+                    }),
+                }).then((response) => {
+                    if (response.status === 200) {
+                        response.json().then((data) => {
+                            AsyncStorage.removeItem('accessToken');
+                            AsyncStorage.removeItem('refreshToken');
                             checkIfLoggedIn();
                         });
-                    });
-                } else {
-                    console.error('Error');
-                }
+                    } else {
+                        console.log('Error logging out:', response.status, response.message);
+                    }
+                });
             });
         } catch (error) {
             console.log(error);
         }
     }
 
-    useEffect(() => {
-        checkIfLoggedIn();
-    }, []);
-
     return (
-        <AuthContext.Provider value={{ loggedIn, checkIfLoggedIn, login, signup, logout }}>
+        <AuthContext.Provider value={{ loggedIn, login, signup, logout, checkIfLoggedIn }}>
             {children}
         </AuthContext.Provider>
     );
