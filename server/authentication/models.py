@@ -8,7 +8,7 @@ import secrets
 
 
 class ProfileManager(BaseUserManager):
-    def create_user(self, password=None, username_token=None, friend_token=None, public_key=None):
+    def create_user(self, password=None, username_token=None, friend_token=None):
 
         while not username_token or Profile.objects.filter(username_token=username_token).exists():
             username_token = secrets.token_hex(10)
@@ -22,24 +22,7 @@ class ProfileManager(BaseUserManager):
         if len(password) < 8:
             return JsonResponse({'status': 'error', 'message': 'Password must be at least 8 characters'})
         
-         # Generate the public/private key pair
-        private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048,
-            backend=default_backend()
-        )
-        public_key = private_key.public_key()
-        
-        # Serialize the public key to PEM format
-        pem_public_key = public_key.public_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PublicFormat.SubjectPublicKeyInfo
-        )
-
-        # Convert the PEM public key to string
-        str_public_key = pem_public_key.decode('utf-8')
-
-        user = self.model(username_token=username_token, friend_token=friend_token, public_key=str_public_key)
+        user = self.model(username_token=username_token, friend_token=friend_token)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -61,8 +44,12 @@ class ProfileManager(BaseUserManager):
 class Profile(AbstractBaseUser):
     username_token = models.CharField(max_length=10, unique=True)
     friend_token = models.CharField(max_length=4, unique=True)
-    password = models.CharField(max_length=128)
     public_key = models.TextField(blank=True)
+
+    identity_public_key = models.TextField()
+    signed_prekey_public_key = models.TextField()
+    prekey_public_key = models.TextField()
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -73,12 +60,22 @@ class Profile(AbstractBaseUser):
     last_login = None
 
     objects = ProfileManager()
+    
+    def check_password(self, raw_password: str) -> bool:
+        return super().check_password(raw_password)
+
+class OneTimePreKey(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    public_key = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.username_token} - {self.public_key}"
 
 class Friend(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='friends_as_user')
     friend = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='frnick_as_friend')
     nickname = models.CharField(max_length=8)
-    friendship_token = models.CharField(max_length=10, unique=True, default=secrets.token_hex(5))
+    friendship_token = models.CharField(max_length=10, unique=True)
 
     class Meta:
         unique_together = ('user', 'nickname')
