@@ -37,12 +37,13 @@ export default function Chat({ navigation }) {
 
     const ws = useRef(null);
 
+    const [isEdditingNickname, setIsEdditingNickname] = useState(false);
+
     let Cookie = "";
 
     useEffect(() => {
         try {
             AsyncStorage.getItem('access_token').then((access_token) => {
-                console.log(access_token);
                 setMessages([]);
                 makeRequest(`authentication/get_recent_messages/`, 'POST', { friendship_token: friendshipId })
                     .then((response) => {
@@ -52,7 +53,6 @@ export default function Chat({ navigation }) {
                                 for (let i = 0; i < data.messages.length; i++) {
                                     let isOwn = data.messages[i].isOwn;
                                     let text = data.messages[i].content;
-                                    console.log(isOwn, text)
                                     newMessages.push({
                                         text: text,
                                         isOwn: isOwn,
@@ -107,12 +107,30 @@ export default function Chat({ navigation }) {
         }));
     }
 
+    function handleAcceptNickname() {
+        setIsEdditingNickname(false);
+        makeRequest(`authentication/change_nickname/`, 'POST', { friendship_token: friendshipId, new_nickname: friendName })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("success");
+                } else {
+                    console.log("error");
+                }
+            }
+            );
+    }
+
+    function handleDeclineNickname() {
+        setIsEdditingNickname(false);
+        setFriendName(navigation.getParam('friendName'));
+    }
+
     return (
         <>
             <StatusBar style="light" />
             <WebSocket
                 ref={ws}
-                url={`ws://${SERVER_IP}:8000/ws/chat/${friendshipId}/`}
+                url={`wss://${SERVER_IP}/ws/chat/${friendshipId}/`}
                 headers={{
                     Cookie: Cookie,
                 }}
@@ -123,7 +141,18 @@ export default function Chat({ navigation }) {
             />
             <View style={styles.islandHider}></View>
             <View style={styles.chat__header} >
-                <Text style={styles.chat__header_title}>{friendName}</Text>
+                {isEdditingNickname ?
+                    <View style={styles.edit_nickname}>
+                        <TextInput style={styles.chat__header_title} value={friendName} onChangeText={(text) => setFriendName(text)}></TextInput>
+                        {/* <Text style={styles.chat__header_title}>{friendName}</Text> */}
+                        <Icon name='check' size={25} color="#fff" style={styles.edit_icon} onPress={handleAcceptNickname}></Icon>
+                        <Icon name='times' size={25} color="#fff" style={styles.edit_icon} onPress={handleDeclineNickname}></Icon>
+                    </View> :
+                    <View style={styles.edit_nickname}>
+                        <Text style={styles.chat__header_title}>{friendName}</Text>
+                        <Icon name='edit' size={25} color="#fff" style={styles.edit_icon} onPress={() => { setIsEdditingNickname(true) }}></Icon>
+                    </View>
+                }
                 <ImageButton imageSource={require('../assets/cross.png')} style={styles.chat__imageItem} onPress={() => {
                     navigation.navigate('HomeScreen');
                 }} />
@@ -262,5 +291,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         marginTop: 20,
+    },
+    edit_nickname: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    edit_icon: {
+        marginLeft: 10,
     },
 });

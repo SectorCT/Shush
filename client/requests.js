@@ -1,9 +1,10 @@
 import { SERVER_IP, SERVER_PORT } from '@env';
 
-const API_URL = `http://${SERVER_IP}:${SERVER_PORT}`;
+const API_URL = `https://${SERVER_IP}`;
 let access_token = '';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 async function refreshToken() {
