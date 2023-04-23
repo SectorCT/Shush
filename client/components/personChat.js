@@ -3,6 +3,7 @@ import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } fro
 import { colors, fonts } from '../styles';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { makeRequest } from '../requests.js';
 
@@ -43,8 +44,22 @@ export default function PersonChat({ navigation }) {
     }, []);
 
     const handleOpenChat = (friendName, friendshipId) => {
-        console.log(friendName, friendshipId);
         navigation.navigate('Chat', { friendName, friendshipId });
+    };
+
+    const handleDeleteFriend = (friendshipId) => {
+        makeRequest("authentication/remove_friend/", "POST", { friendship_token: friendshipId }).then((response) => {
+            if (response.status === 200) {
+                response.json().then((data) => {
+                    console.log("Friend deleted", data);
+                    refresh();
+                });
+            } else {
+                response.json().then((data) => {
+                    console.log("Error while deleting friend", response.status, data.message);
+                });
+            }
+        });
     };
 
     const renderItem = ({ item }) => (
@@ -54,10 +69,13 @@ export default function PersonChat({ navigation }) {
                 () => handleOpenChat(item.nickname, item.friendship_token)
             }
         >
-            <View style={styles.prChat__personIcon}>
-                <Text style={styles.prChat__letter}>{item.nickname[0]}</Text>
+            <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.prChat__personIcon}>
+                    <Text style={styles.prChat__letter}>{item.nickname[0].toUpperCase()}</Text>
+                </View>
+                <Text style={styles.prChat__name}>{item.nickname}</Text>
             </View>
-            <Text style={styles.prChat__name}>{item.nickname}</Text>
+            <Icon name='trash' size={25} color="#fff" style={styles.delete_friend} onPress={() => { handleDeleteFriend(item.friendship_token) }}></Icon>
         </TouchableOpacity>
     );
 
@@ -80,6 +98,7 @@ const styles = StyleSheet.create({
         height: 80,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -119,5 +138,8 @@ const styles = StyleSheet.create({
     prChat__flatList: {
         flex: 1,
         margin: 5
+    },
+    delete_friend: {
+        marginRight: 20,
     }
 });

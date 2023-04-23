@@ -21,7 +21,7 @@ const AuthContextProvider = ({ children }) => {
     function signup(password, confirmPassword) {
         try {
             if (password === confirmPassword) {
-                fetch(`http://${SERVER_IP}:8000/authentication/signup/`, {
+                fetch(`https://${SERVER_IP}/authentication/signup/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const AuthContextProvider = ({ children }) => {
 
     function login(token, password) {
         try {
-            fetch(`http://${SERVER_IP}:8000/authentication/login/`, {
+            fetch(`https://${SERVER_IP}/authentication/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const AuthContextProvider = ({ children }) => {
     function logout() {
         try {
             AsyncStorage.getItem('refreshToken').then((refreshToken) => {
-                fetch(`http://${SERVER_IP}:8000/authentication/logout/`, {
+                fetch(`https://${SERVER_IP}/authentication/logout/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
