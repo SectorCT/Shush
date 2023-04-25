@@ -4,6 +4,7 @@ import TopBar from '../components/Topbar.js';
 import PersonChat from '../components/personChat';
 import { colors } from '../styles.js';
 
+
 const HomeScreen = ({ navigation }) => {
 
 	return (

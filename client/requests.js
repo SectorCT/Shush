@@ -1,13 +1,11 @@
 import { SERVER_IP, SERVER_PORT } from '@env';
 
 const API_URL = `https://${SERVER_IP}`;
-let access_token = '';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 async function refreshToken() {
+    let access_token = '';
     const refresh_token = await AsyncStorage.getItem('refreshToken');
     const refreshResponse = await fetch(`${API_URL}/authentication/api/refresh_token/`, {
         method: 'POST',
@@ -29,9 +27,11 @@ async function refreshToken() {
 }
 
 export async function makeRequest(endpoint, method = 'GET', body = {}) {
+    let access_token = '';
     if (!access_token) {
         access_token = await AsyncStorage.getItem('access_token');
     }
+    console.log("Access token: ", access_token)
     const response = await fetch(`${API_URL}/${endpoint}`, method == "GET" ? {
         method,
         headers: {
