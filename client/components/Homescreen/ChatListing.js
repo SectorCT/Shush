@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
-import { colors, fonts } from '../styles';
+import { colors, fonts } from '../../styles';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { makeRequest } from '../requests.js';
+import { makeRequest } from '../../requests.js';
 
 const Separator = () => <View style={styles.separator} />;
 
 
-export default function PersonChat({ navigation }) {
+export default function ChatListing({ navigation }) {
     const [Peopele, setPeopele] = useState([]);
     function refresh() {
         try {

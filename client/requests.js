@@ -48,7 +48,6 @@ export async function makeRequest(endpoint, method = 'GET', body = {}) {
     if (response.status === 401) {
         accessToken = await refreshToken();
         await AsyncStorage.setItem('accessToken', accessToken);
-        console.log("Access token: ", accessToken)
         const refreshedResponse = await fetch(`${API_URL}/${endpoint}`, method == "GET" ? {
             method,
             headers: {
