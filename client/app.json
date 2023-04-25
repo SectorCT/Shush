@@ -8,12 +8,12 @@
         }
       ]
     ],
-    "name": "client",
-    "slug": "client",
-    "version": "1.0.0",
+    "name": "Shush",
+    "slug": "shush",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -37,14 +37,14 @@
       "permissions": [
         "android.permission.CAMERA"
       ],
-      "package": "com.svetoslav47.client"
+      "package": "com.svetoslav47.shush"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "fdaeedf6-8178-49d0-bebf-f903f25cb5c1"
+        "projectId": "c2d3e269-3b8a-4414-9661-051ab0825066"
       }
     }
   }

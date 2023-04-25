@@ -12,7 +12,6 @@ const InvitePeople = ({ navigation }) => {
     useEffect(() => {
         try {
             makeRequest(`authentication/get_friend_token/`, "GET").then((response) => {
-                console.log(response);
                 if (response.status === 200) {
                     response.json().then((data) => {
                         setInviteCode(data.friendInviteCode);

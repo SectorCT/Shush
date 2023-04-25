@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
 import { colors, fonts } from '../styles';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { makeRequest } from '../requests.js';

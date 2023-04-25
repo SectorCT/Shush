@@ -2,3 +2,6 @@
 *.sqlite3
 
 *.env
+
+*.aab
+*.apk
