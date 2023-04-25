@@ -12,7 +12,7 @@
     "slug": "shush",
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Shush_Logo.svg",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",

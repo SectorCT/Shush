@@ -4,8 +4,8 @@ const API_URL = `https://${SERVER_IP}`;
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 async function refreshToken() {
-    let access_token = '';
     const refresh_token = await AsyncStorage.getItem('refreshToken');
     const refreshResponse = await fetch(`${API_URL}/authentication/api/refresh_token/`, {
         method: 'POST',
@@ -23,42 +23,43 @@ async function refreshToken() {
         throw new Error('Refresh token failed');
     }
     const data = await refreshResponse.json();
-    access_token = data.access_token;
+    return data.access_token;
 }
 
 export async function makeRequest(endpoint, method = 'GET', body = {}) {
-    let access_token = '';
-    if (!access_token) {
-        access_token = await AsyncStorage.getItem('access_token');
+    let accessToken = '';
+    if (!accessToken) {
+        accessToken = await AsyncStorage.getItem('accessToken');
     }
-    console.log("Access token: ", access_token)
     const response = await fetch(`${API_URL}/${endpoint}`, method == "GET" ? {
         method,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${accessToken}`
         }
     } : {
         method,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify(body)
     });
     if (response.status === 401) {
-        await refreshToken();
+        accessToken = await refreshToken();
+        await AsyncStorage.setItem('accessToken', accessToken);
+        console.log("Access token: ", accessToken)
         const refreshedResponse = await fetch(`${API_URL}/${endpoint}`, method == "GET" ? {
             method,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access_token}`
+                'Authorization': `Bearer ${accessToken}`
             }
         } : {
             method,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access_token}`
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(body)
         });
