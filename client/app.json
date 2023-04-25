@@ -12,8 +12,8 @@
     "slug": "shush",
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/Shush_Logo.svg",
-    "userInterfaceStyle": "dark",
+    "icon": "./assets/Shush_Logo.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

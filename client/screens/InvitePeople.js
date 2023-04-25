@@ -27,7 +27,7 @@ const InvitePeople = ({ navigation }) => {
 
     return (
         <>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <View style={styles.islandHider} />
             <View style={styles.container}>
                 <View style={styles.invitePeople__header} >

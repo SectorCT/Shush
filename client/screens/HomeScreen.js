@@ -1,17 +1,19 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import TopBar from '../components/Topbar.js';
-import PersonChat from '../components/personChat';
+import ChatListing from '../components/Homescreen/ChatListing.js';
 import { colors } from '../styles.js';
+import { StatusBar } from 'expo-status-bar';
 
 
 const HomeScreen = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
+			<StatusBar style="light" />
 			<View style={styles.islandHider} />
 			<TopBar navigation={navigation} />
-			<PersonChat navigation={navigation} />
+			<ChatListing navigation={navigation} />
 		</View>
 	);
 }
@@ -20,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
 	islandHider: {
 		backgroundColor: colors.primary,
-		height: 20,
+		height: 25,
 		width: '100%',
 	},
 	container: {

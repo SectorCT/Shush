@@ -5,7 +5,6 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import { useState, useRef, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import '../scripts/encryption-Secure.js'
 import ImageButton from '../components/ImageButton';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,16 +14,9 @@ import WebSocket from 'react-native-websocket';
 import { SERVER_IP } from '@env';
 import { makeRequest } from '../requests';
 
+import TextMessage from '../components/Chat/TextMessage';
+import AllMessages from '../components/Chat/AllMessages';
 
-function Message({ text, isOwn }) {
-    let extraStyles = isOwn ? styles.chat__messages_message_own : styles.chat__messages_message_other;
-    let fontColor = isOwn ? "#000" : "#fff";
-    return (
-        <View style={{ ...styles.chat__messages_message, ...extraStyles }}>
-            <Text style={{ ...styles.chat__text, color: fontColor }}> {text}</Text>
-        </View >
-    );
-}
 
 export default function Chat({ navigation }) {
     const [messages, setMessages] = useState([]);
@@ -72,7 +64,7 @@ export default function Chat({ navigation }) {
     }, []);
 
     const handleOpen = () => {
-        console.log('WebSocket connection opened');
+        // console.log('WebSocket connection opened');
     };
 
     const handleMessage = (event) => {
@@ -90,7 +82,7 @@ export default function Chat({ navigation }) {
     };
 
     const handleClose = () => {
-        console.log('WebSocket closed');
+        // console.log('WebSocket closed');
     };
 
     function handleSendMsg() {
@@ -140,42 +132,27 @@ export default function Chat({ navigation }) {
                 onClose={handleClose}
             />
             <View style={styles.islandHider}></View>
-            <View style={styles.chat__header} >
+            <View style={styles.header} >
                 {isEdditingNickname ?
                     <View style={styles.edit_nickname}>
-                        <TextInput style={styles.chat__header_title} value={friendName} onChangeText={(text) => setFriendName(text)}></TextInput>
-                        {/* <Text style={styles.chat__header_title}>{friendName}</Text> */}
+                        <TextInput style={styles.header_title} value={friendName} onChangeText={(text) => setFriendName(text)}></TextInput>
                         <Icon name='check' size={25} color="#fff" style={styles.edit_icon} onPress={handleAcceptNickname}></Icon>
                         <Icon name='times' size={25} color="#fff" style={styles.edit_icon} onPress={handleDeclineNickname}></Icon>
                     </View> :
                     <View style={styles.edit_nickname}>
-                        <Text style={styles.chat__header_title}>{friendName}</Text>
+                        <Text style={styles.header_title}>{friendName}</Text>
                         <Icon name='edit' size={25} color="#fff" style={styles.edit_icon} onPress={() => { setIsEdditingNickname(true) }}></Icon>
                     </View>
                 }
-                <ImageButton imageSource={require('../assets/cross.png')} style={styles.chat__imageItem} onPress={() => {
+                <ImageButton imageSource={require('../assets/cross.png')} style={styles.imageItem} onPress={() => {
                     navigation.navigate('HomeScreen');
                 }} />
             </View>
-            <View style={styles.chat__container}>
-                {messages.length === 0 ? <Text style={styles.no_messages}>No messages yet</Text> :
-                    <FlatList
-                        contentContainerStyle={styles.chat__messages}
-                        data={messages}
-                        renderItem={({ item }) => <Message
-                            text={item.text}
-                            isOwn={item.isOwn}
-                        />}
-                        keyExtractor={(item, index) => index.toString()}
-                        ref={flatListRef}
-                        onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
-                    />
-                }
-            </View>
+            <AllMessages messages={messages} />
 
-            <View style={styles.chat__sendMsg}>
+            <View style={styles.sendMsg}>
                 <TextInput
-                    style={styles.chat__sendMsg_input}
+                    style={styles.sendMsg_input}
                     value={typedMessage}
                     onChangeText={(text) => setTypedMessage(text)}
                     placeholder="Type a message ..."
@@ -190,7 +167,7 @@ export default function Chat({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    chat__imageItem: {
+    imageItem: {
         width: 25,
         height: 25,
     },
@@ -199,7 +176,7 @@ const styles = StyleSheet.create({
         height: 20,
         width: '100%',
     },
-    chat__header: {
+    header: {
         backgroundColor: colors.primary,
         height: 60,
         width: '100%',
@@ -208,59 +185,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 30,
     },
-    chat__header_title: {
+    header_title: {
         color: colors.accent,
         fontSize: 40,
-        // fontFamily: fonts.primary,
     },
-    chat__container: {
-        flex: 1,
-        width: '100%',
-        backgroundColor: colors.background,
-        height: '100%',
-    },
-    chat__messages: {
-        width: "100%",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        gap: 15,
-    },
-    chat__messages_message: {
-        backgroundColor: colors.secondary,
-        padding: 20,
-        width: "100%",
-        maxWidth: "100%",
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        // iOS shadow properties
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
-        // Android elevation property
-        elevation: 5,
-    },
-    chat__messages_message_own: {
-        alignSelf: "flex-end",
-        borderTopRightRadius: 0,
-        backgroundColor: colors.accent,
-    },
-    chat__messages_message_other: {
-        alignSelf: "flex-start",
-        borderTopLeftRadius: 0,
-
-    },
-    chat__text: {
-        padding: 0,
-        fontSize: 20,
-    },
-    chat__sendMsg: {
+    sendMsg: {
         width: "100%",
         height: 80,
         backgroundColor: colors.primary,
@@ -270,7 +199,7 @@ const styles = StyleSheet.create({
         gap: 30,
         paddingHorizontal: 30,
     },
-    chat__sendMsg_input: {
+    sendMsg_input: {
         backgroundColor: colors.primary,
         borderBottomColor: colors.secondary,
         maxHeight: 50,
@@ -281,16 +210,10 @@ const styles = StyleSheet.create({
         paddingVertical: 0,
         fontSize: 20,
     },
-    chat__sendMsg_btn: {
+    sendMsg_btn: {
         backgroundColor: colors.primary,
         height: "100%",
 
-    },
-    no_messages: {
-        color: colors.accent,
-        fontSize: 20,
-        alignSelf: 'center',
-        marginTop: 20,
     },
     edit_nickname: {
         flexDirection: 'row',
