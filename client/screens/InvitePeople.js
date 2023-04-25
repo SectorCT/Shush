@@ -3,9 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../styles.js';
 import QRCode from 'react-native-qrcode-svg';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { SERVER_IP } from '@env';
 import { makeRequest } from '../requests.js';
 
 const InvitePeople = ({ navigation }) => {
@@ -17,11 +15,11 @@ const InvitePeople = ({ navigation }) => {
                         setInviteCode(data.friendInviteCode);
                     });
                 } else {
-                    console.log("error");
+                    console.log("error getting friend invite code" + response.status);
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.log("error getting friend invite code:" + error + " " + error.status);
         }
     });
 
