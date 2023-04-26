@@ -9,7 +9,7 @@ import { SERVER_IP } from '@env';
 
 import { makeRequest } from '../requests.js';
 
-const AddPeople = ({ navigation }) => {
+export default function AddPeople({ navigation }) {
     const [inviteToken, setInviteToken] = useState('');
     const [error, setError] = useState('');
 
@@ -31,35 +31,22 @@ const AddPeople = ({ navigation }) => {
         if (!verrifyToken()) {
             return;
         }
-        AsyncStorage.getItem('access_token').then((access_token) => {
-
-            // fetch(`http://${SERVER_IP}:8000/authentication/make_friends/`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': `Bearer ${access_token}`,
-            //     },
-            //     body: JSON.stringify({
-            //         friend_token: inviteToken,
-            //     }),
-            // })
-            makeRequest(`authentication/make_friends/`, "POST", { friend_token: inviteToken }).then((response) => {
-                if (response.status === 200) {
-                    response.json().then((data) => {
-                        if (data.status === 'success') {
-                            navigation.navigate('HomeScreen');
-                        } else {
-                            console.log(data.message);
-                        }
-                    });
-                } else {
-                    console.log("error");
-                }
+        makeRequest(`authentication/make_friends/`, "POST", { friend_token: inviteToken }).then((response) => {
+            if (response.status === 200) {
+                response.json().then((data) => {
+                    if (data.status === 'success') {
+                        navigation.navigate('HomeScreen');
+                    } else {
+                        console.log(data.message);
+                    }
+                });
+            } else {
+                console.log("error");
             }
-            );
         }
         );
     }
+
 
     // const handleInviteTokenChange = debounce((value) => {
     //     setInviteToken(value.toUpperCase());
@@ -67,7 +54,7 @@ const AddPeople = ({ navigation }) => {
 
     return (
         <>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <View style={styles.islandHider} />
             <View style={styles.container}>
                 <View style={styles.header} >
@@ -109,7 +96,7 @@ const AddPeople = ({ navigation }) => {
             </View>
         </>
     );
-}
+};
 
 
 const styles = StyleSheet.create({
@@ -119,7 +106,7 @@ const styles = StyleSheet.create({
     },
     islandHider: {
         backgroundColor: colors.primary,
-        height: 20,
+        height: 35,
         width: '100%',
     },
     container: {
@@ -221,5 +208,3 @@ const styles = StyleSheet.create({
         fontSize: 20,
     }
 });
-
-export default AddPeople;

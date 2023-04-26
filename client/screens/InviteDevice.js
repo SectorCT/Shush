@@ -9,7 +9,7 @@ import { AuthContext } from '../AuthContext.js';
 
 const codeLink = '3ER89H5Y'
 
-const inviteDevice = ({ navigation }) => {
+export default function inviteDevice({ navigation }) {
 
     const { checkIfLoggedIn, logout } = useContext(AuthContext);
     // useEffect(() => {
@@ -78,7 +78,7 @@ const inviteDevice = ({ navigation }) => {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.primary,
-        height: 20,
+        height: 35,
         width: '100%',
     },
     container: {
@@ -154,5 +154,3 @@ const styles = StyleSheet.create({
 
     }
 });
-
-export default inviteDevice;

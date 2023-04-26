@@ -14,7 +14,7 @@ import WebSocket from 'react-native-websocket';
 import { SERVER_IP } from '@env';
 import { makeRequest } from '../requests';
 
-import TextMessage from '../components/Chat/TextMessage';
+import TextMessage from '../components/Chat/ChatMessage';
 import AllMessages from '../components/Chat/AllMessages';
 
 
@@ -35,36 +35,35 @@ export default function Chat({ navigation }) {
 
     useEffect(() => {
         try {
-            AsyncStorage.getItem('access_token').then((access_token) => {
-                setMessages([]);
-                makeRequest(`authentication/get_recent_messages/`, 'POST', { friendship_token: friendshipId })
-                    .then((response) => {
-                        if (response.status === 200) {
-                            response.json().then((data) => {
-                                const newMessages = []
-                                for (let i = 0; i < data.messages.length; i++) {
-                                    let isOwn = data.messages[i].isOwn;
-                                    let text = data.messages[i].content;
-                                    newMessages.push({
-                                        text: text,
-                                        isOwn: isOwn,
-                                    });
-                                }
-                                setMessages(newMessages)
-                            });
-                        } else {
-                            console.log("error");
-                        }
+            setMessages([]);
+            makeRequest(`authentication/get_recent_messages/`, 'POST', { friendship_token: friendshipId })
+                .then((response) => {
+                    if (response.status === 200) {
+                        response.json().then((data) => {
+                            console.log(data);
+                            const newMessages = []
+                            for (let i = 0; i < data.messages.length; i++) {
+                                let isOwn = data.messages[i].isOwn;
+                                let text = data.messages[i].content;
+                                newMessages.push({
+                                    text: text,
+                                    isOwn: isOwn,
+                                });
+                            }
+                            setMessages(newMessages)
+                        });
+                    } else {
+                        console.log("error");
                     }
-                    );
-            });
+                }
+                );
         } catch (error) {
             console.log(error);
         }
     }, []);
 
     const handleOpen = () => {
-        // console.log('WebSocket connection opened');
+        console.log('WebSocket connection opened');
     };
 
     const handleMessage = (event) => {
@@ -82,10 +81,11 @@ export default function Chat({ navigation }) {
     };
 
     const handleClose = () => {
-        // console.log('WebSocket closed');
+        console.log('WebSocket closed');
     };
 
     function handleSendMsg() {
+        console.log("send message friendName: " + friendName + " friendshipId: " + friendshipId)
         if (typedMessage.length === 0) return;
         setMessages([...messages, {
             text: typedMessage,
@@ -93,7 +93,6 @@ export default function Chat({ navigation }) {
         }]);
         setTypedMessage("");
         ws.current.send(JSON.stringify({
-            type: "message",
             message: typedMessage,
             friendship_token: friendshipId,
         }));
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     },
     islandHider: {
         backgroundColor: colors.primary,
-        height: 20,
+        height: 30,
         width: '100%',
     },
     header: {
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     },
     header_title: {
         color: colors.accent,
-        fontSize: 40,
+        fontSize: 45,
     },
     sendMsg: {
         width: "100%",

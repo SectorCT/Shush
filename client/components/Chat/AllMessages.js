@@ -1,7 +1,7 @@
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import { useRef } from 'react';
 
-import TextMessage from './TextMessage';
+import TextMessage from './ChatMessage';
 
 export default function AllMessages({ messages = [] }) {
     const flatListRef = useRef()
@@ -15,8 +15,8 @@ export default function AllMessages({ messages = [] }) {
                     renderItem={({ item, index }) => <TextMessage
                         text={item.text}
                         isOwn={item.isOwn}
-                        isPreviousOwn={index > 0 ? messages[index - 1].isOwn : undefined}
-                        isNextOwn={index < messages.length - 1 ? messages[index + 1].isOwn : undefined}
+                        isPreviousOwn={index > 0 ? messages[index - 1].isOwn : null}
+                        isNextOwn={index < messages.length - 1 ? messages[index + 1].isOwn : null}
                     />}
                     keyExtractor={(item, index) => index.toString()}
                     ref={flatListRef}
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         paddingVertical: 10,
         paddingHorizontal: 30,
-        gap: 15,
+        gap: 5,
     },
     messages_message: {
         backgroundColor: colors.secondary,

@@ -6,7 +6,7 @@ import QRCode from 'react-native-qrcode-svg';
 
 import { makeRequest } from '../requests.js';
 
-const InvitePeople = ({ navigation }) => {
+export default function InvitePeople({ navigation }) {
     useEffect(() => {
         try {
             makeRequest(`authentication/get_friend_token/`, "GET").then((response) => {
@@ -41,7 +41,7 @@ const InvitePeople = ({ navigation }) => {
                     <View style={styles.invitePeople__qrCode_view}>
                         <View style={{ borderWidth: 10, borderColor: 'white' }}>
                             {inviteCode ? <QRCode
-                                value={inviteCode}
+                                value={`${inviteCode}`}
                                 size={200}
                                 color='black'
                                 backgroundColor='white'
@@ -62,7 +62,7 @@ const InvitePeople = ({ navigation }) => {
 const styles = StyleSheet.create({
     islandHider: {
         backgroundColor: colors.primary,
-        height: 20,
+        height: 35,
         width: '100%',
     },
     container: {
@@ -127,5 +127,3 @@ const styles = StyleSheet.create({
 
     }
 });
-
-export default InvitePeople;
