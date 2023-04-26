@@ -8,7 +8,7 @@ import { AuthContext } from '../AuthContext.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SignInScreen = ({ navigation }) => {
+export default function SignInScreen({ navigation }) {
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
 
@@ -177,5 +177,3 @@ const styles = StyleSheet.create({
     }
 
 });
-
-export default SignInScreen;

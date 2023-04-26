@@ -6,7 +6,7 @@ import { colors } from '../styles.js';
 import { StatusBar } from 'expo-status-bar';
 
 
-const HomeScreen = ({ navigation }) => {
+export default function HomeScreen({ navigation }) {
 
 	return (
 		<View style={styles.container}>
@@ -22,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
 	islandHider: {
 		backgroundColor: colors.primary,
-		height: 25,
+		height: 35,
 		width: '100%',
 	},
 	container: {
@@ -76,5 +76,3 @@ const styles = StyleSheet.create({
 		margin: 5
 	}
 });
-
-export default HomeScreen;

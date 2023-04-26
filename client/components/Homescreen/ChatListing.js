@@ -13,14 +13,11 @@ export default function ChatListing({ navigation }) {
     const [Peopele, setPeopele] = useState([]);
     function refresh() {
         try {
-            const newArray = [];
             makeRequest("authentication/list_friends/").then((response) => {
                 if (response.status === 200) {
                     response.json().then((data) => {
-                        data.friends.forEach((element) => {
-                            newArray.push(element);
-                        });
-                        setPeopele(newArray);
+                        console.log("Friends", data);
+                        setPeopele(data.friends);
                     });
                 } else {
                     response.json().then((data) => {
