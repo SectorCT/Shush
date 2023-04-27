@@ -7,6 +7,9 @@ const numberOfEmojis = 4;
 function isStringOnlyEmojis(str) {
     const regex = emojiRegex();
     const matches = str.match(regex);
+    if (matches === null) {
+        return false;
+    }
     if (matches.length > numberOfEmojis) {
         return false;
     }

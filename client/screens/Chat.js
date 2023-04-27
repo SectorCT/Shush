@@ -93,7 +93,7 @@ export default function Chat({ navigation }) {
         }]);
         setTypedMessage("");
         ws.current.send(JSON.stringify({
-            message: typedMessage,
+            message: typedMessage.trim(),
             friendship_token: friendshipId,
         }));
     }
