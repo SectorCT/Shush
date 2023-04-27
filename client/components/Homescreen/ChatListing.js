@@ -69,7 +69,12 @@ export default function ChatListing({ navigation }) {
                 <View style={styles.prChat__personIcon}>
                     <Text style={styles.prChat__letter}>{item.nickname[0].toUpperCase()}</Text>
                 </View>
-                <Text style={styles.prChat__name}>{item.nickname}</Text>
+                <View>
+                    <Text style={styles.prChat__name}>{item.nickname}</Text>
+                    {item.latest_message &&
+                        <Text style={styles.lastMessage}>{item.is_latest_message_from_me ? "You:" : item.nickname} {item.latest_message}</Text>
+                    }
+                </View>
             </View>
             <Icon name='trash' size={25} color="#fff" style={styles.delete_friend} onPress={() => { handleDeleteFriend(item.friendship_token) }}></Icon>
         </TouchableOpacity>
