@@ -58,7 +58,7 @@ export default function Message({ text, isOwn, isPreviousOwn, isNextOwn, isDisap
                 messageStyle = { ...messageStyle, backgroundColor: colors.accent };
             }
             if(isDisappearing){
-                messageStyle = { ...messageStyle, backgroundColor: "red" };
+                messageStyle = { ...messageStyle, backgroundColor: "#ff686b" };
             }
             break;
         case "emoji":
