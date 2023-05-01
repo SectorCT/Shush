@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, FlatList, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, FlatList, Button, TouchableOpacity } from 'react-native';
 import { colors, fonts } from '../styles';
 import { TextInput } from 'react-native-gesture-handler';
 
@@ -17,6 +17,8 @@ import { makeRequest } from '../requests';
 import TextMessage from '../components/Chat/ChatMessage';
 import AllMessages from '../components/Chat/AllMessages';
 
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 export default function Chat({ navigation }) {
     const [messages, setMessages] = useState([]);
@@ -32,6 +34,9 @@ export default function Chat({ navigation }) {
     const [isEdditingNickname, setIsEdditingNickname] = useState(false);
 
     let Cookie = "";
+
+    const [mode, setMode] = useState("Normal");
+    const [dissapearTime, setDissapearTime] = useState(5);
 
     useEffect(() => {
         try {
@@ -66,13 +71,18 @@ export default function Chat({ navigation }) {
         console.log('WebSocket connection opened');
     };
 
+    function addMessage(text, isOwn) {
+        setMessages([...messages, {
+            text: text,
+            isOwn: isOwn,
+            timeToLive: mode === "Disappearing" ? 10 : -1, // -1 means the message never disappears
+        }]);
+    }
+
     const handleMessage = (event) => {
         let data = JSON.parse(event.data);
         // if (data.type === "message") {
-        setMessages([...messages, {
-            text: data.message,
-            isOwn: false,
-        }]);
+        addMessage(data.message, false);
         // }
     };
 
@@ -90,6 +100,7 @@ export default function Chat({ navigation }) {
         setMessages([...messages, {
             text: typedMessage,
             isOwn: true,
+            timeToLive: mode === "Disappearing" ? dissapearTime : -1,
         }]);
         setTypedMessage("");
         ws.current.send(JSON.stringify({
@@ -115,6 +126,33 @@ export default function Chat({ navigation }) {
         setIsEdditingNickname(false);
         setFriendName(navigation.getParam('friendName'));
     }
+
+    function switchMode () {
+        setMode(mode === "Normal" ? "Disappearing" : "Normal");
+    };
+
+    function updateMessagesTimeToLive() {
+        setMessages(prevMessages => {
+            const newMessages = prevMessages.map(msg => {
+                if (msg.timeToLive === -1) {
+                    return msg; // never expires
+                } else {
+                    const newTTL = msg.timeToLive - 1;
+                    if (newTTL < 0) {
+                        return null; // message has expired, remove it
+                    } else {
+                        return {...msg, timeToLive: newTTL};
+                    }
+                }
+            });
+            return newMessages.filter(msg => msg !== null); // remove expired messages
+        });
+    }
+    
+    useEffect(() => {
+        const intervalId = setInterval(updateMessagesTimeToLive, 1000); // update timeToLive every second
+        return () => clearInterval(intervalId);
+    }, [messages]);
 
     return (
         <>
@@ -150,6 +188,9 @@ export default function Chat({ navigation }) {
             <AllMessages messages={messages} />
 
             <View style={styles.sendMsg}>
+                <TouchableOpacity onPress={switchMode}>
+                    <Icon name={mode === "Normal" ? "eye" : "eye-slash"} size={24} color="white" />
+                </TouchableOpacity>
                 <TextInput
                     style={styles.sendMsg_input}
                     value={typedMessage}
