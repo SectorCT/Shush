@@ -19,7 +19,7 @@ function isStringOnlyEmojis(str) {
     return str.length === 0;
 }
 
-export default function Message({ text, isOwn, isPreviousOwn, isNextOwn }) {
+export default function Message({ text, isOwn, isPreviousOwn, isNextOwn, isDisappearing}) {
     //emoji regex
     let isOwnStyles = isOwn ? styles.messages_message_own : styles.messages_message_other;
     let concecativeOwnStyle = {};
@@ -52,10 +52,13 @@ export default function Message({ text, isOwn, isPreviousOwn, isNextOwn }) {
 
     switch (messageType) {
         case "text":
-            messageStyle = { ...messageStyle, ...styles.messages_text_message };
+            messageStyle = { ...messageStyle, ...styles.messages_text_message};
             messageTextStyle = { ...messageTextStyle, ...styles.messages_text_message_text, color: messageColor };
             if (isOwn) {
                 messageStyle = { ...messageStyle, backgroundColor: colors.accent };
+            }
+            if(isDisappearing){
+                messageStyle = { ...messageStyle, backgroundColor: "red" };
             }
             break;
         case "emoji":

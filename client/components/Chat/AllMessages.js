@@ -17,6 +17,7 @@ export default function AllMessages({ messages = [] }) {
                         isOwn={item.isOwn}
                         isPreviousOwn={index > 0 ? messages[index - 1].isOwn : null}
                         isNextOwn={index < messages.length - 1 ? messages[index + 1].isOwn : null}
+                        isDisappearing={item.timeToLive > -1}
                     />}
                     keyExtractor={(item, index) => index.toString()}
                     ref={flatListRef}
