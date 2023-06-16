@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { colors } from '../styles.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { colors } from "../styles.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { AuthContext } from '../AuthContext.js';
+import { AuthContext } from "../AuthContext.js";
 
 export default function SignScreen({ navigation }) {
-	const [password, setPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
 
-	const [error, setError] = useState('');
+	const [error, setError] = useState("");
 
 	const { signup } = React.useContext(AuthContext);
 
 
 	function validatePassword() {
 		if (password.length < 8) {
-			setError('Password must be at least 8 characters long');
+			setError("Password must be at least 8 characters long");
 			return false;
 		}
 		if (password !== confirmPassword) {
-			setError('Passwords do not match');
+			setError("Passwords do not match");
 			return false;
 		}
-		setError('');
+		setError("");
 		return true;
 	}
 
@@ -32,7 +32,7 @@ export default function SignScreen({ navigation }) {
 		if (!validatePassword()) {
 			return;
 		}
-		signup(password, confirmPassword)
+		signup(password, confirmPassword);
 	}
 	return (
 		<>
@@ -62,7 +62,7 @@ export default function SignScreen({ navigation }) {
 							secureTextEntry={true}
 							placeholderTextColor="#525252"
 						/>
-						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate('SignIn'); }}>
+						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignIn"); }}>
 							<Text
 								style={styles.logInButton_text}
 							>
@@ -70,7 +70,7 @@ export default function SignScreen({ navigation }) {
 							</Text>
 						</TouchableOpacity>
 					</View>
-					{error !== '' &&
+					{error !== "" &&
 						<View style={styles.errorContainer}>
 							<Text style={styles.errorContainer_text}>{error}</Text>
 						</View>
@@ -89,29 +89,29 @@ const styles = StyleSheet.create({
 	islandHider: {
 		backgroundColor: colors.primary,
 		height: 20,
-		width: '100%',
+		width: "100%",
 	},
 	main: {
 		flex: 1,
-		height: '100%',
-		justifyContent: 'space-between',
+		height: "100%",
+		justifyContent: "space-between",
 		backgroundColor: colors.backgroundColor,
 		marginBottom: 40
 	},
 	container: {
 		flex: 1,
 		backgroundColor: colors.primary,
-		width: '100%',
-		height: '100%',
-		justifyContent: 'space-between',
+		width: "100%",
+		height: "100%",
+		justifyContent: "space-between",
 	},
 	header: {
 		backgroundColor: colors.primary,
 		height: 60,
-		width: '100%',
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
+		width: "100%",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
 		paddingHorizontal: 30,
 	},
 	header_title: {
@@ -120,13 +120,13 @@ const styles = StyleSheet.create({
 	},
 	input__field: {
 		padding: 10,
-		width: '100%',
-		height: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
+		width: "100%",
+		height: "100%",
+		alignItems: "center",
+		justifyContent: "center",
 		height: 70,
 		fontSize: 30,
-		color: '#fff',
+		color: "#fff",
 		borderBottomColor: colors.secondary,
 		borderBottomWidth: 2,
 		marginTop: 20,
@@ -134,16 +134,16 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		margin: 40,
 		marginTop: 70,
-		height: '24%',
-		justifyContent: 'space-between',
+		height: "24%",
+		justifyContent: "space-between",
 		flex: 0.5
 	},
 	logInButton: {
 		marginTop: 30,
 	},
 	logInButton_text: {
-		color: '#fff',
-		textDecorationLine: 'underline',
+		color: "#fff",
+		textDecorationLine: "underline",
 		fontSize: 20,
 		padding: 10
 	},
@@ -152,26 +152,26 @@ const styles = StyleSheet.create({
 		color: colors.primary,
 		borderRadius: 15,
 		marginBottom: 20,
-		width: '80%',
+		width: "80%",
 		margin: 40,
 		height: 70,
-		alignItems: 'center',
-		justifyContent: 'center',
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	createAccountButton_text: {
 		fontSize: 30
 	},
 	errorContainer: {
 		backgroundColor: colors.secondary,
-		width: '80%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		alignSelf: 'center',
+		width: "80%",
+		alignItems: "center",
+		justifyContent: "center",
+		alignSelf: "center",
 		borderRadius: 15,
 		padding: 20
 	},
 	errorContainer_text: {
-		color: '#fff',
+		color: "#fff",
 		fontSize: 20,
 	}
 });
