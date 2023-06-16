@@ -17,6 +17,7 @@
     "expo": "^48.0.11",
     "expo-barcode-scanner": "~12.3.2",
     "expo-google-fonts": "^0.0.0",
+    "expo-module-scripts": "^3.0.9",
     "expo-status-bar": "~1.4.4",
     "lodash": "^4.17.21",
     "react": "18.2.0",
@@ -33,10 +34,14 @@
     "react-native-websocket": "^1.0.2",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
-    "ts-migrate": "^0.1.35"
+    "ts-migrate": "^0.1.35",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4"
+    "@babel/core": "^7.21.4",
+    "@types/react": "~18.0.14",
+    "@types/react-native": "^0.72.2",
+    "typescript": "^4.9.4"
   },
   "private": true
 }

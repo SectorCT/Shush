@@ -1,51 +1,51 @@
 {
-  "expo": {
-    "plugins": [
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
-        }
-      ]
-    ],
-    "name": "Shush",
-    "slug": "shush",
-    "version": "0.1.0",
-    "orientation": "portrait",
-    "icon": "./assets/Shush_Logo.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#010101"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#010101"
-      },
-      "permissions": [
-        "android.permission.CAMERA"
-      ],
-      "package": "com.svetoslav47.shush"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "c2d3e269-3b8a-4414-9661-051ab0825066"
-      }
-    }
-  }
+	"expo": {
+		"plugins": [
+			[
+				"expo-barcode-scanner",
+				{
+					"cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+				}
+			]
+		],
+		"name": "Shush",
+		"slug": "shush",
+		"version": "0.1.0",
+		"orientation": "portrait",
+		"icon": "./assets/Shush_Logo.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#010101"
+		},
+		"assetBundlePatterns": [
+			"**/*"
+		],
+		"ios": {
+			"supportsTablet": true,
+			"infoPlist": {
+				"NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
+				"NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#010101"
+			},
+			"permissions": [
+				"android.permission.CAMERA"
+			],
+			"package": "com.svetoslav47.shush"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"extra": {
+			"eas": {
+				"projectId": "c2d3e269-3b8a-4414-9661-051ab0825066"
+			}
+		}
+	}
 }
