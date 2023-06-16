@@ -1,9 +1,9 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import TopBar from '../components/Topbar.js';
-import ChatListing from '../components/Homescreen/ChatListing.js';
-import { colors } from '../styles.js';
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useContext, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import TopBar from "../components/Topbar.js";
+import ChatListing from "../components/Homescreen/ChatListing.js";
+import { colors } from "../styles.js";
+import { StatusBar } from "expo-status-bar";
 
 
 export default function HomeScreen({ navigation }) {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	islandHider: {
 		backgroundColor: colors.primary,
 		height: 35,
-		width: '100%',
+		width: "100%",
 	},
 	container: {
 		flex: 1,
@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.secondary,
 		borderRadius: 20,
 		height: 80,
-		flexDirection: 'row',
-		alignItems: 'center',
-		shadowColor: '#000',
+		flexDirection: "row",
+		alignItems: "center",
+		shadowColor: "#000",
 		shadowOffset: {
 			width: 0,
 			height: 2,
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
 	prChat__personIcon: {
 		backgroundColor: colors.accent,
 		borderRadius: 90,
-		height: '75%',
-		aspectRatio: '1/1',
+		height: "75%",
+		aspectRatio: "1/1",
 		margin: 8,
-		alignItems: 'center',
-		justifyContent: 'center',
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	prChat__name: {
 		marginLeft: 12,
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
 	},
 	prChat__letter: {
 		color: colors.primary,
-		alignItems: 'center',
-		justifyContent: 'center',
+		alignItems: "center",
+		justifyContent: "center",
 		fontSize: 30,
 	},
 	separator: {
 		height: 0,
-		backgroundColor: '#ddd',
+		backgroundColor: "#ddd",
 		marginVertical: 5,
 	},
 	prChat__flatList: {
