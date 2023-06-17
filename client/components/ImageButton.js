@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, TouchableOpacity } from "react-native";
-import { colors } from "../styles.js";
+import { colors } from "../styles";
 
 export default ImageButton = ({ imageSource, style, onPress }) => {
 	//const navigation = useNavigation();

@@ -24,11 +24,11 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 		success?: {
 			status: number;
 			access_token: string;
-			refresh_token: string;
+			refresh_token: string
 		};
 		error?: {
 			status: number;
-			message: string;
+			message: string
 		};
 	}
 

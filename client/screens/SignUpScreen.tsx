@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, StatusBar, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { colors } from "../styles.js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { colors } from "../styles";
 
-import { AuthContext } from "../AuthContext.js";
+import { AuthContext } from "../AuthContext";
 
-export default function SignScreen({ navigation }) {
+
+export default function SignScreen({ navigation } : { navigation: any }) {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -36,7 +36,7 @@ export default function SignScreen({ navigation }) {
 	}
 	return (
 		<>
-			<StatusBar style="auto" />
+			<StatusBar />
 			<View style={styles.islandHider} />
 			<View style={styles.container}>
 				<View style={styles.header} >
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
 		height: "100%",
 		alignItems: "center",
 		justifyContent: "center",
-		height: 70,
 		fontSize: 30,
 		color: "#fff",
 		borderBottomColor: colors.secondary,

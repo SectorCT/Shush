@@ -4,12 +4,14 @@ import { AuthContext } from "./AuthContext";
 
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SERVER_IP, SERVER_PORT } from "@env";
+// import { SERVER_IP, SERVER_PORT } from "@env";
+const SERVER_IP = "";
+const SERVER_PORT = "8000";
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
-const {checkIfLoggedIn} = useContext(AuthContext);
 
 async function refreshToken() {
+	const {checkIfLoggedIn} = useContext(AuthContext);
 	const refresh_token = await AsyncStorage.getItem("refreshToken");
 	const refreshResponse = await fetch(`${API_URL}/authentication/api/refresh_token/`, {
 		method: "POST",
@@ -24,14 +26,14 @@ async function refreshToken() {
 		AsyncStorage.removeItem("accessToken");
 		AsyncStorage.removeItem("refreshToken");
 		checkIfLoggedIn();
-		throw new Error("Refresh token failed");
+		return null;
 	}
 	const data = await refreshResponse.json();
 	return data.access_token;
 }
 
-export async function makeRequest(endpoint, method = "GET", body = {}) {
-	let accessToken = "";
+export async function makeRequest(endpoint:string, method = "GET", body = {}) {
+	let accessToken = "" as string | null;
 	if (!accessToken) {
 		accessToken = await AsyncStorage.getItem("accessToken");
 	}
@@ -51,6 +53,9 @@ export async function makeRequest(endpoint, method = "GET", body = {}) {
 	});
 	if (response.status === 401) {
 		accessToken = await refreshToken();
+		if (!accessToken) {
+			return null;
+		}
 		await AsyncStorage.setItem("accessToken", accessToken);
 		const refreshedResponse = await fetch(`${API_URL}/${endpoint}`, method == "GET" ? {
 			method,

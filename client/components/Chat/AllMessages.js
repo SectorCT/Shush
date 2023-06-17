@@ -1,5 +1,6 @@
 import { FlatList, View, Text, StyleSheet } from "react-native";
-import { useRef } from "react";
+import React, { useRef } from "react";
+import { colors } from "../../styles";
 
 import TextMessage from "./ChatMessage";
 

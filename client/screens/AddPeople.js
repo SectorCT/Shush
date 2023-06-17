@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from "react-native";
-import { colors } from "../styles.js";
+import { colors } from "../styles";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { SERVER_IP } from "@env";
 
-import { makeRequest } from "../requests.js";
+import { makeRequest } from "../requests";
 
 export default function AddPeople({ navigation }) {
 	const [inviteToken, setInviteToken] = useState("");
@@ -64,7 +64,7 @@ export default function AddPeople({ navigation }) {
 				<View style={styles.main}>
 					<View style={styles.invite_container}>
 						<Text style={styles.invite_text}>
-                            Insert{" "}
+							Insert{" "}
 							<Text style={styles.invite_text_blue}>invite code</Text>
 						</Text>
 						<View style={styles.input}>
@@ -82,9 +82,9 @@ export default function AddPeople({ navigation }) {
 						</View>
 					</View>
 					{error !== "" &&
-                        <View style={styles.errorContainer}>
-                        	<Text style={styles.errorContainer_text}>{error}</Text>
-                        </View>
+						<View style={styles.errorContainer}>
+							<Text style={styles.errorContainer_text}>{error}</Text>
+						</View>
 					}
 					<TouchableOpacity style={styles.button} onPress={handleSubmit}>
 						<Text style={styles.button_text}>Add Friend</Text>

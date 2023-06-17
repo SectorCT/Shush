@@ -3,8 +3,8 @@ import { createAppContainer } from "react-navigation";
 
 import HomeScreen from "./HomeScreen";
 import Chat from "./Chat";
-import SignUp from "./SignUpScreen.js";
-import SignIn from "./SignInScreen.js";
+import SignUp from "./SignUpScreen.tsx";
+import SignIn from "./SignInScreen.tsx";
 import AddPeople from "./AddPeople.js";
 import AddPeopleOrSeeCode from "./AddPeopleOrSeeCode";
 import InvitePeople from "./InvitePeople";
@@ -75,8 +75,6 @@ const authStackScreens = {
 const HomeStack = createStackNavigator(homeStackScreens);
 const AuthStack = createStackNavigator(authStackScreens);
 
-module.exports = {
-	HomeStackNavigator: createAppContainer(HomeStack),
-	AuthStackNavigator: createAppContainer(AuthStack),
-};
+export const HomeStackNavigator = createAppContainer(HomeStack);
+export const AuthStackNavigator = createAppContainer(AuthStack);
 

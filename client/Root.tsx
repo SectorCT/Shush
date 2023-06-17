@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from "react";
 
-import { HomeStackNavigator, AuthStackNavigator } from "./screens/routes.js";
+import { HomeStackNavigator, AuthStackNavigator } from "./screens/Routes";
 
-import { AuthContext } from "./AuthContext.js";
+import { AuthContext } from "./AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
 
 export default function Root() {

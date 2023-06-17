@@ -1,6 +1,6 @@
-import { AuthContextProvider } from "./AuthContext.js";
+import { AuthContextProvider } from "./AuthContext";
 
-import Root from "./Root.js";
+import Root from "./Root";
 
 import React from "react";
 
