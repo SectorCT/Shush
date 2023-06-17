@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from "react-native";
-import { colors } from "../styles.js";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { colors } from "../styles";
 import QRCode from "react-native-qrcode-svg";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../AuthContext.js";
+import { AuthContext } from "../AuthContext";
 
 const codeLink = "3ER89H5Y";
 
@@ -35,8 +34,6 @@ export default function inviteDevice({ navigation }) {
 	function handleLogout() {
 		logout();
 	}
-
-	const [inviteCode, setInviteCode] = useState("");
 
 	return (
 		<>

@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TextInput, Button } from "react-native";
+import { StyleSheet, Text, View, StatusBar, TextInput} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import ImageButton from "../components/ImageButton.js";
-import { colors } from "../styles.js";
+import { colors } from "../styles";
 
-import { AuthContext } from "../AuthContext.js";
+import { AuthContext } from "../AuthContext";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function SignInScreen({ navigation }) {
+export default function SignInScreen({ navigation } : { navigation: any }) {
 	const [code, setCode] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -18,6 +17,9 @@ export default function SignInScreen({ navigation }) {
 
 	useEffect(() => {
 		AsyncStorage.getItem("userToken").then((value) => {
+			if (value === null) {
+				return;
+			}
 			setCode(value);
 		});
 	}, []);
@@ -43,7 +45,7 @@ export default function SignInScreen({ navigation }) {
 	}
 	return (
 		<>
-			<StatusBar style="auto" />
+			<StatusBar />
 			<View style={styles.islandHider} />
 			<View style={styles.container}>
 				<View style={styles.header} >
@@ -68,13 +70,13 @@ export default function SignInScreen({ navigation }) {
 							placeholderTextColor="#525252"
 						/>
 						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignUp"); }}>
-							<Text style={styles.logInButton_text}>Don't have an account?</Text>
+							<Text style={styles.logInButton_text}>Don&apos;t have an account?</Text>
 						</TouchableOpacity>
 					</View>
 					{error !== "" &&
-                        <View style={styles.errorContainer}>
-                        	<Text style={styles.errorContainer_text}>{error}</Text>
-                        </View>
+						<View style={styles.errorContainer}>
+							<Text style={styles.errorContainer_text}>{error}</Text>
+						</View>
 					}
 					<TouchableOpacity style={styles.createAccountButton} onPress={handleSubmit}>
 						<Text style={styles.createAccountButton_text}>Link Account</Text>
@@ -125,7 +127,6 @@ const styles = StyleSheet.create({
 		height: "100%",
 		alignItems: "center",
 		justifyContent: "center",
-		height: 70,
 		fontSize: 30,
 		color: "#fff",
 		borderBottomColor: colors.secondary,

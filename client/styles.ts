@@ -4,8 +4,8 @@
 //     'Oswald-Regular': Oswald_400Regular,
 // });
 
-let colors = {
-	background: "#000510",
+export const colors = {
+	backgroundColor: "#000510",
 	primary: "#000D1B",
 	secondary: "#112436",
 	accent: "#22B6F5",
@@ -14,12 +14,7 @@ let colors = {
 	textWhite: "#EFEFEF"
 };
 
-let fonts = {
+export const fonts = {
 	//primary: 'Roboto',
 	secondary: "Roboto Mono, monospace",
-};
-
-export default {
-	colors,
-	fonts,
 };

@@ -1,4 +1,6 @@
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { colors } from "../../styles";
 
 import emojiRegex from "emoji-regex";
 
@@ -19,7 +21,7 @@ function isStringOnlyEmojis(str) {
 	return str.length === 0;
 }
 
-export default function Message({ text, isOwn, isPreviousOwn, isNextOwn, isDisappearing}) {
+export default function Message({ text, isOwn, isPreviousOwn, isNextOwn, isDisappearing} ) {
 	//emoji regex
 	let isOwnStyles = isOwn ? styles.messages_message_own : styles.messages_message_other;
 	let concecativeOwnStyle = {};

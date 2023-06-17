@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from "react-native";
-import { colors, fonts } from "../../styles";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
+import { colors } from "../../styles";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { makeRequest } from "../../requests.js";
+import { makeRequest } from "../../requests";
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -72,7 +72,7 @@ export default function ChatListing({ navigation }) {
 				<View>
 					<Text style={styles.prChat__name}>{item.nickname}</Text>
 					{item.latest_message &&
-                        <Text style={styles.lastMessage}>{item.is_latest_message_from_me ? "You:" : item.nickname} {item.latest_message}</Text>
+						<Text style={styles.lastMessage}>{item.is_latest_message_from_me ? "You:" : item.nickname} {item.latest_message}</Text>
 					}
 				</View>
 			</View>

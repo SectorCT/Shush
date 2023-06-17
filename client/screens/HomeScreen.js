@@ -1,8 +1,8 @@
-import React, { useEffect, useContext, useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import TopBar from "../components/Topbar.js";
 import ChatListing from "../components/Homescreen/ChatListing.js";
-import { colors } from "../styles.js";
+import { colors } from "../styles";
 import { StatusBar } from "expo-status-bar";
 
 
