@@ -15,15 +15,23 @@ function isStringOnlyEmojis(str) {
 	if (matches.length > numberOfEmojis) {
 		return false;
 	}
-	matches && matches.forEach((match) => {
+	matches.forEach((match) => {
 		str = str.replace(match, "");
 	});
 	return str.length === 0;
 }
 
-export default function Message({ text, isOwn, isPreviousOwn, isNextOwn, isDisappearing} ) {
+interface IMessageProps {
+	text: string;
+	isOwn: boolean;
+	isNextOwn: boolean;
+	isDisappearing: boolean;
+}
+
+
+export default function Message({ text, isOwn, isNextOwn, isDisappearing} : IMessageProps ) {
 	//emoji regex
-	let isOwnStyles = isOwn ? styles.messages_message_own : styles.messages_message_other;
+	const isOwnStyles = isOwn ? styles.messages_message_own : styles.messages_message_other;
 	let concecativeOwnStyle = {};
 	let messageStyle = {};
 	let messageTextStyle = {};
@@ -46,7 +54,7 @@ export default function Message({ text, isOwn, isPreviousOwn, isNextOwn, isDisap
 		concecativeOwnStyle = { ...concecativeOwnStyle, marginBottom: 12 };
 	}
 
-	let messageColor = isOwn ? "#000" : "#fff";
+	const messageColor = isOwn ? "#000" : "#fff";
 
 	if (isStringOnlyEmojis(text)) {
 		messageType = "emoji";

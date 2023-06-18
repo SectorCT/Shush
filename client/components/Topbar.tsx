@@ -1,10 +1,16 @@
-import React, { startTransition } from "react";
-import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import { colors, fonts } from "../styles";
+import React from "react";
 
-import ImageButton from "./ImageButton.js";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
 
-export default function TopBar({ navigation }) {
+import {  StyleSheet, Text, View} from "react-native";
+import { colors } from "../styles";
+
+import ImageButton from "./ImageButton";
+
+export default function TopBar() {
+	const navigation = useNavigation<NavigationStackProp>();
+
 	return (
 		<View style={styles.topbar__container}>
 			<ImageButton imageSource={require("../assets/addPeople.png")} style={styles.topbar__imageItem}
@@ -25,7 +31,7 @@ export default function TopBar({ navigation }) {
 
 const styles = StyleSheet.create({
 	topbar__container: {
-		// backgroundColor: colors.primary,
+		backgroundColor: colors.primary,
 		height: 100,
 		width: "100%",
 		flexDirection: "row",

@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
-export default function QRCodeScannerButton({ navigation }) {
-	const [hasPermission, setHasPermission] = useState(null);
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
+export default function QRCodeScannerButton() {
+	const navigation = useNavigation<NavigationStackProp>();
+	const [hasPermission, setHasPermission] = useState(false);
 	const [scanned, setScanned] = useState(false);
 
 	useEffect(() => {
@@ -15,7 +19,7 @@ export default function QRCodeScannerButton({ navigation }) {
 		getBarCodeScannerPermissions();
 	}, []);
 
-	const handleBarCodeScanned = ({ type, data }) => {
+	const handleBarCodeScanned = ({ data } : {data: string}) => {
 		setScanned(true);
 		navigation.navigate("AddPeople", { token: data });
 	};

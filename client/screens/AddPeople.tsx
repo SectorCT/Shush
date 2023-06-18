@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { SERVER_IP } from "@env";
 
 import { makeRequest } from "../requests";
 
-export default function AddPeople({ navigation }) {
+export default function AddPeople() {
+	const navigation = useNavigation<NavigationStackProp>();
+
 	const [inviteToken, setInviteToken] = useState("");
 	const [error, setError] = useState("");
 
@@ -32,6 +33,11 @@ export default function AddPeople({ navigation }) {
 			return;
 		}
 		makeRequest("authentication/make_friends/", "POST", { friend_token: inviteToken }).then((response) => {
+			if (response === null) {
+				console.log("error");
+				return;
+			}
+
 			if (response.status === 200) {
 				response.json().then((data) => {
 					if (data.status === "success") {
@@ -111,7 +117,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		backgroundColor: colors.background,
+		backgroundColor: colors.backgroundColor,
 		width: "100%",
 	},
 	header: {
@@ -130,7 +136,7 @@ const styles = StyleSheet.create({
 	},
 	invite_text: {
 		color: "#fff",
-		fontWeight: 400,
+		fontWeight: "400",
 		fontSize: 35,
 		lineHeight: 37,
 		flex: 0.25,
@@ -159,7 +165,6 @@ const styles = StyleSheet.create({
 	input__field: {
 		padding: 10,
 		width: "80%",
-		height: "100%",
 		alignItems: "center",
 		justifyContent: "center",
 		height: 70,

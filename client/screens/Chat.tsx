@@ -1,42 +1,41 @@
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, FlatList, Button, TouchableOpacity } from "react-native";
-import { colors, fonts } from "../styles";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { colors} from "../styles";
 import { TextInput } from "react-native-gesture-handler";
+
 
 import { useState, useRef, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ImageButton from "../components/ImageButton";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import WebSocket from "react-native-websocket";
 
 import { SERVER_IP } from "@env";
 import { makeRequest } from "../requests";
 
-import TextMessage from "../components/Chat/ChatMessage";
 import AllMessages from "../components/Chat/AllMessages";
+export default function Chat() {
+	const navigation = useNavigation<NavigationStackProp>();
 
-import { MaterialIcons } from "@expo/vector-icons";
-
-
-export default function Chat({ navigation }) {
 	const [messages, setMessages] = useState([]);
 
 	const [friendName, setFriendName] = useState(navigation.getParam("friendName"));
-	const [friendshipId, setFriendshipId] = useState(navigation.getParam("friendshipId"));
+	const friendshipId = navigation.getParam("friendshipId");
 	const [typedMessage, setTypedMessage] = useState("");
-
-	const flatListRef = useRef();
 
 	const ws = useRef(null);
 
 	const [isEdditingNickname, setIsEdditingNickname] = useState(false);
 
-	let Cookie = "";
+	const Cookie = "";
 
 	const [mode, setMode] = useState("Normal");
-	const [dissapearTime, setDissapearTime] = useState(5);
+	const dissapearTime = 5;
 
 	useEffect(() => {
 		try {
@@ -48,8 +47,8 @@ export default function Chat({ navigation }) {
 							console.log(data);
 							const newMessages = [];
 							for (let i = 0; i < data.messages.length; i++) {
-								let isOwn = data.messages[i].isOwn;
-								let text = data.messages[i].content;
+								const isOwn = data.messages[i].isOwn;
+								const text = data.messages[i].content;
 								newMessages.push({
 									text: text,
 									isOwn: isOwn,
@@ -80,7 +79,7 @@ export default function Chat({ navigation }) {
 	}
 
 	const handleMessage = (event) => {
-		let data = JSON.parse(event.data);
+		const data = JSON.parse(event.data);
 		// if (data.type === "message") {
 		addMessage(data.message, false);
 		// }
@@ -132,8 +131,8 @@ export default function Chat({ navigation }) {
 	}
 
 	function updateMessagesTimeToLive() {
-		setMessages(prevMessages => {
-			const newMessages = prevMessages.map(msg => {
+		setMessages((prevMessages) => {
+			const newMessages = prevMessages.map((msg) => {
 				if (msg.timeToLive === -1) {
 					return msg; // never expires
 				} else {
@@ -145,7 +144,7 @@ export default function Chat({ navigation }) {
 					}
 				}
 			});
-			return newMessages.filter(msg => msg !== null); // remove expired messages
+			return newMessages.filter((msg) => msg !== null); // remove expired messages
 		});
 	}
     

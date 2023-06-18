@@ -2,7 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 
-export default function AddPeopleOrSeeCode({ navigation }) {
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
+export default function AddPeopleOrSeeCode() {
+	const navigation = useNavigation<NavigationStackProp>();
+
 	return (
 		<>
 			<View style={styles.container}>
@@ -14,7 +19,6 @@ export default function AddPeopleOrSeeCode({ navigation }) {
 				</View>
 				<View style={styles.buttonContainer}>
 					<TouchableOpacity
-						title='Invite'
 						style={styles.inviteButton}
 						onPress={() => {
 							navigation.navigate("InvitePeople");
@@ -23,7 +27,6 @@ export default function AddPeopleOrSeeCode({ navigation }) {
 						<Text style={styles.inviteButton_Text}>Invite</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
-						title='Add'
 						style={styles.addButton}
 						onPress={() => {
 							navigation.navigate("AddPeople");

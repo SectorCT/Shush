@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, TextInput, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 import QRCode from "react-native-qrcode-svg";
 
 import { makeRequest } from "../requests";
 
-export default function InvitePeople({ navigation }) {
+export default function InvitePeople() {
+	const navigation = useNavigation<NavigationStackProp>();
+
 	useEffect(() => {
 		try {
 			makeRequest("authentication/get_friend_token/", "GET").then((response) => {
+				if (response === null) {
+					console.log("error getting friend invite code: response.status is null");
+					return;
+				}
+				
 				if (response.status === 200) {
 					response.json().then((data) => {
 						setInviteCode(data.friendInviteCode);
@@ -19,7 +29,7 @@ export default function InvitePeople({ navigation }) {
 				}
 			});
 		} catch (error) {
-			console.log("error getting friend invite code:" + error + " " + error.status);
+			console.log("error getting friend invite code:" + error);
 		}
 	});
 
@@ -67,7 +77,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		backgroundColor: colors.background,
+		backgroundColor: colors.backgroundColor,
 		width: "100%"
 	},
 	invitePeople__header: {

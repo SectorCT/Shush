@@ -4,7 +4,17 @@ import { colors } from "../../styles";
 
 import TextMessage from "./ChatMessage";
 
-export default function AllMessages({ messages = [] }) {
+interface IAllMessagesProps {
+	messages: IMessage[];
+}
+
+interface IMessage {
+	text: string;
+	isOwn: boolean;
+	timeToLive: number;
+}
+
+export default function AllMessages({ messages = [] } : IAllMessagesProps) {
 	const flatListRef = useRef();
 
 	return (

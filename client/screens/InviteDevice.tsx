@@ -1,4 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
@@ -8,9 +11,10 @@ import { AuthContext } from "../AuthContext";
 
 const codeLink = "3ER89H5Y";
 
-export default function inviteDevice({ navigation }) {
+export default function inviteDevice() {
+	const navigation = useNavigation<NavigationStackProp>();
 
-	const { checkIfLoggedIn, logout } = useContext(AuthContext);
+	const { logout } = useContext(AuthContext);
 	// useEffect(() => {
 	//     console.log("fetch");
 	//     fetch('http://192.168.43.51:8000/authentication/gettoken', {
@@ -80,7 +84,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		backgroundColor: colors.background,
+		backgroundColor: colors.backgroundColor,
 		width: "100%"
 	},
 	inviteDevice__header: {

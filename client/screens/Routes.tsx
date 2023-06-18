@@ -3,14 +3,13 @@ import { createAppContainer } from "react-navigation";
 
 import HomeScreen from "./HomeScreen";
 import Chat from "./Chat";
-import SignUp from "./SignUpScreen.tsx";
-import SignIn from "./SignInScreen.tsx";
-import AddPeople from "./AddPeople.js";
+import SignUpScreen from "./SignUpScreen";
+import SignInScreen from "./SignInScreen";
+import AddPeople from "./AddPeople";
 import AddPeopleOrSeeCode from "./AddPeopleOrSeeCode";
 import InvitePeople from "./InvitePeople";
 import InviteDevice from "./InviteDevice";
 import QRScanner from "./QRScanner";
-
 
 const homeStackScreens = {
 	HomeScreen: {
@@ -59,13 +58,13 @@ const homeStackScreens = {
 
 const authStackScreens = {
 	SignIn: {
-		screen: SignIn,
+		screen: SignInScreen,
 		navigationOptions: {
 			headerShown: false,
 		},
 	},
 	SignUp: {
-		screen: SignUp,
+		screen: SignUpScreen,
 		navigationOptions: {
 			headerShown: false,
 		},
@@ -77,4 +76,3 @@ const AuthStack = createStackNavigator(authStackScreens);
 
 export const HomeStackNavigator = createAppContainer(HomeStack);
 export const AuthStackNavigator = createAppContainer(AuthStack);
-
