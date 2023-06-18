@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StyleSheet, Text, View, StatusBar, TextInput} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors } from "../styles";
@@ -7,7 +10,8 @@ import { AuthContext } from "../AuthContext";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function SignInScreen({ navigation } : { navigation: any }) {
+export default function SignInScreen() {
+	const navigation = useNavigation<NavigationStackProp>();
 	const [code, setCode] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -124,7 +128,7 @@ const styles = StyleSheet.create({
 	input__field: {
 		padding: 10,
 		width: "100%",
-		height: "100%",
+		height: 70,
 		alignItems: "center",
 		justifyContent: "center",
 		fontSize: 30,

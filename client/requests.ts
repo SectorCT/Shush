@@ -4,27 +4,25 @@ import { AuthContext } from "./AuthContext";
 
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { SERVER_IP, SERVER_PORT } from "@env";
-const SERVER_IP = "";
-const SERVER_PORT = "8000";
+import { SERVER_IP, SERVER_PORT } from "@env";
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
 
 async function refreshToken() {
 	const {checkIfLoggedIn} = useContext(AuthContext);
-	const refresh_token = await AsyncStorage.getItem("refreshToken");
+	const refreshToken = await AsyncStorage.getItem("refreshToken");
 	const refreshResponse = await fetch(`${API_URL}/authentication/api/refresh_token/`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({ refresh_token: refresh_token }),
+		body: JSON.stringify({ refresh_token: refreshToken }),
 	});
 	if (refreshResponse.status !== 200) {
 		const refreshResponseData = await refreshResponse.json();
 		console.log("Error refreshing token", refreshResponse.status, refreshResponseData.message, refreshResponse);
-		AsyncStorage.removeItem("accessToken");
-		AsyncStorage.removeItem("refreshToken");
+		await AsyncStorage.removeItem("accessToken");
+		await AsyncStorage.removeItem("refreshToken");
 		checkIfLoggedIn();
 		return null;
 	}

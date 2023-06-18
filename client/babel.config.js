@@ -1,3 +1,4 @@
+/* global module */
 module.exports = function (api) {
 	api.cache(false);
 	return {
@@ -10,9 +11,10 @@ module.exports = function (api) {
 					moduleName: "@env",
 					path: ".env",
 					resetCache: true,
-					watch: true
-				}
-			]
-		]
+					watch: true,
+				},
+			],
+		],
 	};
 };
+  

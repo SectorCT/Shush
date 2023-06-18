@@ -1,12 +1,16 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StyleSheet, View } from "react-native";
-import TopBar from "../components/Topbar.js";
-import ChatListing from "../components/Homescreen/ChatListing.js";
+import TopBar from "../components/Topbar";
+import ChatListing from "../components/Homescreen/ChatListing";
 import { colors } from "../styles";
 import { StatusBar } from "expo-status-bar";
 
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
+	const navigation = useNavigation<NavigationStackProp>();
 
 	return (
 		<View style={styles.container}>

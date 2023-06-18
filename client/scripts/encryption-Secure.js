@@ -8,26 +8,26 @@ class Encryption {
 	}
   
 	get_even_ascii(message) {
-		let even_char = [];
+		let evenchar = [];
 		for (let character of message) {
 			if (character.charCodeAt() % 2 === 0) {
-				even_char.push(character);
+				evenchar.push(character);
 				this.order.push(message.indexOf(character));
 				this.countThem += 1;
 			}
 		}
-		return even_char;
+		return evenchar;
 	}
   
 	get_odd_ascii(message) {
-		let odd_char = [];
+		let oddchar = [];
 		for (let character of message) {
 			if (character.charCodeAt() % 2 === 1) {
-				odd_char.push(character);
+				oddchar.push(character);
 				this.order.push(message.indexOf(character));
 			}
 		}
-		return odd_char;
+		return oddchar;
 	}
   
 	genDeKey() {
@@ -45,12 +45,12 @@ class Encryption {
 			}
 			dekey.push(String.fromCharCode(this.key.charCodeAt(counter) + symbols.charCodeAt(scounter)));
 		}
-		const even_list = this.get_even_ascii(this.key);
-		const odd_list = this.get_odd_ascii(this.key);
-		for (let character of even_list) {
+		const evenlist = this.get_even_ascii(this.key);
+		const oddlist = this.get_odd_ascii(this.key);
+		for (let character of evenlist) {
 			dekey.push(character);
 		}
-		for (let character of odd_list) {
+		for (let character of oddlist) {
 			dekey.push(character);
 		}
 		return dekey.join("");
@@ -88,7 +88,7 @@ class Encryption {
 	}
 }
 
-function genKey() {
+export function genKey() {
 	var key = "";
 	for (var i = 0; i < 128; i++) {
 		key += String.fromCharCode(Math.floor(Math.random() * 95));
@@ -114,3 +114,5 @@ function genKey() {
   deencrypted = test1.revert_encryption(test.DeKey, encrypted);
   console.log(deencrypted);
   */
+
+export default Encryption;

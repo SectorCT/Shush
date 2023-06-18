@@ -8,26 +8,26 @@ class Encryption {
 	}
   
 	get_even_ascii(message) {
-		const even_char = [];
+		const evenchar = [];
 		for (let character = 0; character < message.length; character++) {
 			if (message.charCodeAt(character) % 2 === 0) {
-				even_char.push(message[character]);
+				evenchar.push(message[character]);
 				this.order.push(character);
 				this.countThem += 1;
 			}
 		}
-		return even_char;
+		return evenchar;
 	}
   
 	get_odd_ascii(message) {
-		const odd_char = [];
+		const oddchar = [];
 		for (let character = 0; character < message.length; character++) {
 			if (message.charCodeAt(character) % 2 === 1) {
-				odd_char.push(message[character]);
+				oddchar.push(message[character]);
 				this.order.push(character);
 			}
 		}
-		return odd_char;
+		return oddchar;
 	}
   
 	genDeKey() {
@@ -35,9 +35,7 @@ class Encryption {
 		const symbols = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 		for (let counter = 0; counter < this.key.length; counter++) {
 			let scounter = counter + this.key.charCodeAt(counter);
-			if (scounter <= 95) {
-				scounter = scounter;
-			} else {
+			if (scounter > 95) {
 				scounter = counter;
 			}
 			if (counter > 95) {

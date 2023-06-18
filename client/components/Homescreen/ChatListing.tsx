@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { colors } from "../../styles";
 
@@ -9,7 +12,9 @@ import { makeRequest } from "../../requests";
 const Separator = () => <View style={styles.separator} />;
 
 
-export default function ChatListing({ navigation }) {
+export default function ChatListing() {
+	const navigation = useNavigation<NavigationStackProp>();
+
 	const [Peopele, setPeopele] = useState([]);
 	function refresh() {
 		try {

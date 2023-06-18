@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// import { SERVER_IP } from '@env';
+import { SERVER_IP } from "@env";
 
-const SERVER_IP = "shush-chat-application.herokuapp.com";
+// const SERVER_IP = "shush-chat-application.herokuapp.com";
 
 interface IAuthContextData {
 	loggedIn: boolean | undefined;
