@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "../../screens/Routes";
 
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { colors } from "../../styles";
@@ -17,11 +17,16 @@ type ChatListingProps = {
 	navigation: NavigationProp<StackNavigationProp<HomeStackParamList>>;
 };
 
+
 export default function ChatListing({ navigation }: ChatListingProps) {
 	const [Peopele, setPeopele] = useState([]);
 	function refresh() {
 		try {
 			makeRequest("authentication/list_friends/").then((response) => {
+				if (response === null) {
+					return;
+				}
+
 				if (response.status === 200) {
 					response.json().then((data) => {
 						console.log("Friends", data);
@@ -39,20 +44,26 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 	}
 
 	useEffect(() => {
-		const unsubscribe = navigation.addListener("didFocus", () => {
+		const unsubscribe = navigation.addListener("focus", () => {
 			refresh();
 		});
 		return () => {
-			unsubscribe.remove();
+			unsubscribe();
 		};
 	}, []);
 
-	const handleOpenChat = (friendName, friendshipId) => {
+	const handleOpenChat = (friendName: string, friendshipId: string) => {
 		navigation.navigate("Chat", { friendName, friendshipId });
 	};
 
-	const handleDeleteFriend = (friendshipId) => {
+
+
+	function handleDeleteFriend(friendshipId: string) {
 		makeRequest("authentication/remove_friend/", "POST", { friendship_token: friendshipId }).then((response) => {
+			if (response === null) {
+				return;
+			}
+
 			if (response.status === 200) {
 				response.json().then((data) => {
 					console.log("Friend deleted", data);
@@ -64,21 +75,28 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 				});
 			}
 		});
+	}
+
+	type ChatListItem = {
+		nickname: string;
+		friendship_token: string;
+		latest_message: string;
+		is_latest_message_from_me: boolean;
 	};
 
-	const renderItem = ({ item }) => (
+	const renderItem = ({ item }: { item: ChatListItem }) => (
 		<TouchableOpacity
-			style={styles.prChat__personChat}
+			style={styles.personChat}
 			onPress={
 				() => handleOpenChat(item.nickname, item.friendship_token)
 			}
 		>
 			<View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-				<View style={styles.prChat__personIcon}>
-					<Text style={styles.prChat__letter}>{item.nickname[0].toUpperCase()}</Text>
+				<View style={styles.personIcon}>
+					<Text style={styles.letter}>{item.nickname[0]?.toUpperCase()}</Text>
 				</View>
 				<View>
-					<Text style={styles.prChat__name}>{item.nickname}</Text>
+					<Text style={styles.name}>{item.nickname}</Text>
 					{item.latest_message &&
 						<Text style={styles.lastMessage}>{item.is_latest_message_from_me ? "You:" : item.nickname} {item.latest_message}</Text>
 					}
@@ -94,14 +112,14 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 			renderItem={renderItem}
 			keyExtractor={(item, index) => index.toString()}
 			ItemSeparatorComponent={Separator}
-			style={styles.prChat__flatList}
+			style={styles.flatList}
 			showsVerticalScrollIndicator={false}
 		/>
 	);
 }
 
 const styles = StyleSheet.create({
-	prChat__personChat: {
+	personChat: {
 		backgroundColor: colors.secondary,
 		borderRadius: 20,
 		height: 80,
@@ -117,7 +135,7 @@ const styles = StyleSheet.create({
 		shadowRadius: 3.84,
 		elevation: 5,
 	},
-	prChat__personIcon: {
+	personIcon: {
 		backgroundColor: colors.accent,
 		borderRadius: 90,
 		height: "75%",
@@ -126,14 +144,14 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	prChat__name: {
+	name: {
 		marginLeft: 12,
-		fontWeight: 900,
+		fontWeight: "900",
 		fontSize: 23,
 		lineHeight: 34,
 		color: colors.textWhite,
 	},
-	prChat__letter: {
+	letter: {
 		color: colors.primary,
 		alignItems: "center",
 		justifyContent: "center",
@@ -144,11 +162,18 @@ const styles = StyleSheet.create({
 		backgroundColor: "#ddd",
 		marginVertical: 5,
 	},
-	prChat__flatList: {
+	flatList: {
 		flex: 1,
 		margin: 5
 	},
 	delete_friend: {
 		marginRight: 20,
-	}
+	},
+	lastMessage: {
+		marginLeft: 12,
+		fontWeight: "400",
+		fontSize: 15,
+		lineHeight: 34,
+		color: colors.textWhite,
+	},
 });

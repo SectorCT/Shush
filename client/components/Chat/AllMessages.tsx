@@ -14,8 +14,25 @@ interface IMessage {
 	timeToLive: number;
 }
 
-export default function AllMessages({ messages = [] } : IAllMessagesProps) {
+export default function AllMessages({ messages = [] }: IAllMessagesProps) {
 	const flatListRef = useRef();
+
+
+	function isNextMessageOwn(index: number) {
+		if (messages.length < index + 1) {
+			return false;
+		}
+
+		if (index < messages.length) {
+			if (messages[index + 1] == null) {
+				return false;
+			}
+
+			return messages[index + 1].isOwn;
+		} else {
+			return false;
+		}
+	}
 
 	return (
 		<View style={styles.container}>
@@ -26,13 +43,18 @@ export default function AllMessages({ messages = [] } : IAllMessagesProps) {
 					renderItem={({ item, index }) => <TextMessage
 						text={item.text}
 						isOwn={item.isOwn}
-						isPreviousOwn={index > 0 ? messages[index - 1].isOwn : null}
-						isNextOwn={index < messages.length - 1 ? messages[index + 1].isOwn : null}
+						isPreviousOwn={index > 0 ? messages[index - 1].isOwn : false}
+						isNextOwn={isNextMessageOwn(index)}
 						isDisappearing={item.timeToLive > -1}
 					/>}
 					keyExtractor={(item, index) => index.toString()}
 					ref={flatListRef}
-					onContentSizeChange={() => flatListRef.current.scrollToEnd({ animated: true })}
+					onContentSizeChange={() => {
+						if (flatListRef == null || flatListRef.current == null) {
+							return;
+						}
+						flatListRef.current.scrollToEnd({ animated: true });
+					}}
 				/>
 			}
 		</View>
@@ -65,7 +87,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		width: "100%",
-		backgroundColor: colors.background,
+		backgroundColor: colors.backgroundColor,
 		height: "100%",
 	},
 	messages: {

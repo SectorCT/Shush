@@ -1,9 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { SERVER_IP } from "@env";
-
-// const SERVER_IP = "shush-chat-application.herokuapp.com";
+import { SERVER_IP, SERVER_PORT } from "@env";
+const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
 interface IAuthContextData {
 	loggedIn: boolean | undefined;
@@ -13,7 +12,6 @@ interface IAuthContextData {
 	checkIfLoggedIn: () => void;
 }
 
-console.log(SERVER_IP);
 
 export const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
@@ -34,7 +32,7 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 
 	const login = async function (token: string, password: string) {
 		try {
-			const response = await fetch(`https://${SERVER_IP}/authentication/login/`, {
+			const response = await fetch(`${API_URL}/authentication/login/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -78,7 +76,7 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 				return;
 			}
 
-			const response = await fetch(`https://${SERVER_IP}/authentication/signup/`, {
+			const response = await fetch(`${API_URL}/authentication/signup/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -119,7 +117,7 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 		try {
 			const refreshToken = await AsyncStorage.getItem("refresh_token");
 
-			const response = await fetch(`https://${SERVER_IP}/authentication/logout/`, {
+			const response = await fetch(`${API_URL}/authentication/logout/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

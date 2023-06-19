@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -15,6 +16,11 @@
     "types": [
       "react-native"
     ],
+    "paths": {
+      "@env/*": [
+        "/"
+      ]
+    },
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
