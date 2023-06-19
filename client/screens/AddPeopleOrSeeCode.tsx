@@ -2,12 +2,15 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "./Routes";
 
-export default function AddPeopleOrSeeCode() {
-	const navigation = useNavigation<NavigationStackProp>();
+type AddPeopleOrSeeCodeProps = {
+	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "AddPeopleOrSeeCode">>;
+};
 
+export default function AddPeopleOrSeeCode({ navigation }: AddPeopleOrSeeCodeProps) {
 	return (
 		<>
 			<View style={styles.container}>

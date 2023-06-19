@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "./Routes";
+
+
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
@@ -9,8 +12,11 @@ import QRCode from "react-native-qrcode-svg";
 
 import { makeRequest } from "../requests";
 
-export default function InvitePeople() {
-	const navigation = useNavigation<NavigationStackProp>();
+type InvitePeopleProps = {
+	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "InvitePeople">>;
+};
+
+export default function InvitePeople({ navigation }: InvitePeopleProps) {
 
 	useEffect(() => {
 		try {

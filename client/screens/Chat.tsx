@@ -1,6 +1,8 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "./Routes";
+
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
@@ -19,8 +21,13 @@ import { SERVER_IP } from "@env";
 import { makeRequest } from "../requests";
 
 import AllMessages from "../components/Chat/AllMessages";
-export default function Chat() {
-	const navigation = useNavigation<NavigationStackProp>();
+
+
+type ChatScreenProps = {
+	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "Chat">>;
+};
+
+export default function Chat({ navigation } : ChatScreenProps) {
 
 	const [messages, setMessages] = useState([]);
 
