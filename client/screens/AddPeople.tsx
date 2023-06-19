@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "./Routes";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from "react-native";
@@ -8,8 +9,11 @@ import { colors } from "../styles";
 
 import { makeRequest } from "../requests";
 
-export default function AddPeople() {
-	const navigation = useNavigation<NavigationStackProp>();
+type AddPeopleProps = {
+	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "AddPeople">>;
+};
+
+export default function AddPeople({ navigation }: AddPeopleProps) {
 
 	const [inviteToken, setInviteToken] = useState("");
 	const [error, setError] = useState("");

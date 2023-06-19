@@ -1,6 +1,7 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "./Routes";
 
 import { StyleSheet, View } from "react-native";
 import TopBar from "../components/Topbar";
@@ -9,8 +10,11 @@ import { colors } from "../styles";
 import { StatusBar } from "expo-status-bar";
 
 
-export default function HomeScreen() {
-	const navigation = useNavigation<NavigationStackProp>();
+type HomeScreenProps = {
+	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "HomeScreen">>;
+};
+
+export default function HomeScreen({ navigation }: HomeScreenProps) {
 
 	return (
 		<View style={styles.container}>

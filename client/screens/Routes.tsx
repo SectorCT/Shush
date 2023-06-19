@@ -3,8 +3,8 @@ import { createAppContainer } from "react-navigation";
 
 import HomeScreen from "./HomeScreen";
 import Chat from "./Chat";
-import SignUpScreen from "./SignUpScreen";
-import SignInScreen from "./SignInScreen";
+import SignUp from "./SignUpScreen";
+import SignIn from "./SignInScreen";
 import AddPeople from "./AddPeople";
 import AddPeopleOrSeeCode from "./AddPeopleOrSeeCode";
 import InvitePeople from "./InvitePeople";
@@ -58,18 +58,39 @@ const homeStackScreens = {
 
 const authStackScreens = {
 	SignIn: {
-		screen: SignInScreen,
+		screen: SignIn,
 		navigationOptions: {
 			headerShown: false,
 		},
 	},
 	SignUp: {
-		screen: SignUpScreen,
+		screen: SignUp,
 		navigationOptions: {
 			headerShown: false,
 		},
 	},
 };
+
+export type HomeStackParamList = {
+	HomeScreen: undefined;
+	Chat: {
+		friendshipId: string;
+		friendName: string;
+	};
+	AddPeople: {
+		token : string;
+	};
+	AddPeopleOrSeeCode: undefined;
+	InvitePeople: undefined;
+	InviteDevice: undefined;
+	QRScanner: undefined;
+};
+
+export type AuthStackParamList = {
+	SignIn: undefined;
+	SignUp: undefined;
+};
+
 
 const HomeStack = createStackNavigator(homeStackScreens);
 const AuthStack = createStackNavigator(authStackScreens);

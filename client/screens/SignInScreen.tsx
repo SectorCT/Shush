@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+// import { useNavigation } from "@react-navigation/native";
+// import { NavigationStackProp } from "react-navigation-stack";
 
 import { StyleSheet, Text, View, StatusBar, TextInput} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -10,8 +10,17 @@ import { AuthContext } from "../AuthContext";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function SignInScreen() {
-	const navigation = useNavigation<NavigationStackProp>();
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { AuthStackParamList } from "./Routes";
+
+
+// Define the type for the navigation prop
+type SignInScreenProps = {
+  navigation: NavigationProp<StackNavigationProp<AuthStackParamList, "SignInScreen">>;
+};
+
+export default function SignInScreen({navigation} : SignInScreenProps) {
 	const [code, setCode] = useState("");
 	const [password, setPassword] = useState("");
 

@@ -21,7 +21,7 @@ function isStringOnlyEmojis(str) {
 	return str.length === 0;
 }
 
-interface IMessageProps {
+type MessageProps = {
 	text: string;
 	isOwn: boolean;
 	isNextOwn: boolean;
@@ -29,7 +29,7 @@ interface IMessageProps {
 }
 
 
-export default function Message({ text, isOwn, isNextOwn, isDisappearing} : IMessageProps ) {
+export default function Message({ text, isOwn, isNextOwn, isDisappearing} : MessageProps ) {
 	//emoji regex
 	const isOwnStyles = isOwn ? styles.messages_message_own : styles.messages_message_other;
 	let concecativeOwnStyle = {};

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
 
 import { StyleSheet, Text, View, StatusBar, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -9,8 +7,11 @@ import { colors } from "../styles";
 import { AuthContext } from "../AuthContext";
 
 
-export default function SignScreen() {
-	const navigation = useNavigation<NavigationStackProp>();
+type SignScreenProps = {
+	navigation: NavigationProp<StackNavigationProp<AuthStackParamList, "SignUp">>;
+};
+
+export default function SignUpScreen({ navigation } : SignScreenProps) {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 

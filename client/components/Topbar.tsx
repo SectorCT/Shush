@@ -1,15 +1,19 @@
 import React from "react";
 
-import { useNavigation } from "@react-navigation/native";
-import { NavigationStackProp } from "react-navigation-stack";
+import { NavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParamList } from "./Routes";
 
 import {  StyleSheet, Text, View} from "react-native";
 import { colors } from "../styles";
 
 import ImageButton from "./ImageButton";
 
-export default function TopBar() {
-	const navigation = useNavigation<NavigationStackProp>();
+type TopBarProps = {
+	navigation: NavigationProp<StackNavigationProp<HomeStackParamList>>;
+};
+
+export default function TopBar({ navigation }: TopBarProps) {
 
 	return (
 		<View style={styles.topbar__container}>
