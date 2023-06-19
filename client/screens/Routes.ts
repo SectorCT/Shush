@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createAppContainer } from "react-navigation";
 
 import HomeScreen from "./HomeScreen";
@@ -78,7 +78,7 @@ export type HomeStackParamList = {
 		friendName: string;
 	};
 	AddPeople: {
-		token : string;
+		token: string;
 	};
 	AddPeopleOrSeeCode: undefined;
 	InvitePeople: undefined;
@@ -92,8 +92,9 @@ export type AuthStackParamList = {
 };
 
 
-const HomeStack = createStackNavigator(homeStackScreens);
-const AuthStack = createStackNavigator(authStackScreens);
+const HomeStack = createStackNavigator<HomeStackParamList>();
+const AuthStack = createStackNavigator<AuthStackParamList>();
 
 export const HomeStackNavigator = createAppContainer(HomeStack);
 export const AuthStackNavigator = createAppContainer(AuthStack);
+

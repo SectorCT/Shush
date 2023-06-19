@@ -6,7 +6,7 @@ import emojiRegex from "emoji-regex";
 
 const numberOfEmojis = 4;
 
-function isStringOnlyEmojis(str) {
+function isStringOnlyEmojis(str: string) {
 	const regex = emojiRegex();
 	const matches = str.match(regex);
 	if (matches === null) {
@@ -29,7 +29,7 @@ type MessageProps = {
 }
 
 
-export default function Message({ text, isOwn, isNextOwn, isDisappearing} : MessageProps ) {
+export default function Message({ text, isOwn, isNextOwn, isDisappearing }: MessageProps) {
 	//emoji regex
 	const isOwnStyles = isOwn ? styles.messages_message_own : styles.messages_message_other;
 	let concecativeOwnStyle = {};
@@ -61,22 +61,22 @@ export default function Message({ text, isOwn, isNextOwn, isDisappearing} : Mess
 	}
 
 	switch (messageType) {
-	case "text":
-		messageStyle = { ...messageStyle, ...styles.messages_text_message};
-		messageTextStyle = { ...messageTextStyle, ...styles.messages_text_message_text, color: messageColor };
-		if (isOwn) {
-			messageStyle = { ...messageStyle, backgroundColor: colors.accent };
-		}
-		if(isDisappearing){
-			messageStyle = { ...messageStyle, backgroundColor: "#ff686b" };
-		}
-		break;
-	case "emoji":
-		messageStyle = { ...messageStyle, ...styles.messages_emoji_message };
-		messageTextStyle = { ...messageTextStyle, ...styles.messages_emoji_message_text };
-		break;
-	default:
-		break;
+		case "text":
+			messageStyle = { ...messageStyle, ...styles.messages_text_message };
+			messageTextStyle = { ...messageTextStyle, ...styles.messages_text_message_text, color: messageColor };
+			if (isOwn) {
+				messageStyle = { ...messageStyle, backgroundColor: colors.accent };
+			}
+			if (isDisappearing) {
+				messageStyle = { ...messageStyle, backgroundColor: "#ff686b" };
+			}
+			break;
+		case "emoji":
+			messageStyle = { ...messageStyle, ...styles.messages_emoji_message };
+			messageTextStyle = { ...messageTextStyle, ...styles.messages_emoji_message_text };
+			break;
+		default:
+			break;
 	}
 
 	messageStyle = { ...messageStyle, ...isOwnStyles, ...concecativeOwnStyle };

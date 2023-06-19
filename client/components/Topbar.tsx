@@ -2,9 +2,9 @@ import React from "react";
 
 import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "../screens/Routes";
 
-import {  StyleSheet, Text, View} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../styles";
 
 import ImageButton from "./ImageButton";
