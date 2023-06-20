@@ -25,7 +25,6 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 				if (response === null) {
 					return;
 				}
-
 				if (response.status === 200) {
 					response.json().then((data) => {
 						console.log("Friends", data);

@@ -10,14 +10,11 @@ import { colors} from "../styles";
 import { TextInput } from "react-native-gesture-handler";
 
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ImageButton from "../components/ImageButton";
 
-
-import WebSocket from "react-native-websocket";
-
-import { SERVER_IP } from "@env";
+import { SERVER_IP, SERVER_SOCKET_PORT } from "@env";
 import { makeRequest } from "../requests";
 
 import AllMessages from "../components/Chat/AllMessages";
@@ -43,11 +40,9 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 	const friendshipId = route.params.friendName;
 	const [typedMessage, setTypedMessage] = useState("");
 
-	const ws = useRef(null);
+	const ws = new WebSocket(`ws://${SERVER_IP}:${SERVER_SOCKET_PORT}/ws/chat/${friendshipId}/`);
 
 	const [isEdditingNickname, setIsEdditingNickname] = useState(false);
-
-	const Cookie = "";
 
 	const [mode, setMode] = useState("Normal");
 	const dissapearTime = 5;
@@ -73,7 +68,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 									isOwn: isOwn,
 								});
 							}
-							setMessages(newMessages);
+							setMessages(newMessages as IMessage[]);
 						});
 					} else {
 						console.log("error");
@@ -84,6 +79,19 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 			console.log(error);
 		}
 	}, []);
+
+	useEffect(() => {
+		ws.onopen = handleOpen;
+		ws.onmessage = handleMessage;
+		ws.onerror = handleError;
+		ws.onclose = handleClose;
+		ws.onclose = () => {
+			console.log("WebSocket closed");
+			navigation.navigate("HomeScreen");
+		};
+	}, []);
+
+
 
 	const handleOpen = () => {
 		console.log("WebSocket connection opened");
@@ -97,14 +105,14 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 		}]);
 	}
 
-	const handleMessage = (event) => {
+	const handleMessage = (event: WebSocketMessageEvent) => {
 		const data = JSON.parse(event.data);
 		// if (data.type === "message") {
 		addMessage(data.message, false);
 		// }
 	};
 
-	const handleError = (error) => {
+	const handleError = (error: WebSocketErrorEvent) => {
 		console.error("WebSocket error:", error);
 	};
 
@@ -114,10 +122,6 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 
 	function handleSendMsg() {
 		console.log("send message friendName: " + friendName + " friendshipId: " + friendshipId);
-		if (ws.current == null) {
-			navigation.navigate("HomeScreen");
-			return;
-		}
 		if (typedMessage.length === 0) return;
 		setMessages([...messages, {
 			text: typedMessage,
@@ -125,7 +129,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 			timeToLive: mode === "Disappearing" ? dissapearTime : -1,
 		}]);
 		setTypedMessage("");
-		ws.current.send(JSON.stringify({
+		ws.send(JSON.stringify({
 			message: typedMessage.trim(),
 			friendship_token: friendshipId,
 		}));
@@ -135,6 +139,9 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 		setIsEdditingNickname(false);
 		makeRequest("authentication/change_nickname/", "POST", { friendship_token: friendshipId, new_nickname: friendName })
 			.then((response) => {
+				if (response == null) {
+					return;
+				}
 				if (response.status === 200) {
 					console.log("success");
 				} else {
@@ -146,7 +153,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 
 	function handleDeclineNickname() {
 		setIsEdditingNickname(false);
-		setFriendName(navigation.getParam("friendName"));
+		setFriendName(route.params.friendName);
 	}
 
 	function switchMode () {
@@ -154,21 +161,20 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 	}
 
 	function updateMessagesTimeToLive() {
-		setMessages((prevMessages) => {
-			const newMessages = prevMessages.map((msg) => {
-				if (msg.timeToLive === -1) {
-					return msg; // never expires
+		const prevMessages = messages;
+		const newMessages = prevMessages.map((msg) => {
+			if (msg.timeToLive === -1) {
+				return msg; // never expires
+			} else {
+				const newTTL = msg.timeToLive - 1;
+				if (newTTL < 0) {
+					return null; // message has expired, remove it
 				} else {
-					const newTTL = msg.timeToLive - 1;
-					if (newTTL < 0) {
-						return null; // message has expired, remove it
-					} else {
-						return {...msg, timeToLive: newTTL};
-					}
+					return {...msg, timeToLive: newTTL};
 				}
-			});
-			return newMessages.filter((msg) => msg !== null); // remove expired messages
+			}
 		});
+		setMessages(newMessages.filter((msg) => msg !== null) as IMessage[]); // remove expired messages
 	}
     
 	useEffect(() => {
@@ -179,17 +185,6 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 	return (
 		<>
 			<StatusBar style="light" />
-			<WebSocket
-				ref={ws}
-				url={`wss://${SERVER_IP}/ws/chat/${friendshipId}/`}
-				headers={{
-					Cookie: Cookie,
-				}}
-				onOpen={handleOpen}
-				onMessage={handleMessage}
-				onError={handleError}
-				onClose={handleClose}
-			/>
 			<View style={styles.islandHider}></View>
 			<View style={styles.header} >
 				{isEdditingNickname ?
