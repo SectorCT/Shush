@@ -15,20 +15,21 @@ interface IMessage {
 }
 
 export default function AllMessages({ messages = [] }: IAllMessagesProps) {
-	const flatListRef = useRef();
+	const flatListRef = useRef<FlatList<IMessage> | null>(null);
 
 
 	function isNextMessageOwn(index: number) {
+
 		if (messages.length < index + 1) {
 			return false;
 		}
 
-		if (index < messages.length) {
-			if (messages[index + 1] == null) {
+		if (index < messages.length - 1) {
+			if (messages[index + 1]?.isOwn == null) {
 				return false;
+			}else {
+				return messages[index + 1]?.isOwn ?? false;
 			}
-
-			return messages[index + 1].isOwn;
 		} else {
 			return false;
 		}
@@ -43,11 +44,11 @@ export default function AllMessages({ messages = [] }: IAllMessagesProps) {
 					renderItem={({ item, index }) => <TextMessage
 						text={item.text}
 						isOwn={item.isOwn}
-						isPreviousOwn={index > 0 ? messages[index - 1].isOwn : false}
+						// isPreviousOwn={index > 0 ? messages[index - 1].isOwn : false}
 						isNextOwn={isNextMessageOwn(index)}
 						isDisappearing={item.timeToLive > -1}
 					/>}
-					keyExtractor={(item, index) => index.toString()}
+					keyExtractor={(_, index) => index.toString()}
 					ref={flatListRef}
 					onContentSizeChange={() => {
 						if (flatListRef == null || flatListRef.current == null) {
