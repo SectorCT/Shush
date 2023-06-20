@@ -1,6 +1,5 @@
 import React from "react";
 
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "../screens/Routes";
 
@@ -10,7 +9,7 @@ import { colors } from "../styles";
 import ImageButton from "./ImageButton";
 
 type TopBarProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList>>;
+	navigation: StackNavigationProp<HomeStackParamList>;
 };
 
 export default function TopBar({ navigation }: TopBarProps) {

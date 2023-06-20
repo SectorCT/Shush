@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "./Routes";
 
@@ -11,7 +10,7 @@ import { AuthContext } from "../AuthContext";
 
 
 type SignScreenProps = {
-	navigation: NavigationProp<StackNavigationProp<AuthStackParamList, "SignUp">>;
+	navigation: StackNavigationProp<AuthStackParamList, "SignUp">;
 };
 
 export default function SignUpScreen({ navigation }: SignScreenProps) {

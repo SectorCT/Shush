@@ -2,12 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "./Routes";
 
 type AddPeopleOrSeeCodeProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "AddPeopleOrSeeCode">>;
+	navigation: StackNavigationProp<HomeStackParamList, "AddPeopleOrSeeCode">;
+	
 };
 
 export default function AddPeopleOrSeeCode({ navigation }: AddPeopleOrSeeCodeProps) {
@@ -32,7 +32,7 @@ export default function AddPeopleOrSeeCode({ navigation }: AddPeopleOrSeeCodePro
 					<TouchableOpacity
 						style={styles.addButton}
 						onPress={() => {
-							navigation.navigate("AddPeople");
+							navigation.navigate("AddPeople", { token : undefined});
 						}}
 					>
 						<Text style={styles.addButton_Text}>Add</Text>

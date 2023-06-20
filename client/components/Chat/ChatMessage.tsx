@@ -61,22 +61,22 @@ export default function Message({ text, isOwn, isNextOwn, isDisappearing }: Mess
 	}
 
 	switch (messageType) {
-		case "text":
-			messageStyle = { ...messageStyle, ...styles.messages_text_message };
-			messageTextStyle = { ...messageTextStyle, ...styles.messages_text_message_text, color: messageColor };
-			if (isOwn) {
-				messageStyle = { ...messageStyle, backgroundColor: colors.accent };
-			}
-			if (isDisappearing) {
-				messageStyle = { ...messageStyle, backgroundColor: "#ff686b" };
-			}
-			break;
-		case "emoji":
-			messageStyle = { ...messageStyle, ...styles.messages_emoji_message };
-			messageTextStyle = { ...messageTextStyle, ...styles.messages_emoji_message_text };
-			break;
-		default:
-			break;
+	case "text":
+		messageStyle = { ...messageStyle, ...styles.messages_text_message };
+		messageTextStyle = { ...messageTextStyle, ...styles.messages_text_message_text, color: messageColor };
+		if (isOwn) {
+			messageStyle = { ...messageStyle, backgroundColor: colors.accent };
+		}
+		if (isDisappearing) {
+			messageStyle = { ...messageStyle, backgroundColor: "#ff686b" };
+		}
+		break;
+	case "emoji":
+		messageStyle = { ...messageStyle, ...styles.messages_emoji_message };
+		messageTextStyle = { ...messageTextStyle, ...styles.messages_emoji_message_text };
+		break;
+	default:
+		break;
 	}
 
 	messageStyle = { ...messageStyle, ...isOwnStyles, ...concecativeOwnStyle };

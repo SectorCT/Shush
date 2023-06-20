@@ -1,6 +1,6 @@
 import React from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
 import { HomeStackParamList } from "./Routes";
 
 
@@ -23,16 +23,24 @@ import { makeRequest } from "../requests";
 import AllMessages from "../components/Chat/AllMessages";
 
 
+
 type ChatScreenProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "Chat">>;
+	navigation : StackNavigationProp<HomeStackParamList, "Chat">;
+	route: RouteProp<HomeStackParamList, "Chat">;
 };
 
-export default function Chat({ navigation } : ChatScreenProps) {
+interface IMessage {
+	text: string;
+	isOwn: boolean;
+	timeToLive: number;
+}
 
-	const [messages, setMessages] = useState([]);
+export default function Chat({ navigation, route } : ChatScreenProps) {
 
-	const [friendName, setFriendName] = useState(navigation.getParam("friendName"));
-	const friendshipId = navigation.getParam("friendshipId");
+	const [messages, setMessages] = useState<IMessage[]>([]);
+
+	const [friendName, setFriendName] = useState(route.params.friendName);
+	const friendshipId = route.params.friendName;
 	const [typedMessage, setTypedMessage] = useState("");
 
 	const ws = useRef(null);
@@ -49,6 +57,10 @@ export default function Chat({ navigation } : ChatScreenProps) {
 			setMessages([]);
 			makeRequest("authentication/get_recent_messages/", "POST", { friendship_token: friendshipId })
 				.then((response) => {
+					if (response == null) {
+						console.log("response is null");
+						return;
+					}
 					if (response.status === 200) {
 						response.json().then((data) => {
 							console.log(data);
@@ -77,7 +89,7 @@ export default function Chat({ navigation } : ChatScreenProps) {
 		console.log("WebSocket connection opened");
 	};
 
-	function addMessage(text, isOwn) {
+	function addMessage(text: string, isOwn: boolean) {
 		setMessages([...messages, {
 			text: text,
 			isOwn: isOwn,
@@ -102,6 +114,10 @@ export default function Chat({ navigation } : ChatScreenProps) {
 
 	function handleSendMsg() {
 		console.log("send message friendName: " + friendName + " friendshipId: " + friendshipId);
+		if (ws.current == null) {
+			navigation.navigate("HomeScreen");
+			return;
+		}
 		if (typedMessage.length === 0) return;
 		setMessages([...messages, {
 			text: typedMessage,
@@ -269,4 +285,10 @@ const styles = StyleSheet.create({
 	edit_icon: {
 		marginLeft: 10,
 	},
+	downSpace: {
+		height: 30,
+		width: "100%",
+		backgroundColor: colors.primary,
+	},
+
 });

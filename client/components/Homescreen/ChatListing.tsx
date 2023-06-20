@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "../../screens/Routes";
 
@@ -14,7 +13,7 @@ const Separator = () => <View style={styles.separator} />;
 
 
 type ChatListingProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList>>;
+	navigation: StackNavigationProp<HomeStackParamList>;
 };
 
 
@@ -110,7 +109,7 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 		<FlatList
 			data={Peopele}
 			renderItem={renderItem}
-			keyExtractor={(item, index) => index.toString()}
+			keyExtractor={(item) => item.friendship_token}
 			ItemSeparatorComponent={Separator}
 			style={styles.flatList}
 			showsVerticalScrollIndicator={false}

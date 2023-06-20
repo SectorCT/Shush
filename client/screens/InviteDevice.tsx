@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "./Routes";
 
@@ -13,7 +12,7 @@ import { AuthContext } from "../AuthContext";
 const codeLink = "3ER89H5Y";
 
 type InviteDeviceProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "InviteDevice">>;
+	navigation: StackNavigationProp<HomeStackParamList, "InviteDevice">;
 };
 
 export default function inviteDevice({ navigation }: InviteDeviceProps) {
