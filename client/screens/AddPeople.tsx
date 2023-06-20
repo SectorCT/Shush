@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
 import { HomeStackParamList } from "./Routes";
 
 import { StatusBar } from "expo-status-bar";
@@ -10,17 +10,18 @@ import { colors } from "../styles";
 import { makeRequest } from "../requests";
 
 type AddPeopleProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "AddPeople">>;
+	navigation: StackNavigationProp<HomeStackParamList, "AddPeople">;
+	route: RouteProp<HomeStackParamList, "AddPeople">;
 };
 
-export default function AddPeople({ navigation }: AddPeopleProps) {
+export default function AddPeople({ navigation, route }: AddPeopleProps) {
 
 	const [inviteToken, setInviteToken] = useState("");
 	const [error, setError] = useState("");
 
 	useEffect(() => {
-		if (navigation.getParam("token")) {
-			setInviteToken(navigation.getParam("token"));
+		if (route.params?.token) {
+			setInviteToken(route.params.token);
 		}
 	}, [navigation]);
 

@@ -10,14 +10,13 @@ import { AuthContext } from "../AuthContext";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "./Routes";
 
 
 // Define the type for the navigation prop
 type SignInScreenProps = {
-  navigation: NavigationProp<StackNavigationProp<AuthStackParamList, "SignInScreen">>;
+  navigation: StackNavigationProp<AuthStackParamList, "SignIn">;
 };
 
 export default function SignInScreen({navigation} : SignInScreenProps) {
@@ -82,7 +81,7 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 							secureTextEntry={true}
 							placeholderTextColor="#525252"
 						/>
-						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignUp"); }}>
+						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignUp");}}>
 							<Text style={styles.logInButton_text}>Don&apos;t have an account?</Text>
 						</TouchableOpacity>
 					</View>

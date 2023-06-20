@@ -1,9 +1,8 @@
 import React, { useEffect, useContext } from "react";
 
-import { HomeStackNavigator, AuthStackNavigator } from "./screens/Routes";
+import { HomeStackContainer, AuthStackContainer } from "./screens/Routes";
 
 import { AuthContext } from "./AuthContext";
-import { NavigationContainer } from "@react-navigation/native";
 
 export default function Root() {
 	const { loggedIn, checkIfLoggedIn } = useContext(AuthContext);
@@ -14,9 +13,7 @@ export default function Root() {
 
 	return (
 		<>
-			<NavigationContainer>
-				{loggedIn ? <HomeStackNavigator /> : <AuthStackNavigator />}
-			</NavigationContainer>
+			{loggedIn ? <HomeStackContainer /> : <AuthStackContainer />}
 		</>
 	);
 }
