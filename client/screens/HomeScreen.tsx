@@ -1,5 +1,4 @@
 import React from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "./Routes";
 
@@ -11,7 +10,7 @@ import { StatusBar } from "expo-status-bar";
 
 
 type HomeScreenProps = {
-	navigation: NavigationProp<StackNavigationProp<HomeStackParamList, "HomeScreen">>;
+	navigation: StackNavigationProp<HomeStackParamList, "HomeScreen">;
 };
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
