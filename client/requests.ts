@@ -4,7 +4,10 @@ import { AuthContext } from "./AuthContext";
 
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SERVER_IP, SERVER_PORT } from "@env";
+
+const SERVER_IP = process.env.SERVER_IP ?? "";
+const SERVER_PORT = process.env.SERVER_PORT ?? "";
+// cosnt SERVER_PORT } from "@env";
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
 

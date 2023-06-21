@@ -11,10 +11,11 @@
     ],
     "typeRoots": [
       "./typings",
-      "./node_modules/@types"
+      "./node_modules/@types",
     ],
     "types": [
-      "react-native"
+      "react-native",
+      "node"
     ],
     "paths": {
       "@env/*": [
