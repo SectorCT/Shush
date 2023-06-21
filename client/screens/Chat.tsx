@@ -14,7 +14,9 @@ import { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ImageButton from "../components/ImageButton";
 
-import { SERVER_IP, SERVER_SOCKET_PORT } from "@env";
+// import { SERVER_IP, SERVER_SOCKET_PORT } from "@env";
+const SERVER_IP = process.env.SERVER_IP ?? "localhost";
+const SERVER_SOCKET_PORT = process.env.SERVER_SOCKET_PORT ?? "3001";
 import { makeRequest } from "../requests";
 
 import AllMessages from "../components/Chat/AllMessages";

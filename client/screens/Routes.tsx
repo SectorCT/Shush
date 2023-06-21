@@ -38,6 +38,7 @@ const AuthStack = createStackNavigator<AuthStackParamList>();
 
 function HomeStackContainer() {
 	return (
+		
 		<HomeStack.Navigator>
 			<HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
 			<HomeStack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />

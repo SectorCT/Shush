@@ -1,7 +1,10 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { SERVER_IP, SERVER_PORT } from "@env";
+const SERVER_IP = process.env.SERVER_IP ?? "localhost";
+const SERVER_PORT = process.env.SERVER_PORT ?? "3000";
+
+
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
 interface IAuthContextData {

@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from "react";
 
 import { HomeStackContainer, AuthStackContainer } from "./screens/Routes";
+import { NavigationContainer }  from "@react-navigation/native";
 
 import { AuthContext } from "./AuthContext";
 
@@ -13,7 +14,9 @@ export default function Root() {
 
 	return (
 		<>
-			{loggedIn ? <HomeStackContainer /> : <AuthStackContainer />}
+			<NavigationContainer>
+				{loggedIn ? <HomeStackContainer /> : <AuthStackContainer />}
+			</NavigationContainer>
 		</>
 	);
 }
