@@ -83,10 +83,10 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 	}, []);
 
 	useEffect(() => {
-		ws.onopen = handleOpen;
-		ws.onmessage = handleMessage;
-		ws.onerror = handleError;
-		ws.onclose = handleClose;
+		ws.onopen = handleSocketOpen;
+		ws.onmessage = handleSocketMessage;
+		ws.onerror = handleSocketError;
+		ws.onclose = handleSocketClose;
 		ws.onclose = () => {
 			console.log("WebSocket closed");
 			navigation.navigate("HomeScreen");
@@ -95,7 +95,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 
 
 
-	const handleOpen = () => {
+	const handleSocketOpen = () => {
 		console.log("WebSocket connection opened");
 	};
 
@@ -107,18 +107,18 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 		}]);
 	}
 
-	const handleMessage = (event: WebSocketMessageEvent) => {
+	const handleSocketMessage= (event: WebSocketMessageEvent) => {
 		const data = JSON.parse(event.data);
 		// if (data.type === "message") {
 		addMessage(data.message, false);
 		// }
 	};
 
-	const handleError = (error: WebSocketErrorEvent) => {
+	const handleSocketError = (error: WebSocketErrorEvent) => {
 		console.error("WebSocket error:", error);
 	};
 
-	const handleClose = () => {
+	const handleSocketClose = () => {
 		console.log("WebSocket closed");
 	};
 
@@ -170,7 +170,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 			} else {
 				const newTTL = msg.timeToLive - 1;
 				if (newTTL < 0) {
-					return null; // message has expired, remove it
+					return null;
 				} else {
 					return {...msg, timeToLive: newTTL};
 				}
