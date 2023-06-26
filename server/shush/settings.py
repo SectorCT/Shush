@@ -11,6 +11,7 @@ AUTH_USER_MODEL = 'authentication.Profile'
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+#need improvements
 SECRET_KEY = 'django-insecure-y0ql@fhn!(q#g=!k31h8#13!m2wo9&!6)$ex3jdfg1xtv1%_t_'
 
 import os
@@ -21,11 +22,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = '6379'
-REDIS_DB = '0'
-REDIS_URL = 'redis://localhost:6379/0'
-ALLOWED_HOSTS = ['*']
+import os
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGIN = ["*"]
@@ -58,7 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -73,11 +69,13 @@ MIDDLEWARE = [
 
 ASGI_APPLICATION = 'shush.asgi.application'
 
+REDIS_URL = os.environ.get("REDIS_URL", "redis://:jz32A61KIhsyjLFjmHXHdxavOcSR4z5i@redis-11845.c44.us-east-1-2.ec2.cloud.redislabs.com:11845")
+
 # Cache configuration
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://:jz32A61KIhsyjLFjmHXHdxavOcSR4z5i@redis-11845.c44.us-east-1-2.ec2.cloud.redislabs.com:11845",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -89,10 +87,11 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": ["redis://:jz32A61KIhsyjLFjmHXHdxavOcSR4z5i@redis-11845.c44.us-east-1-2.ec2.cloud.redislabs.com:11845"],
         },
     },
 }
+
 
 ROOT_URLCONF = 'shush.urls'
 
@@ -116,9 +115,11 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 import dj_database_url
-
+#need improvements
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default='postgres://ubvpqqfnorvosw:3364931606117413538519476276344f3f96289bc88ba0fd7ed0fe460298d8d6@ec2-34-236-56-112.compute-1.amazonaws.com:5432/davbe4td209gum'
+    )
 }
 
 # Password validation
@@ -138,12 +139,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-REDIS_HOST = 'localhost'
-REDIS_PORT = '6379'
-REDIS_DB = '0'
-REDIS_URL = 'redis://localhost:6379/0'
-ALLOWED_HOSTS = ['*']
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

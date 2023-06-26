@@ -8,7 +8,7 @@ import secrets
 
 
 class ProfileManager(BaseUserManager):
-    def create_user(self, password=None, username_token=None, friend_token=None):
+    def create_user(self, password=None, username_token = None, friend_token=None):
 
         while not username_token or Profile.objects.filter(username_token=username_token).exists():
             username_token = secrets.token_hex(10)
@@ -26,8 +26,6 @@ class ProfileManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
 
-        # Save the private key in the user's local storage or client-side
-
         return user
 
     def create_superuser(self, password=None, username_token=None, friend_token=None, public_key=None):
@@ -42,13 +40,13 @@ class ProfileManager(BaseUserManager):
         return self.username_token + ' ' + self.password
 
 class Profile(AbstractBaseUser):
-    username_token = models.CharField(max_length=10, unique=True)
-    friend_token = models.CharField(max_length=4, unique=True)
-    public_key = models.TextField(blank=True)
+    username_token = models.CharField(max_length=20, unique=True)
+    password = models.CharField(max_length=255)
+    friend_token = models.CharField(max_length=8, unique=True)
 
-    identity_public_key = models.TextField()
-    signed_prekey_public_key = models.TextField()
-    prekey_public_key = models.TextField()
+    identity_public_key = models.TextField(default='NULL')
+    signed_prekey_public_key = models.TextField(default='NULL')
+    prekey_public_key = models.TextField(default='NULL')
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -63,6 +61,14 @@ class Profile(AbstractBaseUser):
     
     def check_password(self, raw_password: str) -> bool:
         return super().check_password(raw_password)
+    
+    def delete(self, *args, **kwargs):
+        # Delete related rooms
+        for room in self.room_users.all():
+            room.delete()
+
+        # Delete the user
+        super(Profile, self).delete(*args, **kwargs)
 
 class OneTimePreKey(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -75,7 +81,8 @@ class Friend(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='friends_as_user')
     friend = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='frnick_as_friend')
     nickname = models.CharField(max_length=8)
-    friendship_token = models.CharField(max_length=10, unique=True)
+    friendship_token = models.CharField(max_length=10, unique=True, default='')
+    room = models.ForeignKey('chat.Room', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         unique_together = ('user', 'nickname')

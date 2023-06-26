@@ -17,8 +17,9 @@ urlpatterns = [
     path('list_friends/', views.list_friends, name='list_friends'),
     path('remove_friend/', views.remove_friend, name='remove_friend'),
     path('change_nickname/', views.change_nickname, name='change_nickname'),
-    path('change_password/', views.change_password, name='change_password'),
+    # path('change_password/', views.change_password, name='change_password'), # todo
     path('send_public_keys/', views.send_public_keys, name='send_public_keys'),
     path('update_identity_public_key/', views.update_identity_public_key, name='update_identity_public_key'),
     path('update_signed_public_key/', views.update_signed_public_key, name='update_signed_public_key'),
+    path('delete_account/', views.delete_account, name='delete_account'),
 ]
