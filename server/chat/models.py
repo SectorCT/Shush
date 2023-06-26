@@ -12,5 +12,6 @@ class Message(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    encrypted_content = models.BinaryField()
+    content = models.TextField(default='')
+    image = models.ImageField(upload_to='chat_images/', null=True, blank=True)
     is_seen = models.BooleanField(default=False)
