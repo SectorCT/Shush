@@ -1,7 +1,7 @@
 import React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 
 import { StatusBar } from "expo-status-bar";
@@ -17,7 +17,7 @@ import ImageButton from "../components/ImageButton";
 // import { SERVER_IP, SERVER_SOCKET_PORT } from "@env";
 const SERVER_IP = process.env.SERVER_IP ?? "localhost";
 const SERVER_SOCKET_PORT = process.env.SERVER_SOCKET_PORT ?? "3001";
-import { makeRequest } from "../requests";
+import { makeRequest } from "../utils/requests";
 
 import AllMessages from "../components/Chat/AllMessages";
 

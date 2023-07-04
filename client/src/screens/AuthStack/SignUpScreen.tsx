@@ -1,48 +1,34 @@
-import React, { useState, useEffect, useContext } from "react";
-// import { useNavigation } from "@react-navigation/native";
-// import { NavigationStackProp } from "react-navigation-stack";
-
-import { StyleSheet, Text, View, StatusBar, TextInput} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { colors } from "../styles";
-
-import { AuthContext } from "../AuthContext";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import React, { useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthStackParamList } from "./Routes";
+import { AuthStackParamList } from "@navigation/AuthStack";
+
+import { StyleSheet, Text, View, StatusBar, TextInput } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { colors } from "../../styles";
+
+import { AuthContext } from "../../AuthContext";
 
 
-// Define the type for the navigation prop
-type SignInScreenProps = {
-  navigation: StackNavigationProp<AuthStackParamList, "SignIn">;
+type SignScreenProps = {
+	navigation: StackNavigationProp<AuthStackParamList, "SignUp">;
 };
 
-export default function SignInScreen({navigation} : SignInScreenProps) {
-	const [code, setCode] = useState("");
+export default function SignUpScreen({ navigation }: SignScreenProps) {
 	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
 
 	const [error, setError] = useState("");
 
-	const { login } = useContext(AuthContext);
+	const { signup } = React.useContext(AuthContext);
 
-	useEffect(() => {
-		AsyncStorage.getItem("userToken").then((value) => {
-			if (value === null) {
-				return;
-			}
-			setCode(value);
-		});
-	}, []);
 
-	function verrifyCodeAndPass() {
-		if (code.length < 8) {
-			setError("Code must be at least 8 characters long");
-			return false;
-		}
+	function validatePassword() {
 		if (password.length < 8) {
 			setError("Password must be at least 8 characters long");
+			return false;
+		}
+		if (password !== confirmPassword) {
+			setError("Passwords do not match");
 			return false;
 		}
 		setError("");
@@ -50,10 +36,10 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 	}
 
 	function handleSubmit() {
-		if (!verrifyCodeAndPass()) {
+		if (!validatePassword()) {
 			return;
 		}
-		login(code, password);
+		signup(password, confirmPassword);
 	}
 	return (
 		<>
@@ -61,17 +47,10 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 			<View style={styles.islandHider} />
 			<View style={styles.container}>
 				<View style={styles.header} >
-					<Text style={styles.header_title}>Link account</Text>
+					<Text style={styles.header_title}>Create account</Text>
 				</View>
 				<View style={styles.main}>
 					<View style={styles.inputContainer}>
-						<TextInput
-							style={styles.input__field}
-							value={code}
-							placeholder="Your Code"
-							placeholderTextColor="#525252"
-							onChangeText={(value) => setCode(value)}
-						/>
 						<TextInput
 							style={styles.input__field}
 							value={password}
@@ -81,8 +60,21 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 							secureTextEntry={true}
 							placeholderTextColor="#525252"
 						/>
-						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignUp");}}>
-							<Text style={styles.logInButton_text}>Don&apos;t have an account?</Text>
+						<TextInput
+							style={styles.input__field}
+							value={confirmPassword}
+							placeholder="Confirm Password"
+							onChangeText={(value) => setConfirmPassword(value)}
+							maxLength={32}
+							secureTextEntry={true}
+							placeholderTextColor="#525252"
+						/>
+						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignIn"); }}>
+							<Text
+								style={styles.logInButton_text}
+							>
+								Already have an account?
+							</Text>
 						</TouchableOpacity>
 					</View>
 					{error !== "" &&
@@ -91,7 +83,7 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 						</View>
 					}
 					<TouchableOpacity style={styles.createAccountButton} onPress={handleSubmit}>
-						<Text style={styles.createAccountButton_text}>Link Account</Text>
+						<Text style={styles.createAccountButton_text}>Create</Text>
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -149,8 +141,8 @@ const styles = StyleSheet.create({
 		margin: 40,
 		marginTop: 70,
 		height: "24%",
-		justifyContent: "flex-start",
-		flex: 1
+		justifyContent: "space-between",
+		flex: 0.5
 	},
 	logInButton: {
 		marginTop: 30,
@@ -188,5 +180,4 @@ const styles = StyleSheet.create({
 		color: "#fff",
 		fontSize: 20,
 	}
-
 });

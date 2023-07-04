@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 import QRCode from "react-native-qrcode-svg";
 
-import { makeRequest } from "../requests";
+import { makeRequest } from "../utils/requests";
+
 
 type InvitePeopleProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "InvitePeople">;
 };
 
 export default function InvitePeople({ navigation }: InvitePeopleProps) {
-
 	useEffect(() => {
 		try {
 			makeRequest("authentication/get_friend_token/", "GET").then((response) => {

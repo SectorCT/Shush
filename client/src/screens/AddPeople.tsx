@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 
-import { makeRequest } from "../requests";
+import { makeRequest } from "../utils/requests";
 
 type AddPeopleProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "AddPeople">;

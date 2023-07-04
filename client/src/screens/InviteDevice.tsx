@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
@@ -15,7 +15,7 @@ type InviteDeviceProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "InviteDevice">;
 };
 
-export default function inviteDevice({ navigation }: InviteDeviceProps) {
+export default function InviteDevice({ navigation }: InviteDeviceProps) {
 
 	const { logout } = useContext(AuthContext);
 	// useEffect(() => {

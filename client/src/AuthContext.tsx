@@ -21,19 +21,19 @@ export const AuthContext = createContext<IAuthContextData>({} as IAuthContextDat
 export function AuthContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
 	const [loggedIn, setLoggedIn] = useState(false);
 
-	interface ILoginResponse {
-		success?: {
-			status: number;
-			access_token: string;
-			refresh_token: string
+	type ILoginResponse = 
+		{
+			status: "success";
+			message: string;
+			accessToken: string;
+			refreshToken: string;
+		} |
+		{
+			status: "error"
+			message: string;
 		};
-		error?: {
-			status: number;
-			message: string
-		};
-	}
 
-	const login = async function (token: string, password: string) {
+	async function login (token: string, password: string) {
 		try {
 			const response = await fetch(`${API_URL}/authentication/login/`, {
 				method: "POST",
@@ -47,39 +47,41 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 			});
 			const data: ILoginResponse = await response.json();
 
-			if (data.success) {
-				AsyncStorage.setItem("access_token", data.success.access_token);
-				AsyncStorage.setItem("refresh_token", data.success.refresh_token);
+			if (data.status === "success") {
+				AsyncStorage.setItem("accessToken", data.accessToken);
+				AsyncStorage.setItem("refreshToken", data.refreshToken);
 				setLoggedIn(true);
-			} else if (data.error) {
-				console.log(data.error.message);
+			} else {
+				console.log(data.message);
 				return;
 			}
 		} catch (error) {
 			console.log(error);
 		}
-	};
-
-	interface ISignupResponse {
-		success?: {
-			status: number;
-			access_token: string;
-			refresh_token: string;
-		};
-		error?: {
-			status: number;
-			message: string;
-		};
 	}
 
-	const signup = async function (password: string, confirmPassword: string) {
-		try {
-			if (password !== confirmPassword) {
-				console.log("Passwords do not match");
-				return;
-			}
+	type ISignupResponse =
+		{
+			status: "success";
+			message: string;
+			token: string;
+			accessToken: string;
+			refreshToken: string;
+		} |
+		{
+			status: "error"
+			message: string;
+		};
 
-			const response = await fetch(`${API_URL}/authentication/signup/`, {
+	async function signup (password: string, confirmPassword: string) {
+		if (password !== confirmPassword) {
+			console.log("Passwords do not match");
+			return;
+		}
+
+		let response = null;
+		try {
+			response = await fetch(`${API_URL}/authentication/signup/`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -88,37 +90,39 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 					password: password,
 				}),
 			});
-
-			const data: ISignupResponse = await response.json();
-
-			if (data.success) {
-				await AsyncStorage.setItem("access_token", data.success.access_token);
-				await AsyncStorage.setItem("refresh_token", data.success.refresh_token);
-				await setLoggedIn(true);
-				return;
-			} else if (data.error) {
-				console.log(data.error.message);
-				return;
-			}
 		} catch (error) {
 			console.log(error);
+			return;
 		}
-	};
 
-	interface ILogoutResponse {
-		success?: {
-			status: number;
-			message: string;
-		};
-		error?: {
-			status: number;
-			message: string;
-		};
+		let data = null;
+		try {
+			data = await response.json() as ISignupResponse;
+		} catch {
+			console.log("Error parsing JSON");
+			return;
+		}
+
+		if (data.status === "success") {
+			await AsyncStorage.setItem("accessToken", data.accessToken);
+			await AsyncStorage.setItem("refreshToken", data.refreshToken);
+			console.log("Successfully signed up");
+			await setLoggedIn(true);
+			return;
+		} else {
+			console.log(data.message);
+			return;
+		}
 	}
 
-	const logout = async function () {
+	interface ILogoutResponse {
+		status: string;
+		message: string;
+	}
+
+	async function logout () {
 		try {
-			const refreshToken = await AsyncStorage.getItem("refresh_token");
+			const refreshToken = await AsyncStorage.getItem("refreshToken");
 
 			const response = await fetch(`${API_URL}/authentication/logout/`, {
 				method: "POST",
@@ -131,27 +135,33 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 			});
 
 			const data: ILogoutResponse = await response.json();
-
-			if (data.success) {
-				AsyncStorage.removeItem("access_token");
-				AsyncStorage.removeItem("refresh_token");
+			if (data.status === "success") {
+				AsyncStorage.removeItem("accessToken");
+				AsyncStorage.removeItem("refreshToken");
 				setLoggedIn(false);
-			} else if (data.error) {
-				console.log(data.error.message);
+			} else {
+				console.log("error:", data.message);
 				return;
 			}
 		} catch (error) {
 			console.log(error);
 		}
-	};
+	}
 
 
-	const checkIfLoggedIn = async () => {
-		// Implement your checkIfLoggedIn logic here
-		// Check if a token exists in AsyncStorage
-		// If a token exists, set the loggedIn state to true
-		// Otherwise, set the loggedIn state to false
-	};
+	async function checkIfLoggedIn () {
+		try {
+			const refreshToken = await AsyncStorage.getItem("refreshToken");
+
+			if (refreshToken) {
+				setLoggedIn(true);
+			} else {
+				setLoggedIn(false);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	useEffect(() => {
 		checkIfLoggedIn();
