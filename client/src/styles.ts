@@ -5,7 +5,7 @@
 // });
 
 export const colors = {
-	backgroundColor: "#000510",
+	backgroundColor: "#0E0E12",
 	primary: "#000D1B",
 	secondary: "#112436",
 	accent: "#22B6F5",

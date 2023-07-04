@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 type AddPeopleOrSeeCodeProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "AddPeopleOrSeeCode">;

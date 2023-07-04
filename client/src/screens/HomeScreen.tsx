@@ -1,6 +1,6 @@
 import React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StyleSheet, View } from "react-native";
 import TopBar from "../components/Topbar";

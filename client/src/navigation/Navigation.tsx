@@ -1,16 +1,22 @@
 import React, { useEffect, useContext } from "react";
 
-import { HomeStackContainer, AuthStackContainer } from "./screens/Routes";
+import HomeStackContainer from "./HomeStack";
+import AuthStackContainer from "./AuthStack";
+
 import { NavigationContainer }  from "@react-navigation/native";
 
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 
-export default function Root() {
+export default function Navigation() {
 	const { loggedIn, checkIfLoggedIn } = useContext(AuthContext);
 
 	useEffect(() => {
 		checkIfLoggedIn();
 	}, []);
+
+	useEffect(() => {
+		console.log("loggedIn", loggedIn);
+	}, [loggedIn]);
 
 	return (
 		<>

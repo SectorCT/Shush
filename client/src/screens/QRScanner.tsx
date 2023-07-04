@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "./Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 type QRCodeScannerProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "QRScanner">;

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "../../screens/Routes";
+import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { colors } from "../../styles";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { makeRequest } from "../../requests";
+import { makeRequest } from "../../utils/requests";
 
 const Separator = () => <View style={styles.separator} />;
 
