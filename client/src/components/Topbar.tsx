@@ -1,12 +1,14 @@
 import React from "react";
 
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HomeStackParamList } from "../screens/Routes";
+import { HomeStackParamList } from "../navigation/HomeStack";
 
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { colors } from "../styles";
 
-import ImageButton from "./ImageButton";
+import { FontAwesome } from "@expo/vector-icons";
+
+import ShushLogoAndText from "./ShushLogoAndText";
 
 type TopBarProps = {
 	navigation: StackNavigationProp<HomeStackParamList>;
@@ -15,26 +17,23 @@ type TopBarProps = {
 export default function TopBar({ navigation }: TopBarProps) {
 
 	return (
-		<View style={styles.topbar__container}>
-			<ImageButton imageSource={require("../assets/addPeople.png")} style={styles.topbar__imageItem}
-				onPress={() => {
-					navigation.navigate("AddPeopleOrSeeCode");
-				}}
-			/>
-			<Text style={styles.topbar__text}>Shush</Text>
-			<ImageButton imageSource={require("../assets/settings.png")} style={styles.topbar__imageItem}
-				onPress={() => {
-					navigation.navigate("InviteDevice");
-				}}
-			/>
-
+		<View style={styles.container}>
+			<ShushLogoAndText text="Shush!" ContainerStyle={{marginBottom:0}}/>
+			<View style={styles.buttons}>
+				<TouchableOpacity onPress={() => {navigation.navigate("AddPeopleOrSeeCode");}}>
+					<FontAwesome name="user-plus" size={30} color="white" />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => {navigation.navigate("InviteDevice");}}>
+					<FontAwesome name="bars" size={30} color="white" />
+				</TouchableOpacity>
+			</View>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	topbar__container: {
-		backgroundColor: colors.primary,
+	container: {
+		backgroundColor: colors.backgroundColor,
 		height: 100,
 		width: "100%",
 		flexDirection: "row",
@@ -45,17 +44,11 @@ const styles = StyleSheet.create({
 		fontSize: 29,
 		lineHeight: 43,
 	},
-	topbar__text: {
-		fontSize: 35,
-		fontWeight: "bold",
-		color: "#fff",
-		justifyContent: "center",
+	buttons: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		width: 70,
 	},
-	topbar__people: {
-		justifyContent: "flex-start",
-	},
-	topbar__imageItem: {
-		width: 40,
-		height: 40,
-	}
 });
+

@@ -8,25 +8,26 @@ const SERVER_PORT = process.env.SERVER_PORT ?? "3000";
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
 interface IAuthContextData {
-	loggedIn: boolean | undefined;
+	loggedIn: boolean | null;
 	login: (token: string, password: string) => void;
 	signup: (password: string, confirmPassword: string) => void;
 	logout: () => void;
 	checkIfLoggedIn: () => void;
 }
 
+console.log(API_URL);
 
 export const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 export function AuthContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
-	const [loggedIn, setLoggedIn] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(null as boolean | null);
 
 	type ILoginResponse = 
 		{
 			status: "success";
 			message: string;
-			accessToken: string;
-			refreshToken: string;
+			access_token: string;
+			refresh_token: string;
 		} |
 		{
 			status: "error"
@@ -48,8 +49,9 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 			const data: ILoginResponse = await response.json();
 
 			if (data.status === "success") {
-				AsyncStorage.setItem("accessToken", data.accessToken);
-				AsyncStorage.setItem("refreshToken", data.refreshToken);
+				AsyncStorage.setItem("accessToken", data.access_token);
+				AsyncStorage.setItem("refreshToken", data.refresh_token);
+				AsyncStorage.setItem("userToken", token);
 				setLoggedIn(true);
 			} else {
 				console.log(data.message);
@@ -65,8 +67,8 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 			status: "success";
 			message: string;
 			token: string;
-			accessToken: string;
-			refreshToken: string;
+			access_token: string;
+			refresh_token: string;
 		} |
 		{
 			status: "error"
@@ -104,8 +106,9 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 		}
 
 		if (data.status === "success") {
-			await AsyncStorage.setItem("accessToken", data.accessToken);
-			await AsyncStorage.setItem("refreshToken", data.refreshToken);
+			await AsyncStorage.setItem("accessToken", data.access_token);
+			await AsyncStorage.setItem("refreshToken", data.refresh_token);
+			await AsyncStorage.setItem("userToken", data.token);
 			console.log("Successfully signed up");
 			await setLoggedIn(true);
 			return;
@@ -123,6 +126,12 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 	async function logout () {
 		try {
 			const refreshToken = await AsyncStorage.getItem("refreshToken");
+
+			if (!refreshToken) {
+				AsyncStorage.removeItem("accessToken");
+				AsyncStorage.removeItem("refreshToken");
+				setLoggedIn(false);
+			}
 
 			const response = await fetch(`${API_URL}/authentication/logout/`, {
 				method: "POST",

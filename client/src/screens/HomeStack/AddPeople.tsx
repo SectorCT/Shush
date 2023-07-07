@@ -5,9 +5,9 @@ import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from "react-native";
-import { colors } from "../styles";
+import { colors } from "../../styles";
 
-import { makeRequest } from "../utils/requests";
+import { makeRequest } from "../../utils/requests";
 
 type AddPeopleProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "AddPeople">;
@@ -88,7 +88,7 @@ export default function AddPeople({ navigation, route }: AddPeopleProps) {
 								maxLength={20}
 							/>
 							<TouchableOpacity onPress={() => { navigation.navigate("QRScanner"); }}>
-								<Image source={require("../assets/scanQr.png")} style={styles.input__field_button} />
+								<Image source={require("../../assets/scanQr.png")} style={styles.input__field_button} />
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 		// fontFamily: fonts.primary,
 	},
 	invite_text: {
-		color: "#fff",
+		color: colors.white,
 		fontWeight: "400",
 		fontSize: 35,
 		lineHeight: 37,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-between",
 		fontSize: 30,
-		color: "#fff",
+		color: colors.white,
 		marginTop: 20,
 		flex: 0.3
 
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		height: 70,
 		fontSize: 30,
-		color: "#fff",
+		color: colors.white,
 		borderBottomColor: colors.secondary,
 		borderBottomWidth: 2,
 		marginTop: 20,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 	},
 	button_text: {
 		fontSize: 30,
-		color: colors.textWhite
+		color: colors.white
 	},
 	errorContainer: {
 		backgroundColor: colors.secondary,
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20
 	},
 	errorContainer_text: {
-		color: "#fff",
+		color: colors.white,
 		fontSize: 20,
 	}
 });

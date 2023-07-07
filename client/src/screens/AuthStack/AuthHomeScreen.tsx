@@ -2,8 +2,9 @@ import React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "@navigation/AuthStack";
 
-import { StyleSheet, Text, Image, View, TouchableOpacity} from "react-native";
+import { StyleSheet, Text, Image, View} from "react-native";
 import { StatusBar } from "expo-status-bar";
+import AuthStyleButton from "../../components/AuthStyleButton";
 
 import { colors } from "../../styles";
 
@@ -19,12 +20,8 @@ export default function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 				<Image style={styles.logoImage} source={require("../../assets/ShushLogoWhite.png")} />
 				<Text style={styles.logoText}>Shush!</Text>
 			</View>
-			<TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SignIn")}>
-				<Text style={styles.buttonText}>Sign In</Text>
-			</TouchableOpacity>
-			<TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SignUp")}>
-				<Text style={styles.buttonText}>Sign Up</Text>
-			</TouchableOpacity>
+			<AuthStyleButton text="Log In" onPress={() => navigation.navigate("SignIn")} />
+			<AuthStyleButton text="Sign Up" onPress={() => navigation.navigate("SignUp")} />
 		</View>
 	);
 }
@@ -41,31 +38,24 @@ const styles = StyleSheet.create({
 		marginBottom: 50
 	},
 	logoImage: {
-		width: 100,
-		height: 100
+		width: 120,
+		height: 120,
+		marginBottom: 10
 	},
 	logoText: {
-		fontFamily: "AlumniSans",
-		color: "#fff",
-		fontSize: 90,
-		fontWeight: "700",
+		fontFamily: "AlumniSans-SemiBold",
+		color: colors.white,
+		fontSize: 100,
 	},
 	button: {
 		margin: 20,
 		width: "80%",
-		backgroundColor: colors.backgroundColor,
-		borderColor: "#fff",
+		backgroundColor: colors.backgroundColor, 
+		borderColor: colors.white,
 		borderWidth: 2,
 		borderRadius: 20,
 		justifyContent: "center",
 		alignItems: "center",
 		marginTop: 10
 	},
-	buttonText: {
-		fontFamily: "AlumniSans",  
-		color: "#fff",
-		fontSize: 20,
-		fontWeight: "bold",
-		padding: 15
-	}
 });

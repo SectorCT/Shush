@@ -4,10 +4,10 @@ import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { colors } from "../styles";
+import { colors } from "../../styles";
 import QRCode from "react-native-qrcode-svg";
 
-import { makeRequest } from "../utils/requests";
+import { makeRequest } from "../../utils/requests";
 
 
 type InvitePeopleProps = {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 30,
 	},
 	invitePeople__header_title: {
-		color: "#fff",
+		color: colors.white,
 		fontSize: 40,
 		// fontFamily: fonts.primary,
 	},
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 	invitePeople__description_highlight: {
 		fontSize: 34,
 		fontWeight: "bold",
-		color: colors.textWhite
+		color: colors.white
 	},
 	invitePeople__createAccountButton: {
 		backgroundColor: colors.secondary,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 	},
 	invitePeople__createAccountButton_text: {
 		fontSize: 30,
-		color: colors.textWhite
+		color: colors.white
 	},
 	invitePeople__qrCode_style: {
 		alignSelf: "center",

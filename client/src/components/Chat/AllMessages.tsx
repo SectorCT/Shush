@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: colors.secondary,
 		maxHeight: 50,
 		borderBottomWidth: 3,
-		color: "#fff",
+		color: colors.white,
 		width: "80%",
 		height: "80%",
 		paddingVertical: 0,

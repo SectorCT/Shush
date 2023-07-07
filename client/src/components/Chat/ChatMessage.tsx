@@ -54,7 +54,7 @@ export default function Message({ text, isOwn, isNextOwn, isDisappearing }: Mess
 		concecativeOwnStyle = { ...concecativeOwnStyle, marginBottom: 12 };
 	}
 
-	const messageColor = isOwn ? "#000" : "#fff";
+	const messageColor = isOwn ? "#000" : colors.white;
 
 	if (isStringOnlyEmojis(text)) {
 		messageType = "emoji";

@@ -18,6 +18,10 @@ export default function Navigation() {
 		console.log("loggedIn", loggedIn);
 	}, [loggedIn]);
 
+	if (loggedIn === null) {
+		return null;
+	}
+
 	return (
 		<>
 			<NavigationContainer>

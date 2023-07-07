@@ -5,12 +5,8 @@ import { HomeStackParamList } from "@navigation/HomeStack";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { colors } from "../../styles";
 
-import Icon from "react-native-vector-icons/FontAwesome";
 
 import { makeRequest } from "../../utils/requests";
-
-const Separator = () => <View style={styles.separator} />;
-
 
 type ChatListingProps = {
 	navigation: StackNavigationProp<HomeStackParamList>;
@@ -55,26 +51,6 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 	};
 
 
-
-	function handleDeleteFriend(friendshipId: string) {
-		makeRequest("authentication/remove_friend/", "POST", { friendship_token: friendshipId }).then((response) => {
-			if (response === null) {
-				return;
-			}
-
-			if (response.status === 200) {
-				response.json().then((data) => {
-					console.log("Friend deleted", data);
-					refresh();
-				});
-			} else {
-				response.json().then((data) => {
-					console.log("Error while deleting friend", response.status, data.message);
-				});
-			}
-		});
-	}
-
 	type ChatListItem = {
 		nickname: string;
 		friendship_token: string;
@@ -82,25 +58,29 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 		is_latest_message_from_me: boolean;
 	};
 
+	function Separator() {
+		return (
+			<View style={styles.separator}></View>
+		);
+	}
+
 	const renderItem = ({ item }: { item: ChatListItem }) => (
 		<TouchableOpacity
-			style={styles.personChat}
+			style={styles.personChatContainer}
 			onPress={
 				() => handleOpenChat(item.nickname, item.friendship_token)
 			}
 		>
-			<View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-				<View style={styles.personIcon}>
-					<Text style={styles.letter}>{item.nickname[0]?.toUpperCase()}</Text>
-				</View>
-				<View>
-					<Text style={styles.name}>{item.nickname}</Text>
-					{item.latest_message &&
-						<Text style={styles.lastMessage}>{item.is_latest_message_from_me ? "You:" : item.nickname} {item.latest_message}</Text>
-					}
-				</View>
+			<View style={styles.personIcon}>
+				<Text style={styles.letter}>{item.nickname[0]?.toUpperCase()}</Text>
 			</View>
-			<Icon name='trash' size={25} color="#fff" style={styles.delete_friend} onPress={() => { handleDeleteFriend(item.friendship_token); }}></Icon>
+			<View style={styles.nameAndLastMessage}>
+				<Text style={styles.name}>{item.nickname}</Text>
+				<Text numberOfLines={1} ellipsizeMode="tail" style={styles.lastMessage}>da ti eba majkata pedal zashto iztri vsichko asa das</Text>
+				{item.latest_message &&
+						<Text style={styles.lastMessage}>{item.is_latest_message_from_me ? "You:" : item.nickname} {item.latest_message}</Text>
+				}
+			</View>
 		</TouchableOpacity>
 	);
 
@@ -117,8 +97,8 @@ export default function ChatListing({ navigation }: ChatListingProps) {
 }
 
 const styles = StyleSheet.create({
-	personChat: {
-		backgroundColor: colors.secondary,
+	personChatContainer: {
+		backgroundColor: colors.backgroundColor,
 		borderRadius: 20,
 		height: 80,
 		flexDirection: "row",
@@ -132,24 +112,35 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
+		marginHorizontal: 10,
 	},
 	personIcon: {
 		backgroundColor: colors.accent,
-		borderRadius: 90,
+		borderRadius: 5,
 		height: "75%",
 		aspectRatio: "1/1",
 		margin: 8,
 		alignItems: "center",
 		justifyContent: "center",
 	},
+	nameAndLastMessage: {
+		flex: 1,
+		height: "100%",
+		flexDirection: "column",
+		alignItems: "flex-start",
+		justifyContent: "center",
+		borderBottomColor: colors.underlineBlack,
+		borderBottomWidth: 2,
+		marginLeft: 5,
+	},
 	name: {
-		marginLeft: 12,
-		fontWeight: "900",
-		fontSize: 23,
+		fontFamily: "AlumniSans-Bold",
+		fontSize: 34,
 		lineHeight: 34,
-		color: colors.textWhite,
+		color: colors.white,
 	},
 	letter: {
+		fontFamily: "AlumniSans-Bold",
 		color: colors.primary,
 		alignItems: "center",
 		justifyContent: "center",
@@ -168,10 +159,9 @@ const styles = StyleSheet.create({
 		marginRight: 20,
 	},
 	lastMessage: {
-		marginLeft: 12,
-		fontWeight: "400",
-		fontSize: 15,
+		fontFamily: "AlumniSans-Regular",
+		fontSize: 20,
 		lineHeight: 34,
-		color: colors.textWhite,
+		color: colors.textGray,
 	},
 });
