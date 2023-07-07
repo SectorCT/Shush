@@ -2,12 +2,12 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "../screens/HomeScreen";
-import Chat from "../screens/Chat";
-import AddPeople from "../screens/AddPeople";
-import AddPeopleOrSeeCode from "../screens/AddPeopleOrSeeCode";
-import InvitePeople from "../screens/InvitePeople";
-import InviteDevice from "../screens/InviteDevice";
+import HomeScreen from "../screens/HomeStack/HomeScreen";
+import Chat from "../screens/HomeStack/Chat";
+import AddPeople from "../screens/HomeStack/AddPeople";
+import AddPeopleOrSeeCode from "../screens/HomeStack/AddPeopleOrSeeCode";
+import InvitePeople from "../screens/HomeStack/InvitePeople";
+import InviteDevice from "../screens/HomeStack/InviteDevice";
 import QRScanner from "../screens/QRScanner";
 
 export type HomeStackParamList = {

@@ -4,10 +4,10 @@ import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { colors } from "../styles";
+import { colors } from "../../styles";
 import QRCode from "react-native-qrcode-svg";
 
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../../AuthContext";
 
 const codeLink = "3ER89H5Y";
 
@@ -69,7 +69,7 @@ export default function InviteDevice({ navigation }: InviteDeviceProps) {
 						<Text style={styles.inviteDevice__createAccountButton_text}>Go Back</Text>
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.inviteDevice__logOutButton} onPress={handleLogout}>
-						<Text style={{ color: "#fff", fontSize: 30 }} >Log Out</Text>
+						<Text style={{ color: colors.white, fontSize: 30 }} >Log Out</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 30,
 	},
 	inviteDevice__header_title: {
-		color: "#fff",
+		color: colors.white,
 		fontSize: 40,
 		// fontFamily: fonts.primary,
 	},
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
 	inviteDevice__description_highlight: {
 		fontSize: 34,
 		fontWeight: "bold",
-		color: colors.textWhite
+		color: colors.white
 	},
 	inviteDevice__createAccountButton: {
 		backgroundColor: colors.secondary,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 	},
 	inviteDevice__createAccountButton_text: {
 		fontSize: 30,
-		color: colors.textWhite
+		color: colors.white
 	},
 	inviteDevice__qrCode_style: {
 		alignSelf: "center",
