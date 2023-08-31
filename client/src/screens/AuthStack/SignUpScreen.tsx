@@ -90,7 +90,7 @@ export default function SignUpScreen({ navigation }: SignScreenProps) {
 const styles = StyleSheet.create({
 	islandHider: {
 		backgroundColor: colors.backgroundColor,
-		height: 40,
+		height: 50,
 		width: "100%",
 	},
 	container: {
