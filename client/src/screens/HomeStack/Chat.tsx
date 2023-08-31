@@ -73,7 +73,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 							setMessages(newMessages as IMessage[]);
 						});
 					} else {
-						console.log("error");
+						console.log("error " + response.status);
 					}
 				}
 				);

@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SERVER_IP = process.env.SERVER_IP ?? "localhost";
-const SERVER_PORT = process.env.SERVER_PORT ?? "3000";
+const SERVER_PORT = process.env.SERVER_PORT ?? "5000";
 
 
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
@@ -126,6 +126,8 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
 	async function logout () {
 		try {
 			const refreshToken = await AsyncStorage.getItem("refreshToken");
+
+			console.log("refreshToken", `${API_URL}/authentication/logout/`);
 
 			if (!refreshToken) {
 				AsyncStorage.removeItem("accessToken");

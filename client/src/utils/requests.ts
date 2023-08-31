@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const SERVER_IP = process.env.SERVER_IP ?? "";
-const SERVER_PORT = process.env.SERVER_PORT ?? "";
+const SERVER_IP = process.env.SERVER_IP ?? "localhost";
+const SERVER_PORT = process.env.SERVER_PORT ?? "5000";
 // cosnt SERVER_PORT } from "@env";
 const API_URL = `https://${SERVER_IP}:${SERVER_PORT}`;
 
