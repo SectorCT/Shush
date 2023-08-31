@@ -2,8 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 // import { useNavigation } from "@react-navigation/native";
 // import { NavigationStackProp } from "react-navigation-stack";
 
-import { StyleSheet, Text, View, StatusBar, TextInput} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import ShushLogoAndText from "../../components/ShushLogoAndText";
+import AuthStyleButton from "../../components/AuthStyleButton";
+
+
 import { colors } from "../../styles";
 
 import { AuthContext } from "../../AuthContext";
@@ -57,19 +61,17 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 	}
 	return (
 		<>
-			<StatusBar />
+			<StatusBar style="light" />
 			<View style={styles.islandHider} />
 			<View style={styles.container}>
-				<View style={styles.header} >
-					<Text style={styles.header_title}>Link account</Text>
-				</View>
+				<ShushLogoAndText text="Log in account" ContainerStyle={styles.header} />
 				<View style={styles.main}>
 					<View style={styles.inputContainer}>
 						<TextInput
 							style={styles.input__field}
 							value={code}
-							placeholder="Your Code"
-							placeholderTextColor="#525252"
+							placeholder="Your ID"
+							placeholderTextColor={colors.textGray}
 							onChangeText={(value) => setCode(value)}
 						/>
 						<TextInput
@@ -79,10 +81,11 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 							onChangeText={(value) => setPassword(value)}
 							maxLength={32}
 							secureTextEntry={true}
-							placeholderTextColor="#525252"
+							placeholderTextColor={colors.textGray}
 						/>
-						<TouchableOpacity style={styles.logInButton} onPress={() => { navigation.navigate("SignUp");}}>
-							<Text style={styles.logInButton_text}>Don&apos;t have an account?</Text>
+						<AuthStyleButton text="Log in" onPress={handleSubmit} style={styles.logInButton} />
+						<TouchableOpacity style={styles.switchOptionButton} onPress={() => { navigation.navigate("SignUp");}}>
+							<Text style={styles.switchOptionButton_text}>*Don&apos;t have an account?</Text>
 						</TouchableOpacity>
 					</View>
 					{error !== "" &&
@@ -90,9 +93,7 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 							<Text style={styles.errorContainer_text}>{error}</Text>
 						</View>
 					}
-					<TouchableOpacity style={styles.createAccountButton} onPress={handleSubmit}>
-						<Text style={styles.createAccountButton_text}>Link Account</Text>
-					</TouchableOpacity>
+					
 				</View>
 			</View>
 		</>
@@ -102,90 +103,74 @@ export default function SignInScreen({navigation} : SignInScreenProps) {
 
 const styles = StyleSheet.create({
 	islandHider: {
-		backgroundColor: colors.primary,
-		height: 20,
-		width: "100%",
-	},
-	main: {
-		flex: 1,
-		height: "100%",
-		justifyContent: "space-between",
 		backgroundColor: colors.backgroundColor,
-		marginBottom: 40
+		height: 50,
+		width: "100%",
 	},
 	container: {
-		flex: 1,
-		backgroundColor: colors.primary,
 		width: "100%",
 		height: "100%",
-		justifyContent: "space-between",
 	},
 	header: {
-		backgroundColor: colors.primary,
+		backgroundColor: colors.backgroundColor,
 		height: 60,
 		width: "100%",
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
-		paddingHorizontal: 30,
+		marginBottom: 0,
 	},
-	header_title: {
-		color: "#fff",
-		fontSize: 40,
+	main: {
+		marginTop: 0,
+		flex: 1,
+		height: "100%",
+		alignItems: "center",
+		justifyContent: "flex-start",
+		backgroundColor: colors.backgroundColor,
+	},
+	inputContainer: {
+		width: "85%",
+		marginTop: 30,
+		marginBottom: 30,
 	},
 	input__field: {
+		fontFamily: "AlumniSans-Regular",
 		padding: 10,
 		width: "100%",
 		height: 70,
 		alignItems: "center",
 		justifyContent: "center",
-		fontSize: 30,
-		color: "#fff",
-		borderBottomColor: colors.secondary,
+		fontSize: 40,
+		letterSpacing: 0.75,
+		color: colors.white,
+		borderBottomColor: colors.complimentary,
 		borderBottomWidth: 2,
-		marginTop: 20,
-	},
-	inputContainer: {
-		margin: 40,
-		marginTop: 70,
-		height: "24%",
-		justifyContent: "flex-start",
-		flex: 1
-	},
-	logInButton: {
 		marginTop: 30,
 	},
-	logInButton_text: {
-		color: "#fff",
-		textDecorationLine: "underline",
-		fontSize: 20,
-		padding: 10
-	},
-	createAccountButton: {
-		backgroundColor: colors.accent,
-		color: colors.primary,
-		borderRadius: 15,
+	logInButton: {
+		margin: 0,
+		marginTop: 80,
 		marginBottom: 20,
-		width: "80%",
-		margin: 40,
-		height: 70,
-		alignItems: "center",
-		justifyContent: "center",
+		width: "100%",
 	},
-	createAccountButton_text: {
-		fontSize: 30
+	switchOptionButton: {
+		marginTop: 10,
+		alignSelf: "flex-start",
+	},
+	switchOptionButton_text: {
+		color: colors.white,
+		textDecorationLine: "underline",
+		fontFamily: "AlumniSans-Light",
+		fontSize: 24,
+		padding: 10,
 	},
 	errorContainer: {
 		backgroundColor: colors.secondary,
 		width: "80%",
 		alignItems: "center",
 		justifyContent: "center",
-		alignSelf: "center",
 		borderRadius: 15,
 		padding: 20
 	},
 	errorContainer_text: {
-		color: "#fff",
+		color: colors.white,
 		fontSize: 20,
 	}
 

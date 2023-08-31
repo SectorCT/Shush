@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { colors } from "../styles";
+import { colors } from "../../styles";
 
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "@navigation/HomeStack";
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 	header: {
 		fontSize: 30,
 		fontWeight: "bold",
-		color: "#fff",
+		color: colors.white,
 		justifyContent: "center",
 		textAlign: "center",
 		paddingTop: 40,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 	},
 
 	inviteButton_Text: {
-		color: "#fff",
+		color: colors.white,
 		fontSize: 25,
 	},
 

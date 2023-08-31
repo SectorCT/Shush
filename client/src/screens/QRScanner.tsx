@@ -5,6 +5,8 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParamList } from "@navigation/HomeStack";
 
+import { colors } from "../styles";
+
 type QRCodeScannerProps = {
 	navigation: StackNavigationProp<HomeStackParamList, "QRScanner">;
 };
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
 	},
 	scanButton: {
 		padding: 10,
-		backgroundColor: "#fff",
+		backgroundColor: colors.white,
 		color: "#FFFFFF",
 		borderRadius: 5,
 		fontSize: 20,

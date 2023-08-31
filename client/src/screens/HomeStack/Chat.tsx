@@ -6,20 +6,20 @@ import { HomeStackParamList } from "@navigation/HomeStack";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { colors} from "../styles";
+import { colors} from "../../styles";
 import { TextInput } from "react-native-gesture-handler";
 
 
 import { useState, useEffect } from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
-import ImageButton from "../components/ImageButton";
+import { FontAwesome } from "@expo/vector-icons";
+import ImageButton from "../../components/ImageButton";
 
-// import { SERVER_IP, SERVER_SOCKET_PORT } from "@env";
 const SERVER_IP = process.env.SERVER_IP ?? "localhost";
 const SERVER_SOCKET_PORT = process.env.SERVER_SOCKET_PORT ?? "3001";
-import { makeRequest } from "../utils/requests";
 
-import AllMessages from "../components/Chat/AllMessages";
+import { makeRequest } from "../../utils/requests";
+
+import AllMessages from "../../components/Chat/AllMessages";
 
 
 
@@ -73,7 +73,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 							setMessages(newMessages as IMessage[]);
 						});
 					} else {
-						console.log("error");
+						console.log("error " + response.status);
 					}
 				}
 				);
@@ -192,15 +192,15 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 				{isEdditingNickname ?
 					<View style={styles.edit_nickname}>
 						<TextInput style={styles.header_title} value={friendName} onChangeText={(text) => setFriendName(text)}></TextInput>
-						<Icon name='check' size={25} color="#fff" style={styles.edit_icon} onPress={handleAcceptNickname}></Icon>
-						<Icon name='times' size={25} color="#fff" style={styles.edit_icon} onPress={handleDeclineNickname}></Icon>
+						<FontAwesome name='check' size={25} color={colors.white} style={styles.edit_icon} onPress={handleAcceptNickname}/>
+						<FontAwesome name='times' size={25} color={colors.white} style={styles.edit_icon} onPress={handleDeclineNickname}/>
 					</View> :
 					<View style={styles.edit_nickname}>
 						<Text style={styles.header_title}>{friendName}</Text>
-						<Icon name='edit' size={25} color="#fff" style={styles.edit_icon} onPress={() => { setIsEdditingNickname(true); }}></Icon>
+						<FontAwesome name='edit' size={25} color={colors.white} style={styles.edit_icon} onPress={() => { setIsEdditingNickname(true); }}/>
 					</View>
 				}
-				<ImageButton imageSource={require("../assets/cross.png")} style={styles.imageItem} onPress={() => {
+				<ImageButton imageSource={require("../../assets/cross.png")} style={styles.imageItem} onPress={() => {
 					navigation.navigate("HomeScreen");
 				}} />
 			</View>
@@ -208,7 +208,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 
 			<View style={styles.sendMsg}>
 				<TouchableOpacity onPress={switchMode}>
-					<Icon name={mode === "Normal" ? "eye" : "eye-slash"} size={24} color="white" />
+					<FontAwesome name={mode === "Normal" ? "eye" : "eye-slash"} size={24} color="white" />
 				</TouchableOpacity>
 				<TextInput
 					style={styles.sendMsg_input}
@@ -218,7 +218,7 @@ export default function Chat({ navigation, route } : ChatScreenProps) {
 					placeholderTextColor="#b4b4b4"
 				/>
 
-				<Icon name='send' size={20} color="#fff" onPress={handleSendMsg}></Icon>
+				<FontAwesome name='send' size={20} color={colors.white} onPress={handleSendMsg}/>
 			</View>
 			<View style={styles.downSpace} />
 		</>
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: colors.secondary,
 		maxHeight: 50,
 		borderBottomWidth: 3,
-		color: "#fff",
+		color: colors.white,
 		width: "80%",
 		height: "80%",
 		paddingVertical: 0,
